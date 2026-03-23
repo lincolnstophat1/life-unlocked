@@ -296,7 +296,7 @@ h2{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;line-he
 <p>One more to go. And it's the big one.</p>
 </div>
 <div class="next-lesson-preview">
-<div class="lock-icon">🔒 Up Next</div>
+<div class="lock-icon">→ Up Next</div>
 <h4>Lesson 5: The Big Build</h4>
 <p>Everything you've learned, applied to one massive project. Real prices. Real trade-offs. Let's see what you've got.</p>
 </div>
@@ -391,10 +391,11 @@ const btn=document.getElementById('nextBtn');const back=document.getElementById(
 btn.disabled=false;back.classList.toggle('hidden',currentScreen===1);
 if(currentScreen===3&&!budgetValid){btn.disabled=true;btn.textContent='Assign every dollar ($0 remaining)'}
 else if(currentScreen===4&&!reflDone){btn.disabled=true;btn.textContent='Answer the question to continue'}
-else if(currentScreen===6){btn.textContent='Coming Soon: Lesson 5 🔒';btn.disabled=true}
+else if(currentScreen===6){btn.textContent='Start Lesson 5 →';btn.disabled=false}
 else{btn.textContent='Continue →'}
 }
 function nextScreen(){
+if(currentScreen===6){window.location.href='lesson5.html';return}
 if(currentScreen>=totalScreens)return;
 if(currentScreen===3)buildMonths();
 document.getElementById('screen'+currentScreen).classList.remove('active');

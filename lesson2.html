@@ -391,7 +391,7 @@ h2{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;line-he
 </ul>
 </div>
 <div class="next-lesson-preview">
-<div class="lock-icon">🔒 Up Next</div>
+<div class="lock-icon">→ Up Next</div>
 <h4>Lesson 3: The Trade-Off Game</h4>
 <p>Every dollar you spend here is a dollar you can't spend there. Sounds obvious. Stings when you see it play out.</p>
 </div>
@@ -460,10 +460,11 @@ const btn=document.getElementById('nextBtn');const back=document.getElementById(
 btn.disabled=false;back.classList.toggle('hidden',currentScreen===1);
 if(currentScreen===3&&warmupDone<3){btn.disabled=true;btn.textContent='Answer all 3 to continue'}
 else if(currentScreen===4&&getSortedCount()<totalItems){btn.disabled=true;btn.textContent='Sort all items ('+getSortedCount()+'/'+totalItems+')'}
-else if(currentScreen===6){btn.textContent='Coming Soon: Lesson 3 🔒';btn.disabled=true}
+else if(currentScreen===6){btn.textContent='Start Lesson 3 →';btn.disabled=false}
 else{btn.textContent='Continue →'}
 }
 function nextScreen(){
+if(currentScreen===6){window.location.href='lesson3.html';return}
 if(currentScreen>=totalScreens)return;
 document.getElementById('screen'+currentScreen).classList.remove('active');
 currentScreen++;document.getElementById('screen'+currentScreen).classList.add('active');

@@ -266,7 +266,7 @@ h2{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;line-he
 </ul>
 </div>
 <div class="next-lesson-preview">
-<div class="lock-icon">🔒 Up Next</div>
+<div class="lock-icon">→ Up Next</div>
 <h4>Lesson 2: Needs vs. Wants (It's Not That Simple)</h4>
 <p>You think you know the difference? Wait until we start arguing about whether Wi-Fi is a need.</p>
 </div>
@@ -290,11 +290,12 @@ btn.disabled=false;
 back.classList.toggle('hidden',currentScreen===1);
 if(currentScreen===3&&!choiceMade){btn.disabled=true;btn.textContent='Make your pick first ☝️'}
 else if(currentScreen===4&&(!reflTextDone||!reflPickDone)){btn.disabled=true;btn.textContent='Complete both sections ✍️'}
-else if(currentScreen===5){btn.textContent='Coming Soon: Lesson 2 🔒';btn.disabled=true}
+else if(currentScreen===5){btn.textContent='Start Lesson 2 →';btn.disabled=false}
 else if(currentScreen===4&&reflTextDone&&reflPickDone){btn.disabled=false;btn.textContent='Finish Lesson →'}
 else{btn.textContent='Continue →'}
 }
 function nextScreen(){
+if(currentScreen===5){window.location.href='lesson2.html';return}
 if(currentScreen>=totalScreens)return;
 document.getElementById('screen'+currentScreen).classList.remove('active');
 currentScreen++;

@@ -266,7 +266,7 @@ h2{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;line-he
 </ul>
 </div>
 <div class="next-lesson-preview">
-<div class="lock-icon">🔒 Up Next</div>
+<div class="lock-icon">→ Up Next</div>
 <h4>Lesson 4: Build Your First Budget</h4>
 <p>You've learned to pause, sort, and weigh trade-offs. Now it's time to put a real plan together.</p>
 </div>
@@ -288,10 +288,11 @@ const btn=document.getElementById('nextBtn');const back=document.getElementById(
 btn.disabled=false;back.classList.toggle('hidden',currentScreen===1);
 if(currentScreen===2&&!quizPassed){btn.disabled=true;btn.textContent='Answer the question to continue'}
 else if(currentScreen===4&&wkSelected.size===0){btn.disabled=true;btn.textContent='Pick at least one thing to do'}
-else if(currentScreen===7){btn.textContent='Coming Soon: Lesson 4 🔒';btn.disabled=true}
+else if(currentScreen===7){btn.textContent='Start Lesson 4 →';btn.disabled=false}
 else{btn.textContent='Continue →'}
 }
 function nextScreen(){
+if(currentScreen===7){window.location.href='lesson4.html';return}
 if(currentScreen>=totalScreens)return;
 if(currentScreen===4)buildReveal();
 document.getElementById('screen'+currentScreen).classList.remove('active');

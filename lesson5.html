@@ -536,10 +536,11 @@ if(currentScreen===2&&!chosenPath){btn.disabled=true;btn.textContent='Pick your 
 else if(currentScreen===3&&!planValid){btn.disabled=true;btn.textContent='Assign every dollar ($0 remaining)'}
 else if(currentScreen===4&&shopSelected.size===0){btn.disabled=true;btn.textContent='Add at least one item'}
 else if(currentScreen===6&&!gutDone){btn.disabled=true;btn.textContent='Share your advice first ✍️'}
-else if(currentScreen===7){btn.textContent='Course Complete 🏆';btn.disabled=true}
+else if(currentScreen===7){btn.textContent='Take the Survey →';btn.disabled=false}
 else{btn.textContent='Continue →'}
 }
 function nextScreen(){
+if(currentScreen===7){window.location.href='survey-teen.html';return}
 if(currentScreen>=totalScreens)return;
 if(currentScreen===3)buildShop();
 if(currentScreen===4)buildReveal();
