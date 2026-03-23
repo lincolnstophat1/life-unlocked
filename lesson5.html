@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life Unlocked — Lesson 5: The Big Build</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--bg-dark:#141518;--bg-card:#1e1f24;--bg-card-hover:#26272d;--accent:#00e59b;--accent-dim:#00c583;--accent-glow:rgba(0,229,155,0.15);--text-primary:#f0f0f0;--text-secondary:#a0a0a0;--text-muted:#666;--warning:#ff6b4a;--blue:#4dabf7;--purple:#b197fc;--yellow:#ffd43b;--border:rgba(255,255,255,0.1);--radius:16px;--max-w:560px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg-dark);background-image:radial-gradient(ellipse at 50% 0%,rgba(0,229,155,0.04) 0%,transparent 60%);color:var(--text-primary);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh}
+@media(min-width:700px){body{background-image:radial-gradient(ellipse at 50% 0%,rgba(0,229,155,0.04) 0%,transparent 60%),repeating-linear-gradient(90deg,transparent,transparent calc(50% - 290px),rgba(255,255,255,0.015) calc(50% - 290px),rgba(255,255,255,0.015) calc(50% - 288px),transparent calc(50% - 288px),transparent calc(50% + 288px),rgba(255,255,255,0.015) calc(50% + 288px),rgba(255,255,255,0.015) calc(50% + 290px),transparent calc(50% + 290px))}}
+.progress-bar-container{position:fixed;top:0;left:0;right:0;height:4px;background:rgba(255,255,255,0.05);z-index:100}
+.progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--blue));transition:width .6s cubic-bezier(.22,1,.36,1);border-radius:0 2px 2px 0;box-shadow:0 0 12px rgba(0,229,155,0.3)}
+.top-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;position:sticky;top:0;background:rgba(20,21,24,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:50;border-bottom:1px solid var(--border)}
+.brand{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;letter-spacing:-.5px}.brand span{color:var(--accent)}
+.lesson-tag{font-size:12px;color:var(--text-muted);background:rgba(255,255,255,0.05);padding:4px 10px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase}
+.screen{display:none;min-height:calc(100vh - 60px);padding:32px 20px 100px;max-width:var(--max-w);margin:0 auto;opacity:0;transform:translateY(24px)}
+.screen.active{display:block;animation:screenIn .5s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes screenIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+h1{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;line-height:1.15;letter-spacing:-1px;margin-bottom:8px}
+h2{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;line-height:1.2;letter-spacing:-.5px;margin-bottom:8px}
+.subtitle{color:var(--text-secondary);font-size:16px;margin-bottom:24px;line-height:1.5}
+.content-block{margin:20px 0}.content-block p{font-size:15px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px}
+.content-block strong{color:var(--text-primary);font-weight:600}.content-block em{color:var(--accent);font-style:italic}
+.content-block ul{list-style:none;padding:0;margin:8px 0 12px}
+.content-block ul li{font-size:15px;color:var(--text-secondary);padding:4px 0 4px 16px;position:relative;line-height:1.6}
+.content-block ul li::before{content:'';position:absolute;left:0;top:12px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.key-concept{font-size:15px;color:var(--text-primary);padding:14px 16px;background:rgba(255,255,255,0.04);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;margin:16px 0;line-height:1.6}
+.key-concept strong{color:var(--accent);font-weight:700}
+.key-concept ul{list-style:none;padding:0;margin:6px 0 0}.key-concept ul li{padding:3px 0 3px 14px;position:relative;font-size:15px}
+.key-concept ul li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.sarcasm{color:var(--accent);font-style:italic;font-size:14px;margin-bottom:12px}
+.divider{height:1px;background:var(--border);margin:24px 0}
+.callout{background:var(--accent-glow);border:1px solid rgba(0,229,155,0.2);border-radius:var(--radius);padding:20px;margin:20px 0;transition:transform .2s ease,box-shadow .2s ease}
+.callout:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,229,155,0.08)}
+.callout-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.callout p{font-size:15px;color:var(--text-secondary);line-height:1.6;margin-bottom:6px}.callout p:last-child{margin-bottom:0}
+.callout strong{color:var(--text-primary);font-weight:600}
+.callout ul{list-style:none;padding:0;margin:6px 0 0}.callout ul li{font-size:15px;color:var(--text-secondary);padding:3px 0 3px 14px;position:relative;line-height:1.5}
+.callout ul li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.callout.warn-callout{background:rgba(255,107,74,0.08);border-color:rgba(255,107,74,0.3)}
+.callout.warn-callout .callout-title{color:var(--warning)}
+.callout.warn-callout ul li{color:var(--warning)}.callout.warn-callout ul li::before{background:var(--warning)}
+.callout.mild-callout{background:rgba(255,212,59,0.08);border-color:rgba(255,212,59,0.3)}
+.callout.mild-callout .callout-title{color:var(--yellow)}
+.callout.mild-callout ul li{color:var(--yellow)}.callout.mild-callout ul li::before{background:var(--yellow)}
+.activity-intro{background:linear-gradient(135deg,rgba(0,229,155,0.08),rgba(77,171,247,0.08));border:1px solid rgba(0,229,155,0.15);border-radius:var(--radius);padding:20px;margin:20px 0;text-align:center}
+.activity-intro .emoji{font-size:32px;margin-bottom:8px}
+.activity-intro h3{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px}
+.activity-intro p{font-size:14px;color:var(--text-secondary)}.activity-intro strong{color:var(--text-primary)}
+/* Path cards */
+.path-card{background:var(--bg-card);border:2px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:14px;cursor:pointer;transition:all .25s cubic-bezier(.22,1,.36,1);text-align:center;position:relative;overflow:hidden}
+.path-card::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,0.05) 0%,transparent 60%);opacity:0;transition:opacity .3s ease;pointer-events:none}
+.path-card:hover::after{opacity:1}
+.path-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.3);border-color:rgba(255,255,255,0.2)}
+.path-card:active{transform:scale(.97)}
+.path-card.selected{border-color:var(--accent);background:rgba(0,229,155,0.06)}
+.path-card .path-emoji{font-size:40px;margin-bottom:8px}.path-card .path-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;margin-bottom:4px}
+.path-card .path-desc{font-size:14px;color:var(--text-secondary)}
+/* Budget planner */
+.bucket{background:var(--bg-card);border:2px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:16px;transition:all .25s ease;position:relative;overflow:hidden}
+.bucket::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,0.04) 0%,transparent 60%);opacity:0;transition:opacity .3s ease;pointer-events:none}
+.bucket:hover::after{opacity:1}.bucket:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.2);border-color:rgba(255,255,255,0.16)}
+.bucket-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.bucket-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px}
+.bucket-name.needs{color:var(--accent)}.bucket-name.wants{color:var(--purple)}.bucket-name.save{color:var(--blue)}
+.bucket-right{text-align:right}
+.bucket-amount{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px}
+.bucket-amount.needs{color:var(--accent)}.bucket-amount.wants{color:var(--purple)}.bucket-amount.save{color:var(--blue)}
+.bucket-pct{font-size:13px;color:var(--text-muted)}
+.bucket-desc{font-size:13px;color:var(--text-muted);margin-bottom:12px}
+.bucket-slider{width:100%;-webkit-appearance:none;appearance:none;height:8px;border-radius:4px;background:rgba(255,255,255,0.08);outline:none;cursor:pointer}
+.bucket-slider::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid var(--bg-dark);box-shadow:0 2px 8px rgba(0,0,0,0.3)}
+.bucket-slider.ns::-webkit-slider-thumb{background:var(--accent)}.bucket-slider.ws::-webkit-slider-thumb{background:var(--purple)}.bucket-slider.ss::-webkit-slider-thumb{background:var(--blue)}
+.bucket-slider::-moz-range-thumb{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid var(--bg-dark);box-shadow:0 2px 8px rgba(0,0,0,0.3)}
+.bucket-slider.ns::-moz-range-thumb{background:var(--accent)}.bucket-slider.ws::-moz-range-thumb{background:var(--purple)}.bucket-slider.ss::-moz-range-thumb{background:var(--blue)}
+.remaining-bar{text-align:center;margin:12px 0}
+.remaining-amount{font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;transition:color .3s ease}
+.remaining-amount.ok{color:var(--accent)}.remaining-amount.over{color:var(--warning)}.remaining-amount.done{color:var(--blue)}
+.remaining-label{font-size:13px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px}
+.remaining-pct{font-size:14px;color:var(--text-muted);margin-top:2px}
+.over-warning{color:var(--warning);font-size:14px;font-weight:600;text-align:center;margin-top:4px;display:none}
+.over-warning.visible{display:block;animation:feedbackIn .3s ease forwards}
+@keyframes feedbackIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.alloc-bar{height:12px;border-radius:6px;background:rgba(255,255,255,0.05);overflow:hidden;display:flex;margin:8px 0 16px}
+.alloc-seg{height:100%;transition:width .3s ease}.alloc-seg.ns{background:var(--accent)}.alloc-seg.ws{background:var(--purple)}.alloc-seg.ss{background:var(--blue)}
+/* Shop */
+.shop-budget{position:sticky;top:56px;z-index:40;background:rgba(20,21,24,0.95);backdrop-filter:blur(8px);padding:12px 0;margin:0 -20px;padding-left:20px;padding-right:20px;border-bottom:1px solid var(--border)}
+.shop-budget-inner{display:flex;justify-content:space-between;align-items:baseline}
+.sb-spent{font-family:'Space Grotesk',sans-serif;font-size:14px;color:var(--text-muted)}
+.sb-spent strong{color:var(--text-primary);font-size:20px}
+.sb-of{font-size:14px;color:var(--text-muted)}.sb-remaining{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px}
+.sb-remaining.ok{color:var(--accent)}.sb-remaining.low{color:var(--yellow)}.sb-remaining.over{color:var(--warning)}
+.sb-items{font-size:13px;color:var(--text-muted)}
+.shop-category{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);font-weight:600;margin:20px 0 10px;padding-top:8px;border-top:1px solid var(--border)}
+.shop-category:first-child{border-top:none;padding-top:0}
+.shop-category .cat-tag{font-size:10px;padding:2px 6px;border-radius:4px;margin-left:6px;vertical-align:middle}
+.cat-tag.need-tag{color:var(--accent);background:rgba(0,229,155,0.1)}.cat-tag.want-tag{color:var(--purple);background:rgba(177,151,252,0.1)}
+.shop-item{background:var(--bg-card);border:2px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:all .25s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
+.shop-item::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,0.05) 0%,transparent 60%);opacity:0;transition:opacity .3s ease;pointer-events:none}
+.shop-item:hover::after{opacity:1}
+.shop-item:hover{transform:translateY(-1px);border-color:rgba(255,255,255,0.18);box-shadow:0 4px 16px rgba(0,0,0,0.25)}
+.shop-item:active{transform:scale(.97);transition-duration:.1s}
+.shop-item.selected{border-color:var(--accent);background:rgba(0,229,155,0.06)}
+.shop-item.locked{opacity:.35;pointer-events:none}
+.shop-item.excluded{opacity:.25;pointer-events:none;border-style:dashed}
+.shop-item .s-left{display:flex;flex-direction:column;flex:1;min-width:0}
+.shop-item .s-name{font-weight:600;font-size:15px;font-family:'Space Grotesk',sans-serif}
+.shop-item .s-desc{font-size:12px;color:var(--text-muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shop-item .s-tier{font-size:10px;text-transform:uppercase;letter-spacing:.8px;font-weight:700;margin-top:3px;display:inline-block;padding:2px 6px;border-radius:4px;color:var(--text-muted);background:rgba(255,255,255,0.06)}
+.shop-item .s-price{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--text-secondary);margin-left:12px;white-space:nowrap}
+.shop-item.selected .s-price{color:var(--accent)}
+/* Reveal */
+.reveal-section{margin:20px 0}
+.reveal-label{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-bottom:10px}
+.reveal-label.got{color:var(--accent)}.reveal-label.missed{color:var(--warning)}.reveal-label.saved{color:var(--blue)}
+.reveal-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px}.reveal-item:last-child{border-bottom:none}
+.reveal-item .r-name{color:var(--text-secondary)}.reveal-item .r-price{font-family:'Space Grotesk',sans-serif;font-weight:600}
+.reveal-item.got .r-price{color:var(--accent)}.reveal-item.lost .r-price{color:var(--warning)}
+.compare-bar{margin:16px 0}.compare-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:14px}
+.compare-label{width:80px;font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;flex-shrink:0}
+.compare-track{flex:1;height:8px;border-radius:4px;background:rgba(255,255,255,0.05);overflow:hidden;position:relative}
+.compare-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.compare-fill.planned{background:rgba(255,255,255,0.12)}.compare-fill.actual{position:absolute;top:0;left:0;height:100%}
+.compare-fill.nf{background:var(--accent)}.compare-fill.wf{background:var(--purple)}.compare-fill.sf{background:var(--blue)}
+.compare-pct{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;width:50px;text-align:right;flex-shrink:0}
+/* Reflection */
+.reflection-area{width:100%;min-height:80px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text-primary);resize:vertical;margin:10px 0;transition:border-color .2s}
+.reflection-area:focus{outline:none;border-color:var(--accent)}
+.reflection-area::placeholder{color:var(--text-muted)}
+/* Bottom nav */
+.bottom-action{position:fixed;bottom:0;left:0;right:0;padding:12px 20px;padding-bottom:max(12px,env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--bg-dark) 30%);z-index:50;display:flex;gap:10px;justify-content:center}
+.btn-back{padding:16px 20px;background:var(--bg-card);color:var(--text-secondary);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all .2s ease;flex-shrink:0}
+.btn-back:hover{background:var(--bg-card-hover);border-color:rgba(255,255,255,0.2)}.btn-back:active{transform:scale(.97)}
+.btn-back.hidden{display:none}
+.btn-next{flex:1;max-width:var(--max-w);padding:16px;background:var(--accent);color:var(--bg-dark);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;border:none;border-radius:12px;cursor:pointer;transition:all .25s cubic-bezier(.22,1,.36,1);letter-spacing:-.3px;position:relative;overflow:hidden}
+.btn-next::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);transform:translateX(-100%);transition:transform .4s ease}
+.btn-next:hover::before{transform:translateX(100%)}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,229,155,0.25)}
+.btn-next:active{transform:scale(.97) translateY(0);box-shadow:none;transition-duration:.1s}
+.btn-next:disabled{background:var(--text-muted);cursor:not-allowed;box-shadow:none;transform:none}
+.btn-next:disabled::before{display:none}.btn-next:disabled:hover{transform:none;box-shadow:none}
+.badge-icon{width:80px;height:80px;border-radius:50%;background:var(--accent-glow);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px;animation:pulseGlow 2s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(0,229,155,0.2)}50%{box-shadow:0 0 20px 8px rgba(0,229,155,0.15)}}
+.badge-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;color:var(--accent);margin-bottom:4px}
+.star-tracker{display:flex;gap:8px;justify-content:center;margin:16px 0}
+.star{font-size:28px;opacity:0.2}.star.lit{opacity:1;animation:starPop .4s cubic-bezier(.22,1,.36,1) both}
+@keyframes starPop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+.star-label{font-size:13px;color:var(--text-muted);text-align:center}
+.hook-emoji{font-size:48px;margin-bottom:16px;animation:emojiFloat 3s ease-in-out infinite}
+@keyframes emojiFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@media(min-width:600px){.screen{padding:48px 32px 120px}h1{font-size:40px}}
+</style>
+</head>
+<body>
+<div class="progress-bar-container"><div class="progress-bar" id="progressBar"></div></div>
+<div class="top-nav"><div class="brand">life<span>unlocked</span></div><div class="lesson-tag">Lesson 5 of 5</div></div>
+
+<!-- SCREEN 1: HOOK -->
+<div class="screen active" id="screen1">
+<div class="hook-emoji">🏆</div>
+<h1>The Big Build.</h1>
+<p class="subtitle">Everything you've learned. One real project. Real prices. Real trade-offs.</p>
+<div class="content-block">
+<p>You've come into <strong>$3,500.</strong> It's yours. And you're about to spend it on something real.</p>
+<p>But you're not going in blind. You've got a toolkit now:</p>
+</div>
+<div class="key-concept">
+<ul>
+<li><strong>Pause</strong> before spending (Lesson 1)</li>
+<li>Sort <strong>needs from wants</strong> (Lesson 2)</li>
+<li>See the <strong><em>opportunity cost</em></strong> (Lesson 3)</li>
+<li>Build a <strong><em>budget</em> first</strong> (Lesson 4)</li>
+</ul>
+</div>
+<div class="content-block">
+<p>This is the final test. You, $3,500, and every skill you've picked up applied to one big decision.</p>
+<p class="sarcasm">Let's see what you've got.</p>
+</div>
+</div>
+
+<!-- SCREEN 2: PICK PATH -->
+<div class="screen" id="screen2">
+<h2>Pick your build.</h2>
+<p class="subtitle">Choose the one that speaks to you.</p>
+<div class="path-card" onclick="pickPath('gaming')" id="pathGaming">
+<div class="path-emoji">🎮</div>
+<div class="path-title">Dream Gaming Setup</div>
+<div class="path-desc">Desk, chair, console or PC, monitor, headset, and all the extras.</div>
+</div>
+<div class="path-card" onclick="pickPath('room')" id="pathRoom">
+<div class="path-emoji">🛋️</div>
+<div class="path-title">Dream Room Makeover</div>
+<div class="path-desc">Furniture, tech, decor, lighting, and vibes. Make your space yours.</div>
+</div>
+</div>
+
+<!-- SCREEN 3: PLAN -->
+<div class="screen" id="screen3">
+<div class="activity-intro">
+<div class="emoji">📋</div>
+<h3>Plan Before You Shop</h3>
+<p>Remember the <strong>50/30/20</strong> guideline from Lesson 4?<br>Set your targets for <strong>needs, wants, and savings</strong> before you see prices. Max 20% ($700) in savings.</p>
+</div>
+<div class="remaining-bar"><div class="remaining-amount ok" id="planRem">$3,500</div><div class="remaining-label">left to assign</div><div class="remaining-pct" id="planPct">100% unassigned</div></div>
+<div class="over-warning" id="planWarn">Over budget. Adjust your sliders.</div>
+<div class="alloc-bar"><div class="alloc-seg ns" id="pAN" style="width:0%"></div><div class="alloc-seg ws" id="pAW" style="width:0%"></div><div class="alloc-seg ss" id="pAS" style="width:0%"></div></div>
+<div class="bucket">
+<div class="bucket-header"><div class="bucket-name needs">Must-Haves <span style="font-weight:400;font-size:13px;color:var(--text-muted)">(needs)</span></div><div class="bucket-right"><div class="bucket-amount needs" id="pNA">$0</div><div class="bucket-pct" id="pNP">0%</div></div></div>
+<div class="bucket-desc">The essentials. Your build doesn't function without these.</div>
+<input type="range" class="bucket-slider ns" id="pNS" min="0" max="3500" value="0" step="50" oninput="updatePlan()">
+</div>
+<div class="bucket">
+<div class="bucket-header"><div class="bucket-name wants">Upgrades <span style="font-weight:400;font-size:13px;color:var(--text-muted)">(wants)</span></div><div class="bucket-right"><div class="bucket-amount wants" id="pWA">$0</div><div class="bucket-pct" id="pWP">0%</div></div></div>
+<div class="bucket-desc">The things that take it from fine to amazing.</div>
+<input type="range" class="bucket-slider ws" id="pWS" min="0" max="3500" value="0" step="50" oninput="updatePlan()">
+</div>
+<div class="bucket">
+<div class="bucket-header"><div class="bucket-name save">Save the Rest <span style="font-weight:400;font-size:13px;color:var(--text-muted)">(savings)</span></div><div class="bucket-right"><div class="bucket-amount save" id="pSA">$0</div><div class="bucket-pct" id="pSP">0%</div></div></div>
+<div class="bucket-desc">What you keep. Not spending everything is a flex.</div>
+<input type="range" class="bucket-slider ss" id="pSS" min="0" max="700" value="0" step="50" oninput="updatePlan()">
+</div>
+</div>
+
+<!-- SCREEN 4: SHOP -->
+<div class="screen" id="screen4">
+<div class="shop-budget" id="shopBar"><div class="shop-budget-inner">
+<div><span class="sb-spent"><strong id="shopSpent">$0</strong> spent</span> <span class="sb-of">of $<span id="shopTotal">3500</span></span></div>
+<div style="text-align:right"><div class="sb-remaining ok" id="shopRem">$3,500 left</div><div class="sb-items"><span id="shopCount">0</span> items</div></div>
+</div></div>
+<div class="activity-intro" style="margin-top:8px"><div class="emoji">🛒</div><h3 id="shopTitle">Build Your Setup</h3><p>Tap to add, tap again to remove.<br><strong>Pick one option per category</strong> (Budget, Mid, or Premium).</p></div>
+<div id="shopCatalog"></div>
+</div>
+
+<!-- SCREEN 5: REVEAL -->
+<div class="screen" id="screen5">
+<h2>Your build is in.</h2>
+<p class="subtitle">Here's what you chose, what it cost, and what you left behind.</p>
+<div id="revealContent"></div>
+</div>
+
+<!-- SCREEN 6: GUT CHECK -->
+<div class="screen" id="screen6">
+<h2>One last thing.</h2>
+<p class="subtitle">Your friend just got $3,500 and is about to go on a shopping spree.</p>
+<div class="content-block">
+<p><strong>Based on everything you've learned, what's the ONE thing you'd tell them before they start spending?</strong></p>
+</div>
+<textarea class="reflection-area" id="gutCheck" placeholder="Type your advice here..."></textarea>
+<div class="callout" id="gutCallout" style="display:none">
+<div class="callout-title">That's the whole course in one sentence</div>
+<ul>
+<li>Whatever you just wrote, that's the skill</li>
+<li>Not a formula. Not a rule</li>
+<li><strong>A way of thinking about money that you own now</strong></li>
+</ul>
+</div>
+</div>
+
+<!-- SCREEN 7: COMPLETION -->
+<div class="screen" id="screen7">
+<div style="text-align:center;padding-top:20px;">
+<div class="badge-icon">🏆</div>
+<div class="badge-name">Money Basics Graduate</div>
+<p class="subtitle" style="margin-bottom:12px;">5 lessons. Real skills. You're not the same person who started Lesson 1.</p>
+<div class="star-tracker">
+<div class="star lit" style="animation-delay:0.1s">⭐</div>
+<div class="star lit" style="animation-delay:0.2s">⭐</div>
+<div class="star lit" style="animation-delay:0.3s">⭐</div>
+<div class="star lit" style="animation-delay:0.4s">⭐</div>
+<div class="star lit" style="animation-delay:0.6s">⭐</div>
+</div>
+<div class="star-label">5 of 5 lessons complete</div>
+</div>
+<div class="divider"></div>
+<div class="content-block">
+<h2>Your full toolkit:</h2>
+<ul>
+<li><strong>Pause</strong> before any spending decision</li>
+<li><strong>Sort</strong> needs from wants honestly</li>
+<li><strong>See</strong> the <em>opportunity cost</em> of every choice</li>
+<li><strong>Plan</strong> your money with a <em>budget</em> that works for your life</li>
+<li><strong>Apply</strong> all of it to real decisions, big and small</li>
+</ul>
+<p>That's not theory. That's a system. And it works whether you're spending $5 or $5,000.</p>
+</div>
+<div class="callout">
+<div class="callout-title">What comes next</div>
+<ul>
+<li>This was <strong>Money Basics</strong> — the foundation</li>
+<li>There's a lot more to learn: credit, investing, taxes, building real wealth</li>
+<li>But none of it works without what you just built here</li>
+<li><em>You're ready for all of it</em></li>
+</ul>
+</div>
+</div>
+
+<div class="bottom-action">
+<button class="btn-back hidden" id="backBtn" onclick="prevScreen()">← Back</button>
+<button class="btn-next" id="nextBtn" onclick="nextScreen()">Let's Go →</button>
+</div>
+
+<script>
+const BUDGET=3500;
+let currentScreen=1;const totalScreens=7;
+let chosenPath=null;
+let planN=0,planW=0,planS=0,planValid=false;
+let shopBudget=BUDGET;const shopSelected=new Map();
+let gutDone=false;
+
+// CATALOGS - items grouped by category, with mutual exclusivity groups
+const catalogs={
+gaming:[
+{cat:"Desk",catType:"need",group:"desk",items:[
+{name:"Budget Gaming Desk",desc:"48-inch, steel frame, basic cable management",price:90,tier:"Budget"},
+{name:"Mid-Range Gaming Desk",desc:"60-inch, LED accents, headphone hook, monitor shelf",price:200,tier:"Mid"},
+{name:"Premium Gaming Desk",desc:"Large surface, magnetic cable system, 12-year warranty",price:380,tier:"Premium"}
+]},
+{cat:"Chair",catType:"need",group:"chair",items:[
+{name:"Budget Gaming Chair",desc:"Adjustable height, faux leather, lumbar pillow",price:80,tier:"Budget"},
+{name:"Mid-Range Gaming Chair",desc:"Memory foam, 4D armrests, breathable mesh back",price:220,tier:"Mid"},
+{name:"Premium Gaming Chair",desc:"Magnetic headrest, cold-cure foam, 5-year warranty",price:450,tier:"Premium"}
+]},
+{cat:"Gaming System",catType:"need",group:"system",items:[
+{name:"Gaming Console",desc:"Current-gen console, digital or disc edition",price:550,tier:"Budget"},
+{name:"Mid-Range Gaming PC",desc:"Capable graphics card, 16GB RAM, 1TB SSD",price:700,tier:"Mid"},
+{name:"High-End Gaming PC",desc:"Top-tier graphics, 32GB RAM, 2TB SSD, future-proof",price:1100,tier:"Premium"}
+]},
+{cat:"Monitor",catType:"need",group:"monitor",items:[
+{name:"Budget 27\" Monitor",desc:"1080p, 75Hz, 60fps capable, good for casual play",price:150,tier:"Budget"},
+{name:"27\" 1440p Monitor",desc:"165Hz, 120+ fps, IPS panel, great colors",price:320,tier:"Mid"},
+{name:"32\" 4K Gaming Monitor",desc:"144Hz, 120fps, HDR, the full visual experience",price:550,tier:"Premium"}
+]},
+{cat:"Audio",catType:"need",group:"audio",items:[
+{name:"Budget Gaming Headset",desc:"Wired, built-in mic, solid sound for the price",price:30,tier:"Budget"},
+{name:"Mid-Range Wireless Headset",desc:"Low latency wireless, 3D audio, 30-hour battery",price:100,tier:"Mid"},
+{name:"Premium Wireless Headset",desc:"Hi-fi drivers, dual wireless, noise cancelling mic",price:220,tier:"Premium"}
+]},
+{cat:"Speakers",catType:"want",group:"speakers",items:[
+{name:"Desktop Speakers",desc:"Compact, decent bass, Bluetooth capable",price:50,tier:"Budget"},
+{name:"2.1 Sound System",desc:"Speakers + subwoofer, room-filling sound",price:160,tier:"Premium"}
+]},
+{cat:"Lighting & Decor",catType:"want",group:null,items:[
+{name:"LED Light Strips",desc:"Basic RGB, adhesive back, remote control",price:20,tier:"Budget"},
+{name:"Smart RGB Lighting Kit",desc:"App controlled, syncs to games and music",price:65,tier:"Premium"},
+{name:"Posters & Wall Art",desc:"Your vibe on the walls",price:15,tier:"Add-on"},
+{name:"Cable Management Kit",desc:"Trays, clips, sleeves, velcro ties",price:20,tier:"Add-on"}
+]},
+{cat:"Extras",catType:"want",group:null,items:[
+{name:"Extended Mousepad",desc:"Full desk coverage, stitched edges",price:25,tier:"Add-on"},
+{name:"Webcam (1080p)",desc:"Good for streaming and video calls",price:45,tier:"Budget"},
+{name:"Premium Webcam (4K)",desc:"Auto-focus, studio quality, low light capable",price:110,tier:"Premium"},
+{name:"Mini Fridge",desc:"Fits under desk, keeps drinks cold",price:65,tier:"Add-on"},
+{name:"Shelving Unit",desc:"Wall-mounted, display your gear",price:40,tier:"Add-on"},
+{name:"VR Headset",desc:"Standalone VR gaming, no PC required",price:350,tier:"Premium"}
+]}
+],
+room:[
+{cat:"Bed Frame",catType:"need",group:"bed",items:[
+{name:"Budget Bed Frame",desc:"Metal platform, clean look, no box spring needed",price:120,tier:"Budget"},
+{name:"Premium Bed Frame",desc:"Wood, headboard, built-in USB charging",price:380,tier:"Premium"}
+]},
+{cat:"Mattress & Bedding",catType:"need",group:null,items:[
+{name:"Budget Mattress",desc:"8-inch foam, firm support, bed-in-a-box",price:200,tier:"Budget"},
+{name:"Premium Mattress",desc:"12-inch hybrid, cooling gel, plush top",price:450,tier:"Premium"},
+{name:"Full Bedding Set",desc:"Comforter, sheets, pillows, matching set",price:90,tier:"Add-on"},
+{name:"Mattress Topper",desc:"Memory foam, 3-inch, instantly comfier",price:60,tier:"Add-on"}
+]},
+{cat:"Desk",catType:"need",group:"rdesk",items:[
+{name:"Budget Desk",desc:"Simple writing desk, drawer included",price:80,tier:"Budget"},
+{name:"Mid-Range Desk",desc:"Larger surface, cable management, modern look",price:220,tier:"Premium"}
+]},
+{cat:"Desk Chair",catType:"need",group:"rchair",items:[
+{name:"Budget Desk Chair",desc:"Ergonomic, adjustable, mesh back",price:100,tier:"Budget"},
+{name:"Premium Desk Chair",desc:"Memory foam, lumbar support, smooth recline",price:270,tier:"Premium"}
+]},
+{cat:"Tech",catType:"want",group:"tv",items:[
+{name:"32\" Smart TV",desc:"1080p, streaming apps built in",price:180,tier:"Budget"},
+{name:"50\" 4K Smart TV",desc:"HDR, gaming mode, premium picture",price:420,tier:"Premium"}
+]},
+{cat:"Sound",catType:"want",group:"rsound",items:[
+{name:"Bluetooth Speaker",desc:"Portable, solid sound, connects to phone",price:40,tier:"Budget"},
+{name:"Soundbar + Sub",desc:"Room-filling audio, wall mountable",price:190,tier:"Premium"}
+]},
+{cat:"Lighting",catType:"want",group:null,items:[
+{name:"Smart Light Bulbs (4-pack)",desc:"Color-changing, app controlled, set the mood",price:30,tier:"Budget"},
+{name:"Full Smart Lighting Kit",desc:"Bulbs, light strips, plugs, voice assistant compatible",price:85,tier:"Premium"}
+]},
+{cat:"Window Coverings",catType:"want",group:"curtains",items:[
+{name:"Basic Curtains",desc:"Standard panels, clean look, blocks some light",price:20,tier:"Budget"},
+{name:"Blackout Curtains",desc:"Blocks all light, better sleep, thermal insulated",price:40,tier:"Premium"}
+]},
+{cat:"Storage & Organization",catType:"want",group:null,items:[
+{name:"Shelving Unit",desc:"Bookshelf or floating shelves",price:50,tier:"Budget"},
+{name:"Closet Organizer System",desc:"Rods, shelves, bins, everything has a place",price:85,tier:"Premium"},
+{name:"Full-Length Mirror",desc:"Floor standing, makes the room feel bigger",price:35,tier:"Add-on"}
+]},
+{cat:"Rugs & Comfort",catType:"want",group:"rug",items:[
+{name:"Area Rug (5x7)",desc:"Soft underfoot, ties the room together",price:45,tier:"Budget"},
+{name:"Premium Rug (8x10)",desc:"Thick pile, statement piece",price:95,tier:"Premium"}
+]},
+{cat:"Decor & Personality",catType:"want",group:null,items:[
+{name:"Wall Art & Frames",desc:"Prints, photos, your style on the walls",price:25,tier:"Add-on"},
+{name:"Plants & Planters",desc:"Low-maintenance greenery, terracotta pots",price:20,tier:"Add-on"},
+{name:"Vanity with Lighted Mirror",desc:"Drawers, LED mirror, morning routine upgrade",price:160,tier:"Premium"},
+{name:"Record Player + Stand",desc:"Vinyl setup, retro vibes, Bluetooth capable",price:130,tier:"Premium"}
+]}
+]
+};
+
+function pickPath(p){
+chosenPath=p;
+document.querySelectorAll('.path-card').forEach(c=>c.classList.remove('selected'));
+document.getElementById(p==='gaming'?'pathGaming':'pathRoom').classList.add('selected');
+updateButton();
+}
+
+function updatePlan(){
+planN=parseInt(document.getElementById('pNS').value);
+planW=parseInt(document.getElementById('pWS').value);
+planS=parseInt(document.getElementById('pSS').value);
+const t=planN+planW+planS;const rem=BUDGET-t;
+document.getElementById('pNA').textContent='$'+planN;document.getElementById('pWA').textContent='$'+planW;document.getElementById('pSA').textContent='$'+planS;
+document.getElementById('pNP').textContent=Math.round((planN/BUDGET)*100)+'%';
+document.getElementById('pWP').textContent=Math.round((planW/BUDGET)*100)+'%';
+document.getElementById('pSP').textContent=Math.round((planS/BUDGET)*100)+'%';
+const rEl=document.getElementById('planRem');const warn=document.getElementById('planWarn');const rPct=document.getElementById('planPct');
+if(rem<0){rEl.textContent='-$'+Math.abs(rem);rEl.className='remaining-amount over';warn.classList.add('visible');planValid=false;rPct.textContent='Over by '+Math.round((Math.abs(rem)/BUDGET)*100)+'%'}
+else if(rem===0){rEl.textContent='$0';rEl.className='remaining-amount done';warn.classList.remove('visible');planValid=true;rPct.textContent='Every dollar assigned ✓'}
+else{rEl.textContent='$'+rem;rEl.className='remaining-amount ok';warn.classList.remove('visible');planValid=false;rPct.textContent=Math.round((rem/BUDGET)*100)+'% unassigned'}
+document.getElementById('pAN').style.width=((planN/BUDGET)*100)+'%';
+document.getElementById('pAW').style.width=((planW/BUDGET)*100)+'%';
+document.getElementById('pAS').style.width=((planS/BUDGET)*100)+'%';
+updateButton();
+}
+
+function buildShop(){
+const cat=catalogs[chosenPath];const c=document.getElementById('shopCatalog');
+document.getElementById('shopTitle').textContent=chosenPath==='gaming'?'Build Your Setup':'Build Your Room';
+shopBudget=BUDGET-planS;
+document.getElementById('shopTotal').textContent=shopBudget;
+updateShopDisplay();
+let html='';
+cat.forEach(cg=>{
+const tagClass=cg.catType==='need'?'need-tag':'want-tag';
+const tagLabel=cg.catType==='need'?'need':'want';
+html+='<div class="shop-category">'+cg.cat+' <span class="cat-tag '+tagClass+'">'+tagLabel+'</span></div>';
+cg.items.forEach(item=>{
+const id=item.name.replace(/[^a-z0-9]/gi,'_');
+html+='<div class="shop-item" data-id="'+id+'" data-price="'+item.price+'" data-name="'+item.name+'" data-group="'+(cg.group||'')+'" data-tier="'+item.tier+'" onclick="toggleShop(this)"><div class="s-left"><div class="s-name">'+item.name+'</div><div class="s-desc">'+item.desc+'</div><div class="s-tier">'+item.tier+'</div></div><div class="s-price">$'+item.price+'</div></div>';
+});
+});
+c.innerHTML=html;
+c.querySelectorAll('.shop-item').forEach(el=>{
+el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();el.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');el.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%')});
+});
+}
+
+function toggleShop(el){
+const price=parseInt(el.dataset.price);const name=el.dataset.name;const group=el.dataset.group;const tier=el.dataset.tier;
+if(el.classList.contains('selected')){
+el.classList.remove('selected');shopSelected.delete(name);shopBudget+=price;
+// Un-exclude siblings
+if(group)document.querySelectorAll('.shop-item[data-group="'+group+'"]').forEach(s=>{if(s!==el)s.classList.remove('excluded')});
+}else{
+if(price>shopBudget)return;
+// Mutual exclusivity: deselect other items in same group (if group exists and tier isn't Add-on)
+if(group&&tier!=='Add-on'){
+document.querySelectorAll('.shop-item[data-group="'+group+'"]').forEach(s=>{
+if(s!==el&&s.classList.contains('selected')){
+shopBudget+=parseInt(s.dataset.price);shopSelected.delete(s.dataset.name);s.classList.remove('selected');
+}
+});
+// Exclude unselected siblings
+document.querySelectorAll('.shop-item[data-group="'+group+'"]').forEach(s=>{
+if(s!==el&&!s.classList.contains('selected'))s.classList.add('excluded');
+});
+}
+el.classList.add('selected');shopSelected.set(name,{price,tier});shopBudget-=price;
+}
+updateShopDisplay();updateButton();
+}
+
+function updateShopDisplay(){
+const spent=BUDGET-planS-shopBudget;
+document.getElementById('shopSpent').textContent='$'+spent;
+document.getElementById('shopRem').textContent='$'+shopBudget+' left';
+document.getElementById('shopRem').className='sb-remaining '+(shopBudget>500?'ok':shopBudget>100?'low':'over');
+document.getElementById('shopCount').textContent=shopSelected.size;
+document.querySelectorAll('.shop-item').forEach(el=>{
+if(!el.classList.contains('selected')&&!el.classList.contains('excluded')&&parseInt(el.dataset.price)>shopBudget)el.classList.add('locked');
+else if(!el.classList.contains('selected')&&!el.classList.contains('excluded'))el.classList.remove('locked');
+});
+}
+
+function buildReveal(){
+const cat=catalogs[chosenPath];let picked=[],missed=[];let needSpent=0,wantSpent=0;
+cat.forEach(cg=>{cg.items.forEach(item=>{
+if(shopSelected.has(item.name)){picked.push(item);if(cg.catType==='need')needSpent+=item.price;else wantSpent+=item.price}
+else{missed.push(item)}
+})});
+const totalSpent=needSpent+wantSpent;const actualSave=BUDGET-totalSpent;
+let h='';
+h+='<h2 style="font-size:18px;margin-bottom:4px;">Plan vs. Reality</h2><p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">How your spending compared to your targets.</p>';
+h+='<div class="compare-bar">';
+h+='<div class="compare-row"><div class="compare-label" style="color:var(--accent)">Needs</div><div class="compare-track"><div class="compare-fill planned" style="width:'+((planN/BUDGET)*100)+'%"></div><div class="compare-fill actual nf" style="width:'+((needSpent/BUDGET)*100)+'%"></div></div><div class="compare-pct" style="color:var(--accent)">$'+needSpent+'</div></div>';
+h+='<div class="compare-row"><div class="compare-label" style="color:var(--purple)">Wants</div><div class="compare-track"><div class="compare-fill planned" style="width:'+((planW/BUDGET)*100)+'%"></div><div class="compare-fill actual wf" style="width:'+((wantSpent/BUDGET)*100)+'%"></div></div><div class="compare-pct" style="color:var(--purple)">$'+wantSpent+'</div></div>';
+h+='<div class="compare-row"><div class="compare-label" style="color:var(--blue)">Saved</div><div class="compare-track"><div class="compare-fill planned" style="width:'+((planS/BUDGET)*100)+'%"></div><div class="compare-fill actual sf" style="width:'+((actualSave/BUDGET)*100)+'%"></div></div><div class="compare-pct" style="color:var(--blue)">$'+actualSave+'</div></div>';
+h+='</div>';
+if(actualSave<planS)h+='<div class="callout mild-callout" style="margin:16px 0"><div class="callout-title">Budget drift</div><ul><li>You planned to save <strong>$'+planS+'</strong> but actually saved <strong>$'+actualSave+'</strong></li><li>Those upgrades are tempting</li><li>This is exactly why you set a plan first — it shows you when you\'re drifting</li></ul></div>';
+else if(actualSave>planS)h+='<div class="callout" style="margin:16px 0"><div class="callout-title">Under budget</div><ul><li>You planned to save <strong>$'+planS+'</strong> and actually saved <strong>$'+actualSave+'</strong></li><li>You found a way to get what you wanted without blowing everything</li><li>That\'s discipline showing up</li></ul></div>';
+else h+='<div class="callout" style="margin:16px 0"><div class="callout-title">Right on target</div><ul><li>You planned to save <strong>$'+planS+'</strong> and that\'s exactly what you did</li><li>Plans work when you stick to them</li></ul></div>';
+h+='<div class="divider"></div><div class="reveal-section"><div class="reveal-label got">What you built ('+picked.length+' items — $'+totalSpent+')</div>';
+picked.forEach(i=>{h+='<div class="reveal-item got"><span class="r-name">'+i.name+'</span><span class="r-price">$'+i.price+'</span></div>'});
+h+='</div>';
+h+='<div class="divider"></div><div class="reveal-section"><div class="reveal-label missed">Your <em>opportunity cost</em>: what you left behind</div>';
+missed.forEach(i=>{h+='<div class="reveal-item lost"><span class="r-name">'+i.name+'</span><span class="r-price">$'+i.price+'</span></div>'});
+h+='</div>';
+if(actualSave===0)h+='<div class="callout warn-callout" style="margin:20px 0"><div class="callout-title">Reality check</div><ul><li>You spent every dollar</li><li>Two weeks later, something breaks. Repair costs $150. With $0 saved, you\'re stuck</li><li>Remember the phone crack from Lesson 4? <strong>Same lesson, bigger number</strong></li></ul></div>';
+else if(actualSave<150)h+='<div class="callout mild-callout" style="margin:20px 0"><div class="callout-title">Thin cushion</div><ul><li>You saved $'+actualSave+'</li><li>Better than nothing, but one unexpected expense and it\'s gone</li></ul></div>';
+document.getElementById('revealContent').innerHTML=h;
+}
+
+function checkGut(){
+gutDone=document.getElementById('gutCheck').value.trim().length>15;
+if(gutDone){const gc=document.getElementById('gutCallout');gc.style.display='block';gc.style.animation='screenIn 0.4s ease forwards'}
+updateButton();
+}
+
+function updateProgress(){document.getElementById('progressBar').style.width=((currentScreen/totalScreens)*100)+'%'}
+function updateButton(){
+const btn=document.getElementById('nextBtn');const back=document.getElementById('backBtn');
+btn.disabled=false;back.classList.toggle('hidden',currentScreen===1);
+if(currentScreen===2&&!chosenPath){btn.disabled=true;btn.textContent='Pick your build'}
+else if(currentScreen===3&&!planValid){btn.disabled=true;btn.textContent='Assign every dollar ($0 remaining)'}
+else if(currentScreen===4&&shopSelected.size===0){btn.disabled=true;btn.textContent='Add at least one item'}
+else if(currentScreen===6&&!gutDone){btn.disabled=true;btn.textContent='Share your advice first ✍️'}
+else if(currentScreen===7){btn.textContent='Course Complete 🏆';btn.disabled=true}
+else{btn.textContent='Continue →'}
+}
+function nextScreen(){
+if(currentScreen>=totalScreens)return;
+if(currentScreen===3)buildShop();
+if(currentScreen===4)buildReveal();
+document.getElementById('screen'+currentScreen).classList.remove('active');
+currentScreen++;document.getElementById('screen'+currentScreen).classList.add('active');
+window.scrollTo({top:0,behavior:'smooth'});updateProgress();updateButton();
+}
+function prevScreen(){
+if(currentScreen<=1)return;
+document.getElementById('screen'+currentScreen).classList.remove('active');
+currentScreen--;document.getElementById('screen'+currentScreen).classList.add('active');
+window.scrollTo({top:0,behavior:'smooth'});updateProgress();updateButton();
+}
+
+const gutEl=document.getElementById('gutCheck');
+['input','keyup','change','blur','paste'].forEach(e=>{gutEl.addEventListener(e,checkGut)});
+setInterval(()=>{if(currentScreen===6)checkGut()},500);
+document.querySelectorAll('.path-card,.bucket').forEach(el=>{
+el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();el.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');el.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%')});
+});
+updateProgress();updateButton();
+</script>
+</body>
+</html>

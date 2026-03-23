@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life Unlocked — Lesson 3: The Trade-Off Game</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--bg-dark:#141518;--bg-card:#1e1f24;--bg-card-hover:#26272d;--accent:#00e59b;--accent-dim:#00c583;--accent-glow:rgba(0,229,155,0.15);--text-primary:#f0f0f0;--text-secondary:#a0a0a0;--text-muted:#666;--warning:#ff6b4a;--blue:#4dabf7;--purple:#b197fc;--yellow:#ffd43b;--border:rgba(255,255,255,0.1);--radius:16px;--max-w:560px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg-dark);background-image:radial-gradient(ellipse at 50% 0%,rgba(0,229,155,0.04) 0%,transparent 60%);color:var(--text-primary);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh}
+@media(min-width:700px){body{background-image:radial-gradient(ellipse at 50% 0%,rgba(0,229,155,0.04) 0%,transparent 60%),repeating-linear-gradient(90deg,transparent,transparent calc(50% - 290px),rgba(255,255,255,0.015) calc(50% - 290px),rgba(255,255,255,0.015) calc(50% - 288px),transparent calc(50% - 288px),transparent calc(50% + 288px),rgba(255,255,255,0.015) calc(50% + 288px),rgba(255,255,255,0.015) calc(50% + 290px),transparent calc(50% + 290px))}}
+.progress-bar-container{position:fixed;top:0;left:0;right:0;height:4px;background:rgba(255,255,255,0.05);z-index:100}
+.progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--blue));transition:width .6s cubic-bezier(.22,1,.36,1);border-radius:0 2px 2px 0;box-shadow:0 0 12px rgba(0,229,155,0.3)}
+.top-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;position:sticky;top:0;background:rgba(20,21,24,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:50;border-bottom:1px solid var(--border)}
+.brand{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;letter-spacing:-.5px}.brand span{color:var(--accent)}
+.lesson-tag{font-size:12px;color:var(--text-muted);background:rgba(255,255,255,0.05);padding:4px 10px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase}
+.screen{display:none;min-height:calc(100vh - 60px);padding:32px 20px 100px;max-width:var(--max-w);margin:0 auto;opacity:0;transform:translateY(24px)}
+.screen.active{display:block;animation:screenIn .5s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes screenIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+h1{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;line-height:1.15;letter-spacing:-1px;margin-bottom:8px}
+h2{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;line-height:1.2;letter-spacing:-.5px;margin-bottom:8px}
+.subtitle{color:var(--text-secondary);font-size:16px;margin-bottom:24px;line-height:1.5}
+.content-block{margin:20px 0}.content-block p{font-size:15px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px}
+.content-block strong{color:var(--text-primary);font-weight:600}.content-block em{color:var(--accent);font-style:italic}
+.content-block ul{list-style:none;padding:0;margin:8px 0 12px}
+.content-block ul li{font-size:15px;color:var(--text-secondary);padding:4px 0 4px 16px;position:relative;line-height:1.6}
+.content-block ul li::before{content:'';position:absolute;left:0;top:12px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.key-concept{font-size:15px;color:var(--text-primary);padding:14px 16px;background:rgba(255,255,255,0.04);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;margin:16px 0;line-height:1.6}
+.key-concept strong{color:var(--accent);font-weight:700}
+.key-concept ul{list-style:none;padding:0;margin:6px 0 0}.key-concept ul li{padding:3px 0 3px 14px;position:relative;font-size:15px}
+.key-concept ul li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.sarcasm{color:var(--accent);font-style:italic;font-size:14px;margin-bottom:12px}
+.divider{height:1px;background:var(--border);margin:24px 0}
+.callout{background:var(--accent-glow);border:1px solid rgba(0,229,155,0.2);border-radius:var(--radius);padding:20px;margin:20px 0;transition:transform .2s ease,box-shadow .2s ease}
+.callout:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,229,155,0.08)}
+.callout-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.callout p{font-size:15px;color:var(--text-secondary);line-height:1.6;margin-bottom:6px}.callout p:last-child{margin-bottom:0}
+.callout strong{color:var(--text-primary);font-weight:600}
+.callout ul{list-style:none;padding:0;margin:6px 0 0}.callout ul li{font-size:15px;color:var(--text-secondary);padding:3px 0 3px 14px;position:relative;line-height:1.5}
+.callout ul li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.activity-intro{background:linear-gradient(135deg,rgba(0,229,155,0.08),rgba(77,171,247,0.08));border:1px solid rgba(0,229,155,0.15);border-radius:var(--radius);padding:20px;margin:20px 0;text-align:center}
+.activity-intro .emoji{font-size:32px;margin-bottom:8px}
+.activity-intro h3{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px}
+.activity-intro p{font-size:14px;color:var(--text-secondary)}.activity-intro strong{color:var(--text-primary)}
+/* Quiz */
+.quiz-option{background:var(--bg-card);border:2px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:all .25s cubic-bezier(.22,1,.36,1);font-size:15px;color:var(--text-secondary);position:relative;overflow:hidden}
+.quiz-option::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,0.05) 0%,transparent 60%);opacity:0;transition:opacity .3s ease;pointer-events:none}
+.quiz-option:hover::after{opacity:1}
+.quiz-option:hover{transform:translateY(-1px);border-color:rgba(255,255,255,0.2);box-shadow:0 4px 16px rgba(0,0,0,0.25)}
+.quiz-option:active{transform:scale(.97)}
+.quiz-option.correct{border-color:var(--accent);background:rgba(0,229,155,0.08);color:var(--accent)}
+.quiz-option.wrong{border-color:var(--warning);background:rgba(255,107,74,0.08);color:var(--warning)}
+.quiz-option.disabled{pointer-events:none;opacity:.5}.quiz-option.correct.disabled,.quiz-option.wrong.disabled{opacity:1}
+.quiz-feedback{padding:12px 14px;border-radius:10px;margin-top:12px;font-size:14px;line-height:1.5;display:none}
+.quiz-feedback.visible{display:block;animation:feedbackIn .3s ease forwards}
+@keyframes feedbackIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.quiz-feedback.correct-fb{background:rgba(0,229,155,0.08);border:1px solid rgba(0,229,155,0.2);color:var(--accent)}
+.quiz-feedback.wrong-fb{background:rgba(255,107,74,0.08);border:1px solid rgba(255,107,74,0.2);color:var(--warning)}
+/* Weekend activity */
+.budget-display{text-align:center;margin:16px 0}
+.budget-amount{font-family:'Space Grotesk',sans-serif;font-size:48px;font-weight:700;transition:all .3s ease}
+.budget-amount.healthy{color:var(--accent)}.budget-amount.low{color:var(--yellow)}.budget-amount.broke{color:var(--warning)}
+.budget-label{font-size:13px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+.weekend-item{background:var(--bg-card);border:2px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:all .25s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
+.weekend-item::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,0.05) 0%,transparent 60%);opacity:0;transition:opacity .3s ease;pointer-events:none}
+.weekend-item:hover::after{opacity:1}
+.weekend-item:hover{transform:translateY(-1px);border-color:rgba(255,255,255,0.18);box-shadow:0 4px 16px rgba(0,0,0,0.25)}
+.weekend-item:active{transform:scale(.97);transition-duration:.1s}
+.weekend-item.selected{border-color:var(--accent);background:rgba(0,229,155,0.06)}
+.weekend-item.locked{opacity:.35;pointer-events:none;border-color:var(--border);background:var(--bg-card)}
+.weekend-item.locked .item-price{text-decoration:line-through}
+.weekend-item .item-left{display:flex;flex-direction:column}.weekend-item .item-name{font-weight:600;font-size:15px;font-family:'Space Grotesk',sans-serif}
+.weekend-item .item-desc{font-size:12px;color:var(--text-muted);margin-top:2px}
+.weekend-item .item-price{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--text-secondary);white-space:nowrap;margin-left:12px}
+.weekend-item.selected .item-price{color:var(--accent)}
+/* OC reveal */
+.oc-section{margin:24px 0}
+.oc-label{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-bottom:12px}
+.oc-label.picked{color:var(--accent)}.oc-label.missed{color:var(--warning)}
+.oc-item{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.oc-item:last-child{border-bottom:none}
+.oc-item .oc-name{color:var(--text-secondary)}.oc-item .oc-price{font-family:'Space Grotesk',sans-serif;font-weight:600}
+.oc-item.got .oc-price{color:var(--accent)}.oc-item.lost .oc-price{color:var(--warning)}
+/* Bottom nav */
+.bottom-action{position:fixed;bottom:0;left:0;right:0;padding:12px 20px;padding-bottom:max(12px,env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--bg-dark) 30%);z-index:50;display:flex;gap:10px;justify-content:center}
+.btn-back{padding:16px 20px;background:var(--bg-card);color:var(--text-secondary);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all .2s ease;flex-shrink:0}
+.btn-back:hover{background:var(--bg-card-hover);border-color:rgba(255,255,255,0.2)}.btn-back:active{transform:scale(.97)}
+.btn-back.hidden{display:none}
+.btn-next{flex:1;max-width:var(--max-w);padding:16px;background:var(--accent);color:var(--bg-dark);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;border:none;border-radius:12px;cursor:pointer;transition:all .25s cubic-bezier(.22,1,.36,1);letter-spacing:-.3px;position:relative;overflow:hidden}
+.btn-next::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);transform:translateX(-100%);transition:transform .4s ease}
+.btn-next:hover::before{transform:translateX(100%)}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,229,155,0.25)}
+.btn-next:active{transform:scale(.97) translateY(0);box-shadow:none;transition-duration:.1s}
+.btn-next:disabled{background:var(--text-muted);cursor:not-allowed;box-shadow:none;transform:none}
+.btn-next:disabled::before{display:none}.btn-next:disabled:hover{transform:none;box-shadow:none}
+/* Completion */
+.badge-icon{width:80px;height:80px;border-radius:50%;background:var(--accent-glow);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px;animation:pulseGlow 2s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(0,229,155,0.2)}50%{box-shadow:0 0 20px 8px rgba(0,229,155,0.15)}}
+.badge-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;color:var(--accent);margin-bottom:4px}
+.star-tracker{display:flex;gap:8px;justify-content:center;margin:16px 0}
+.star{font-size:28px;opacity:0.2;transition:all .3s ease}.star.lit{opacity:1;animation:starPop .4s cubic-bezier(.22,1,.36,1) both}
+@keyframes starPop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+.star-label{font-size:13px;color:var(--text-muted);text-align:center}
+.next-lesson-preview{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:28px;text-align:left;transition:all .25s ease}
+.next-lesson-preview:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.25)}
+.next-lesson-preview .lock-icon{font-size:14px;color:var(--text-muted)}
+.next-lesson-preview h4{font-family:'Space Grotesk',sans-serif;font-size:16px;margin:4px 0}
+.next-lesson-preview p{font-size:13px;color:var(--text-secondary)}
+.hook-emoji{font-size:48px;margin-bottom:16px;animation:emojiFloat 3s ease-in-out infinite}
+@keyframes emojiFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@media(min-width:600px){.screen{padding:48px 32px 120px}h1{font-size:40px}}
+</style>
+</head>
+<body>
+<div class="progress-bar-container"><div class="progress-bar" id="progressBar"></div></div>
+<div class="top-nav"><div class="brand">life<span>unlocked</span></div><div class="lesson-tag">Lesson 3 of 5</div></div>
+
+<!-- SCREEN 1: HOOK -->
+<div class="screen active" id="screen1">
+<div class="hook-emoji">⚖️</div>
+<h1>The Trade-Off Game.</h1>
+<p class="subtitle">Every dollar you spend somewhere is a dollar you can't spend somewhere else.</p>
+<div class="content-block">
+<p>Remember Jordan from Lesson 1? Blew $200 by Sunday.</p>
+<ul>
+<li><strong>Jordan didn't have a spending problem</strong></li>
+<li>He had a <em>trade-off</em> problem</li>
+<li>He never stopped to look at <strong>what he was giving up</strong> every time he said yes to something</li>
+</ul>
+</div>
+<div class="key-concept">When you spend money on one thing, you're automatically saying <strong>no</strong> to something else. Every single time.</div>
+<div class="content-block">
+<p>You've got $30. There's a hoodie you've been eyeing <strong>AND</strong> your friend's birthday dinner this weekend. You can't do both.</p>
+<p>Whatever you pick, <em>the other thing is what you lost.</em></p>
+<p>That loss has a name.</p>
+</div>
+</div>
+
+<!-- SCREEN 2: CONCEPT + QUIZ -->
+<div class="screen" id="screen2">
+<h2>This concept has a name.</h2>
+<div class="content-block">
+<p>When you choose one thing and give up another, the thing you gave up is called your <em>opportunity cost.</em></p>
+</div>
+<div class="key-concept"><em>Opportunity cost</em> = <strong>what you give up when you make a choice.</strong> The road you didn't take. The thing you could've had instead.</div>
+<div class="content-block">
+<ul>
+<li>You spent <strong>$15 on lunch?</strong> Your <em>opportunity cost</em> might be the $15 you could've put toward that concert ticket</li>
+<li>Bought the <strong>new video game?</strong> Your <em>opportunity cost</em> is whatever else that $60 could've done for you</li>
+</ul>
+<p>It doesn't mean you made the wrong call. It just means <strong>every choice has a cost you don't see on the receipt.</strong></p>
+</div>
+<div class="divider"></div>
+<h2>Quick check.</h2>
+<p class="subtitle">You have $25. You spend it on a T-shirt instead of saving it toward a $100 pair of shoes you want. What's your <em>opportunity cost</em>?</p>
+<div id="quizArea">
+<div class="quiz-option" onclick="checkQuiz(this,0)">The $25 you spent</div>
+<div class="quiz-option" onclick="checkQuiz(this,1)">The T-shirt</div>
+<div class="quiz-option" onclick="checkQuiz(this,2)">The $25 you could've put toward the shoes</div>
+<div class="quiz-option" onclick="checkQuiz(this,3)">The $100 shoes</div>
+</div>
+<div class="quiz-feedback" id="quizFeedback"></div>
+</div>
+
+<!-- SCREEN 3: BUILDING ON L2 -->
+<div class="screen" id="screen3">
+<h2>This is where needs vs. wants gets real.</h2>
+<p class="subtitle">In Lesson 2, sorting items was pretty chill. Now those categories are fighting each other for the same dollars.</p>
+<div class="content-block">
+<ul>
+<li><strong>Easy trade-off:</strong> New video game vs. saving for a car. One's clearly a want, one's working toward a bigger goal</li>
+<li><strong>Hard trade-off:</strong> Going out with friends vs. new shoes you actually need. Both feel important. Neither is "wrong"</li>
+<li><strong>Hardest trade-off:</strong> Two wants competing for the same money. Concert ticket OR new clothes. Weekend trip OR save for a laptop</li>
+</ul>
+</div>
+<div class="key-concept">Knowing your <em>opportunity cost</em> doesn't make the decision for you. It just makes sure you're making it <strong>with your eyes open.</strong></div>
+</div>
+
+<!-- SCREEN 4: $50 WEEKEND -->
+<div class="screen" id="screen4">
+<div class="activity-intro">
+<div class="emoji">🎮</div>
+<h3>Plan Your Weekend</h3>
+<p>You've got <strong>$50</strong> for the weekend. Pick what you're doing.<br>Tap to select, tap again to remove.</p>
+</div>
+<div class="budget-display">
+<div class="budget-amount healthy" id="budgetAmount">$50</div>
+<div class="budget-label">remaining</div>
+</div>
+<div id="weekendItems">
+<div class="weekend-item" data-price="15" data-name="Gas / ride money" onclick="toggleWeekend(this)"><div class="item-left"><div class="item-name">Gas / ride money</div><div class="item-desc">Getting around all weekend</div></div><div class="item-price">$15</div></div>
+<div class="weekend-item" data-price="12" data-name="Fast food with friends" onclick="toggleWeekend(this)"><div class="item-left"><div class="item-name">Fast food with friends</div><div class="item-desc">Grabbing burgers or tacos, hanging out</div></div><div class="item-price">$12</div></div>
+<div class="weekend-item" data-price="14" data-name="Movie tickets" onclick="toggleWeekend(this)"><div class="item-left"><div class="item-name">Movie tickets</div><div class="item-desc">That new movie everyone's talking about</div></div><div class="item-price">$14</div></div>
+<div class="weekend-item" data-price="10" data-name="Game purchase / skin" onclick="toggleWeekend(this)"><div class="item-left"><div class="item-name">Game purchase / skin</div><div class="item-desc">New game, battle pass, or character skin</div></div><div class="item-price">$10</div></div>
+<div class="weekend-item" data-price="8" data-name="Snacks for a hangout" onclick="toggleWeekend(this)"><div class="item-left"><div class="item-name">Snacks for a hangout</div><div class="item-desc">Chips, drinks, candy for the crew</div></div><div class="item-price">$8</div></div>
+<div class="weekend-item" data-price="18" data-name="Clothes shopping" onclick="toggleWeekend(this)"><div class="item-left"><div class="item-name">Clothes shopping</div><div class="item-desc">Something new to wear next week</div></div><div class="item-price">$18</div></div>
+<div class="weekend-item" data-price="7" data-name="Coffee shop" onclick="toggleWeekend(this)"><div class="item-left"><div class="item-name">Coffee shop</div><div class="item-desc">Iced drinks and vibes</div></div><div class="item-price">$7</div></div>
+<div class="weekend-item" data-price="11" data-name="Something from an online shop" onclick="toggleWeekend(this)"><div class="item-left"><div class="item-name">Something from an online shop</div><div class="item-desc">That thing in your cart you keep looking at</div></div><div class="item-price">$11</div></div>
+<div class="weekend-item" data-price="50" data-name="Save toward something bigger" onclick="toggleWeekend(this)"><div class="item-left"><div class="item-name">Save toward something bigger</div><div class="item-desc">Stay in, stack the cash for a goal</div></div><div class="item-price">$50</div></div>
+</div>
+</div>
+
+<!-- SCREEN 5: OC REVEAL -->
+<div class="screen" id="screen5">
+<h2>Here's your weekend.</h2>
+<p class="subtitle">And here's what it cost you beyond the dollars.</p>
+<div class="oc-section">
+<div class="oc-label picked">What you chose</div>
+<div id="pickedList"></div>
+</div>
+<div class="divider"></div>
+<div class="oc-section">
+<div class="oc-label missed">Your opportunity cost: what you gave up</div>
+<div id="missedList"></div>
+</div>
+<div class="callout" style="margin-top:24px">
+<div class="callout-title">Look at both lists</div>
+<ul>
+<li>Every item on the bottom is something you <em>could</em> have had</li>
+<li>You traded it for the stuff on top</li>
+<li>That trade might be totally worth it. Or maybe you'd swap something now</li>
+<li><strong>That feeling? That's <em>opportunity cost</em> hitting you in real time</strong></li>
+</ul>
+</div>
+</div>
+
+<!-- SCREEN 6: DEBRIEF -->
+<div class="screen" id="screen6">
+<h2>So what do you do with this?</h2>
+<p class="subtitle">You can't avoid trade-offs. But you can make them on purpose.</p>
+<div class="content-block">
+<p>The point of knowing your <em>opportunity cost</em> isn't to stress you out or make you feel guilty. It's so you <strong>stop being surprised</strong> when you can't afford something later.</p>
+</div>
+<div class="key-concept"><strong>Before you spend, ask:</strong> "What am I giving up by choosing this?" If you're cool with the answer, spend with confidence. If not, maybe hold off.</div>
+<div class="content-block">
+<ul>
+<li>That's it. One question. Takes about three seconds</li>
+<li>Stack that on top of the <strong>24-Hour Rule</strong> from Lesson 2 and the <strong>pause</strong> from Lesson 1</li>
+<li>You've got a system most adults wish someone had taught them</li>
+</ul>
+</div>
+</div>
+
+<!-- SCREEN 7: COMPLETION -->
+<div class="screen" id="screen7">
+<div style="text-align:center;padding-top:20px;">
+<div class="badge-icon">🔓</div>
+<div class="badge-name">Trade-Off Thinker</div>
+<p class="subtitle" style="margin-bottom:12px;">You now see the invisible price tag on everything.</p>
+<div class="star-tracker">
+<div class="star lit" style="animation-delay:0.1s">⭐</div>
+<div class="star lit" style="animation-delay:0.2s">⭐</div>
+<div class="star lit" style="animation-delay:0.4s">⭐</div>
+<div class="star">⭐</div>
+<div class="star">⭐</div>
+</div>
+<div class="star-label">3 of 5 lessons complete</div>
+</div>
+<div class="divider"></div>
+<div class="content-block">
+<h2>What you picked up:</h2>
+<ul>
+<li>Every spending decision has <strong>two costs:</strong> what you pay and what you give up</li>
+<li>That second cost is your <em>opportunity cost</em></li>
+<li>Now you see both. That changes how you spend, whether it's $5 or $500</li>
+</ul>
+</div>
+<div class="next-lesson-preview">
+<div class="lock-icon">🔒 Up Next</div>
+<h4>Lesson 4: Build Your First Budget</h4>
+<p>You've learned to pause, sort, and weigh trade-offs. Now it's time to put a real plan together.</p>
+</div>
+</div>
+
+<div class="bottom-action">
+<button class="btn-back hidden" id="backBtn" onclick="prevScreen()">← Back</button>
+<button class="btn-next" id="nextBtn" onclick="nextScreen()">Let's Go →</button>
+</div>
+
+<script>
+let currentScreen=1;const totalScreens=7;
+let quizPassed=false;
+let budget=50;const wkSelected=new Set();
+
+function updateProgress(){document.getElementById('progressBar').style.width=((currentScreen/totalScreens)*100)+'%'}
+function updateButton(){
+const btn=document.getElementById('nextBtn');const back=document.getElementById('backBtn');
+btn.disabled=false;back.classList.toggle('hidden',currentScreen===1);
+if(currentScreen===2&&!quizPassed){btn.disabled=true;btn.textContent='Answer the question to continue'}
+else if(currentScreen===4&&wkSelected.size===0){btn.disabled=true;btn.textContent='Pick at least one thing to do'}
+else if(currentScreen===7){btn.textContent='Coming Soon: Lesson 4 🔒';btn.disabled=true}
+else{btn.textContent='Continue →'}
+}
+function nextScreen(){
+if(currentScreen>=totalScreens)return;
+if(currentScreen===4)buildReveal();
+document.getElementById('screen'+currentScreen).classList.remove('active');
+currentScreen++;document.getElementById('screen'+currentScreen).classList.add('active');
+window.scrollTo({top:0,behavior:'smooth'});updateProgress();updateButton();
+}
+function prevScreen(){
+if(currentScreen<=1)return;
+document.getElementById('screen'+currentScreen).classList.remove('active');
+currentScreen--;document.getElementById('screen'+currentScreen).classList.add('active');
+window.scrollTo({top:0,behavior:'smooth'});updateProgress();updateButton();
+}
+
+// QUIZ
+function checkQuiz(el,i){
+if(quizPassed)return;
+const opts=document.querySelectorAll('.quiz-option');
+const fb=document.getElementById('quizFeedback');
+if(i===2){
+opts.forEach(o=>o.classList.add('disabled'));el.classList.remove('disabled');el.classList.add('correct');
+fb.className='quiz-feedback visible correct-fb';
+fb.innerHTML="<strong>That's it.</strong> The <em>opportunity cost</em> is the $25 toward the shoes you gave up. Not the T-shirt (that's what you got), not the full $100 (you weren't spending that today), and not just \"the money\" in general. It's specifically <strong>what else that money could have done for you.</strong>";
+quizPassed=true;
+}else{
+el.classList.add('wrong');fb.className='quiz-feedback visible wrong-fb';
+if(i===0)fb.innerHTML="Not quite. The $25 is what you <strong>spent</strong>, but <em>opportunity cost</em> is about what you <strong>gave up</strong>. What could that $25 have done instead?";
+else if(i===1)fb.innerHTML="The T-shirt is what you <strong>got</strong>, not what you gave up. Think about what you lost by making this choice.";
+else fb.innerHTML="Close, but you weren't spending $100 today. You gave up <strong>$25 worth of progress</strong> toward the shoes. That's the <em>opportunity cost</em>.";
+setTimeout(()=>{el.classList.remove('wrong')},1200);
+}
+updateButton();
+}
+
+// WEEKEND
+function toggleWeekend(el){
+const price=parseInt(el.dataset.price);const name=el.dataset.name;
+if(el.classList.contains('selected')){
+el.classList.remove('selected');wkSelected.delete(name);budget+=price;
+}else{
+if(price>budget)return;
+if(price===50){document.querySelectorAll('.weekend-item.selected').forEach(it=>{budget+=parseInt(it.dataset.price);it.classList.remove('selected');wkSelected.delete(it.dataset.name)})}
+else{const sa=document.querySelector('.weekend-item[data-price="50"]');if(sa&&sa.classList.contains('selected')){sa.classList.remove('selected');wkSelected.delete(sa.dataset.name);budget+=50}}
+el.classList.add('selected');wkSelected.add(name);budget-=price;
+}
+const a=document.getElementById('budgetAmount');
+a.textContent='$'+budget;a.className='budget-amount '+(budget>20?'healthy':budget>5?'low':'broke');
+document.querySelectorAll('.weekend-item').forEach(it=>{
+const p=parseInt(it.dataset.price);
+if(!it.classList.contains('selected')&&p>budget)it.classList.add('locked');
+else if(!it.classList.contains('selected'))it.classList.remove('locked');
+});
+updateButton();
+}
+
+function buildReveal(){
+const all=document.querySelectorAll('.weekend-item');
+let ph='',mh='';
+all.forEach(it=>{
+const n=it.dataset.name,p='$'+it.dataset.price;
+if(it.classList.contains('selected'))ph+='<div class="oc-item got"><span class="oc-name">'+n+'</span><span class="oc-price">'+p+'</span></div>';
+else mh+='<div class="oc-item lost"><span class="oc-name">'+n+'</span><span class="oc-price">'+p+'</span></div>';
+});
+document.getElementById('pickedList').innerHTML=ph||'<p style="color:var(--text-muted);font-size:14px;">Nothing selected</p>';
+document.getElementById('missedList').innerHTML=mh||'<p style="color:var(--text-muted);font-size:14px;">You picked everything!</p>';
+}
+
+// Mouse follow
+document.querySelectorAll('.weekend-item,.quiz-option').forEach(el=>{
+el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();el.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');el.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%')});
+});
+updateProgress();updateButton();
+</script>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life Unlocked — Pre-Assessment</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--bg-dark:#141518;--bg-card:#1e1f24;--bg-card-hover:#26272d;--accent:#00e59b;--accent-dim:#00c583;--accent-glow:rgba(0,229,155,0.15);--text-primary:#f0f0f0;--text-secondary:#a0a0a0;--text-muted:#666;--warning:#ff6b4a;--blue:#4dabf7;--purple:#b197fc;--yellow:#ffd43b;--border:rgba(255,255,255,0.1);--radius:16px;--max-w:560px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg-dark);background-image:radial-gradient(ellipse at 50% 0%,rgba(0,229,155,0.04) 0%,transparent 60%);color:var(--text-primary);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh}
+@media(min-width:700px){body{background-image:radial-gradient(ellipse at 50% 0%,rgba(0,229,155,0.04) 0%,transparent 60%),repeating-linear-gradient(90deg,transparent,transparent calc(50% - 290px),rgba(255,255,255,0.015) calc(50% - 290px),rgba(255,255,255,0.015) calc(50% - 288px),transparent calc(50% - 288px),transparent calc(50% + 288px),rgba(255,255,255,0.015) calc(50% + 288px),rgba(255,255,255,0.015) calc(50% + 290px),transparent calc(50% + 290px))}}
+.top-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;position:sticky;top:0;background:rgba(20,21,24,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:50;border-bottom:1px solid var(--border)}
+.brand{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;letter-spacing:-.5px}.brand span{color:var(--accent)}
+.nav-tag{font-size:12px;color:var(--text-muted);background:rgba(255,255,255,0.05);padding:4px 10px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase}
+.screen{display:none;min-height:calc(100vh - 60px);padding:32px 20px 100px;max-width:var(--max-w);margin:0 auto;opacity:0;transform:translateY(24px)}
+.screen.active{display:block;animation:screenIn .5s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes screenIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+h1{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;line-height:1.15;letter-spacing:-1px;margin-bottom:8px}
+h2{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;line-height:1.2;letter-spacing:-.5px;margin-bottom:8px}
+.subtitle{color:var(--text-secondary);font-size:16px;margin-bottom:24px;line-height:1.5}
+.content-block{margin:20px 0}.content-block p{font-size:15px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px}
+.content-block strong{color:var(--text-primary);font-weight:600}.content-block em{color:var(--accent);font-style:italic}
+.sarcasm{color:var(--accent);font-style:italic;font-size:14px;margin-bottom:12px}
+.key-concept{font-size:15px;color:var(--text-primary);padding:14px 16px;background:rgba(255,255,255,0.04);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;margin:16px 0;line-height:1.6}
+.key-concept strong{color:var(--accent);font-weight:700}
+.hook-emoji{font-size:48px;margin-bottom:16px;animation:emojiFloat 3s ease-in-out infinite}
+@keyframes emojiFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+/* Code name input */
+.code-name-section{margin:24px 0}
+.code-name-label{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;margin-bottom:4px}
+.code-name-hint{font-size:14px;color:var(--text-secondary);margin-bottom:12px;line-height:1.5}
+.code-name-input{width:100%;padding:14px 16px;background:var(--bg-card);border:2px solid var(--border);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:16px;color:var(--text-primary);transition:border-color .2s ease, box-shadow .2s ease;-webkit-appearance:none}
+.code-name-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,229,155,0.1)}
+.code-name-input::placeholder{color:var(--text-muted)}
+.code-name-input.has-value{border-color:rgba(0,229,155,0.4)}
+/* Question blocks */
+.question-block{margin:28px 0}
+.question-number{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:8px;font-weight:600}
+.question-text{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:17px;line-height:1.4;margin-bottom:14px}
+.answer-option{background:var(--bg-card);border:2px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;cursor:pointer;transition:all .25s cubic-bezier(.22,1,.36,1);user-select:none;-webkit-user-select:none;font-size:15px;color:var(--text-secondary);position:relative;overflow:hidden}
+.answer-option::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,0.05) 0%,transparent 60%);opacity:0;transition:opacity .3s ease;pointer-events:none}
+.answer-option:hover::after{opacity:1}
+.answer-option:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.25);border-color:rgba(255,255,255,0.18)}
+.answer-option:active{transform:scale(.97);transition-duration:.1s}
+.answer-option.selected{border-color:var(--accent);color:var(--accent);background:rgba(0,229,155,0.06)}
+.answer-option .option-letter{font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--text-muted);margin-right:10px;transition:color .2s ease}
+.answer-option.selected .option-letter{color:var(--accent)}
+.divider{height:1px;background:var(--border);margin:24px 0}
+/* Callout */
+.callout{background:var(--accent-glow);border:1px solid rgba(0,229,155,0.2);border-radius:var(--radius);padding:20px;margin:20px 0;transition:transform .2s ease,box-shadow .2s ease}
+.callout:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,229,155,0.08)}
+.callout-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.callout p{font-size:15px;color:var(--text-secondary);line-height:1.6;margin-bottom:6px}.callout p:last-child{margin-bottom:0}
+.callout ul{list-style:none;padding:0;margin:6px 0 0}
+.callout ul li{font-size:15px;color:var(--text-secondary);padding:3px 0 3px 14px;position:relative;line-height:1.5}
+.callout ul li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+/* Confirmation screen */
+.confirm-icon{width:80px;height:80px;border-radius:50%;background:var(--accent-glow);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px;animation:pulseGlow 2s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(0,229,155,0.2)}50%{box-shadow:0 0 20px 8px rgba(0,229,155,0.15)}}
+.confirm-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;text-align:center;margin-bottom:6px}
+.confirm-sub{font-size:15px;color:var(--text-secondary);text-align:center;margin-bottom:24px;line-height:1.5}
+/* Nav buttons */
+.bottom-action{position:fixed;bottom:0;left:0;right:0;padding:12px 20px;padding-bottom:max(12px,env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--bg-dark) 30%);z-index:50;display:flex;gap:10px;justify-content:center}
+.btn-back{padding:16px 20px;background:var(--bg-card);color:var(--text-secondary);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all .2s ease;flex-shrink:0}
+.btn-back:hover{background:var(--bg-card-hover);border-color:rgba(255,255,255,0.2)}
+.btn-back:active{transform:scale(.97)}
+.btn-back.hidden{display:none}
+.btn-next{flex:1;max-width:var(--max-w);padding:16px;background:var(--accent);color:var(--bg-dark);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;border:none;border-radius:12px;cursor:pointer;transition:all .25s cubic-bezier(.22,1,.36,1);letter-spacing:-.3px;position:relative;overflow:hidden}
+.btn-next::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);transform:translateX(-100%);transition:transform .4s ease}
+.btn-next:hover::before{transform:translateX(100%)}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,229,155,0.25)}
+.btn-next:active{transform:scale(.97) translateY(0);box-shadow:none;transition-duration:.1s}
+.btn-next:disabled{background:var(--text-muted);cursor:not-allowed;box-shadow:none;transform:none}
+.btn-next:disabled::before{display:none}.btn-next:disabled:hover{transform:none;box-shadow:none}
+/* Submit spinner */
+.btn-next.submitting{pointer-events:none;background:var(--accent-dim)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(20,21,24,0.3);border-top-color:var(--bg-dark);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:8px}
+@media(min-width:600px){.screen{padding:48px 32px 120px}h1{font-size:40px}}
+</style>
+</head>
+<body>
+<div class="top-nav"><div class="brand">life<span>unlocked</span></div><div class="nav-tag">Before We Start</div></div>
+
+<!-- SCREEN 1: CODE NAME + INTRO -->
+<div class="screen active" id="screen1">
+<div class="hook-emoji">🧪</div>
+<h1>Quick Check-In</h1>
+<p class="subtitle">Before we start, we want to see what you already know. No grades. No wrong answers. Just a baseline.</p>
+
+<div class="content-block">
+<p>This takes about 60 seconds. Answer with your gut. Don't overthink it.</p>
+<p class="sarcasm">We promise this isn't a trap.</p>
+</div>
+
+<div class="code-name-section">
+<div class="code-name-label">First, create your code name</div>
+<div class="code-name-hint">Take your <strong>first pet's name</strong> + your <strong>birth month</strong>. That's your code name. You'll use this again at the end of the course so we can match your results anonymously.</div>
+<input type="text" class="code-name-input" id="codeName" placeholder="Example: BusterMarch" maxlength="40" autocomplete="off">
+</div>
+
+<div class="callout">
+<div class="callout-title">Why a code name?</div>
+<ul>
+<li>We don't collect your real name</li>
+<li>The code name lets us compare your "before" and "after" answers</li>
+<li>Nobody sees your individual results</li>
+</ul>
+</div>
+</div>
+
+<!-- SCREEN 2: ALL 4 QUESTIONS -->
+<div class="screen" id="screen2">
+<h2>Okay, let's see what you've got.</h2>
+<p class="subtitle">Pick the best answer for each. Gut reaction, not a research paper.</p>
+
+<div class="question-block" id="q1block">
+<div class="question-number">Question 1 of 4</div>
+<div class="question-text">Your friend says they "need" the latest pair of headphones. What's the best way to figure out if it's actually a need?</div>
+<div class="answer-option" onclick="selectAnswer(this, 1, 'a')"><span class="option-letter">A</span>If they want it really badly, it's a need</div>
+<div class="answer-option" onclick="selectAnswer(this, 1, 'b')"><span class="option-letter">B</span>If it costs less than $50, it's a need</div>
+<div class="answer-option" onclick="selectAnswer(this, 1, 'c')"><span class="option-letter">C</span>Ask whether they could get by without it or with a cheaper option</div>
+<div class="answer-option" onclick="selectAnswer(this, 1, 'd')"><span class="option-letter">D</span>If everyone else has it, it's a need</div>
+</div>
+
+<div class="divider"></div>
+
+<div class="question-block" id="q2block">
+<div class="question-number">Question 2 of 4</div>
+<div class="question-text">You have $50 for the weekend. You spend $30 on a concert ticket. What's the opportunity cost?</div>
+<div class="answer-option" onclick="selectAnswer(this, 2, 'a')"><span class="option-letter">A</span>$30, because that's what you spent</div>
+<div class="answer-option" onclick="selectAnswer(this, 2, 'b')"><span class="option-letter">B</span>$50, because that's everything you had</div>
+<div class="answer-option" onclick="selectAnswer(this, 2, 'c')"><span class="option-letter">C</span>Whatever else you could've done with that $30</div>
+<div class="answer-option" onclick="selectAnswer(this, 2, 'd')"><span class="option-letter">D</span>Nothing, because you wanted the ticket</div>
+</div>
+
+<div class="divider"></div>
+
+<div class="question-block" id="q3block">
+<div class="question-number">Question 3 of 4</div>
+<div class="question-text">You just got your first paycheck: $467 gross, $400 after taxes. What's the smartest first move?</div>
+<div class="answer-option" onclick="selectAnswer(this, 3, 'a')"><span class="option-letter">A</span>Spend it however you want since you earned it</div>
+<div class="answer-option" onclick="selectAnswer(this, 3, 'b')"><span class="option-letter">B</span>Save all of it</div>
+<div class="answer-option" onclick="selectAnswer(this, 3, 'c')"><span class="option-letter">C</span>Split it into categories: bills, spending money, and savings</div>
+<div class="answer-option" onclick="selectAnswer(this, 3, 'd')"><span class="option-letter">D</span>Ask your parents what to do with it</div>
+</div>
+
+<div class="divider"></div>
+
+<div class="question-block" id="q4block">
+<div class="question-number">Question 4 of 4</div>
+<div class="question-text">You're about to buy something for $75 that you saw 10 minutes ago and suddenly want. What's the best move?</div>
+<div class="answer-option" onclick="selectAnswer(this, 4, 'a')"><span class="option-letter">A</span>Buy it now before it sells out</div>
+<div class="answer-option" onclick="selectAnswer(this, 4, 'b')"><span class="option-letter">B</span>Wait at least a day and see if you still want it</div>
+<div class="answer-option" onclick="selectAnswer(this, 4, 'c')"><span class="option-letter">C</span>Ask a friend if it's a good deal</div>
+<div class="answer-option" onclick="selectAnswer(this, 4, 'd')"><span class="option-letter">D</span>Check if you can find it cheaper somewhere else</div>
+</div>
+</div>
+
+<!-- SCREEN 3: CONFIRMATION -->
+<div class="screen" id="screen3">
+<div class="confirm-icon">✅</div>
+<div class="confirm-title">Locked in.</div>
+<div class="confirm-sub">Your answers are saved. Now let's see how much you actually pick up.</div>
+
+<div class="key-concept">
+<strong>Your code name:</strong> <span id="codeNameDisplay" style="color:var(--accent)"></span><br>
+Write it down or screenshot this. You'll enter it again at the end so we can compare your before and after.
+</div>
+
+<div class="content-block">
+<p>No matter what you picked, there are no wrong answers here. This is just your starting point.</p>
+<p class="sarcasm">The real test is whether you still want those headphones after Lesson 2.</p>
+</div>
+</div>
+
+<div class="bottom-action">
+<button class="btn-back hidden" id="backBtn" onclick="prevScreen()">← Back</button>
+<button class="btn-next" id="nextBtn" onclick="handleNext()">Let's Go →</button>
+</div>
+
+<script>
+let currentScreen = 1;
+const totalScreens = 3;
+let answers = {1: null, 2: null, 3: null, 4: null};
+let codeName = '';
+
+// PLACEHOLDER: Replace this URL with your actual Google Form endpoint
+const GOOGLE_FORM_URL = 'YOUR_GOOGLE_FORM_URL_HERE';
+// PLACEHOLDER: Replace these with the actual entry IDs from your Google Form
+const FORM_FIELDS = {
+  codeName: 'entry.XXXXXXX',
+  q1: 'entry.XXXXXXX',
+  q2: 'entry.XXXXXXX',
+  q3: 'entry.XXXXXXX',
+  q4: 'entry.XXXXXXX'
+};
+
+const codeNameInput = document.getElementById('codeName');
+codeNameInput.addEventListener('input', function() {
+  codeName = this.value.trim();
+  this.classList.toggle('has-value', codeName.length > 0);
+  updateButton();
+});
+
+function selectAnswer(el, qNum, value) {
+  const block = document.getElementById('q' + qNum + 'block');
+  block.querySelectorAll('.answer-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  answers[qNum] = value;
+  updateButton();
+}
+
+function updateButton() {
+  const btn = document.getElementById('nextBtn');
+  const back = document.getElementById('backBtn');
+  btn.disabled = false;
+  back.classList.toggle('hidden', currentScreen === 1);
+
+  if (currentScreen === 1) {
+    if (codeName.length < 3) {
+      btn.disabled = true;
+      btn.textContent = 'Enter your code name first ☝️';
+    } else {
+      btn.textContent = 'Continue →';
+    }
+  } else if (currentScreen === 2) {
+    const allAnswered = answers[1] !== null && answers[2] !== null && answers[3] !== null && answers[4] !== null;
+    if (!allAnswered) {
+      btn.disabled = true;
+      btn.textContent = 'Answer all 4 questions ☝️';
+    } else {
+      btn.textContent = 'Submit →';
+    }
+  } else if (currentScreen === 3) {
+    btn.textContent = 'Start Lesson 1 →';
+  }
+}
+
+function handleNext() {
+  if (currentScreen === 2 && answers[1] !== null && answers[2] !== null && answers[3] !== null && answers[4] !== null) {
+    submitToGoogleForm();
+    return;
+  }
+  if (currentScreen === 3) {
+    window.location.href = 'lesson1.html';
+    return;
+  }
+  nextScreen();
+}
+
+function nextScreen() {
+  if (currentScreen >= totalScreens) return;
+  document.getElementById('screen' + currentScreen).classList.remove('active');
+  currentScreen++;
+  document.getElementById('screen' + currentScreen).classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  updateButton();
+}
+
+function prevScreen() {
+  if (currentScreen <= 1) return;
+  document.getElementById('screen' + currentScreen).classList.remove('active');
+  currentScreen--;
+  document.getElementById('screen' + currentScreen).classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  updateButton();
+}
+
+function submitToGoogleForm() {
+  const btn = document.getElementById('nextBtn');
+  btn.classList.add('submitting');
+  btn.innerHTML = '<span class="spinner"></span>Submitting...';
+  btn.disabled = true;
+
+  const formData = new URLSearchParams();
+  formData.append(FORM_FIELDS.codeName, codeName);
+  formData.append(FORM_FIELDS.q1, answers[1]);
+  formData.append(FORM_FIELDS.q2, answers[2]);
+  formData.append(FORM_FIELDS.q3, answers[3]);
+  formData.append(FORM_FIELDS.q4, answers[4]);
+
+  // Submit via hidden iframe to avoid CORS issues with Google Forms
+  const iframe = document.createElement('iframe');
+  iframe.name = 'hidden_iframe';
+  iframe.style.display = 'none';
+  document.body.appendChild(iframe);
+
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = GOOGLE_FORM_URL;
+  form.target = 'hidden_iframe';
+
+  for (const [key, value] of formData.entries()) {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = key;
+    input.value = value;
+    form.appendChild(input);
+  }
+
+  document.body.appendChild(form);
+  form.submit();
+
+  // Move to confirmation after brief delay (form submits in background)
+  setTimeout(() => {
+    document.body.removeChild(form);
+    btn.classList.remove('submitting');
+    document.getElementById('codeNameDisplay').textContent = codeName;
+    document.getElementById('screen' + currentScreen).classList.remove('active');
+    currentScreen = 3;
+    document.getElementById('screen3').classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    updateButton();
+  }, 800);
+}
+
+// Mouse follow effect on answer options
+document.querySelectorAll('.answer-option').forEach(el => {
+  el.addEventListener('mousemove', e => {
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+    el.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+  });
+});
+
+updateButton();
+</script>
+</body>
+</html>

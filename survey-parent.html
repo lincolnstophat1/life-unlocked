@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life Unlocked — Parent Survey</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--bg-dark:#141518;--bg-card:#1e1f24;--bg-card-hover:#26272d;--accent:#00e59b;--accent-dim:#00c583;--accent-glow:rgba(0,229,155,0.15);--text-primary:#f0f0f0;--text-secondary:#a0a0a0;--text-muted:#666;--warning:#ff6b4a;--blue:#4dabf7;--purple:#b197fc;--yellow:#ffd43b;--border:rgba(255,255,255,0.1);--radius:16px;--max-w:560px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg-dark);background-image:radial-gradient(ellipse at 50% 0%,rgba(0,229,155,0.04) 0%,transparent 60%);color:var(--text-primary);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh}
+@media(min-width:700px){body{background-image:radial-gradient(ellipse at 50% 0%,rgba(0,229,155,0.04) 0%,transparent 60%),repeating-linear-gradient(90deg,transparent,transparent calc(50% - 290px),rgba(255,255,255,0.015) calc(50% - 290px),rgba(255,255,255,0.015) calc(50% - 288px),transparent calc(50% - 288px),transparent calc(50% + 288px),rgba(255,255,255,0.015) calc(50% + 288px),rgba(255,255,255,0.015) calc(50% + 290px),transparent calc(50% + 290px))}}
+.top-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;position:sticky;top:0;background:rgba(20,21,24,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:50;border-bottom:1px solid var(--border)}
+.brand{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;letter-spacing:-.5px}.brand span{color:var(--accent)}
+.nav-tag{font-size:12px;color:var(--text-muted);background:rgba(255,255,255,0.05);padding:4px 10px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase}
+.screen{display:none;min-height:calc(100vh - 60px);padding:32px 20px 100px;max-width:var(--max-w);margin:0 auto;opacity:0;transform:translateY(24px)}
+.screen.active{display:block;animation:screenIn .5s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes screenIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+h1{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;line-height:1.15;letter-spacing:-1px;margin-bottom:8px}
+h2{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;line-height:1.2;letter-spacing:-.5px;margin-bottom:8px}
+.subtitle{color:var(--text-secondary);font-size:16px;margin-bottom:24px;line-height:1.5}
+.content-block{margin:20px 0}.content-block p{font-size:15px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px}
+.content-block strong{color:var(--text-primary);font-weight:600}
+.hook-emoji{font-size:48px;margin-bottom:16px;animation:emojiFloat 3s ease-in-out infinite}
+@keyframes emojiFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.question-block{margin:28px 0}
+.question-text{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:17px;line-height:1.4;margin-bottom:14px}
+.section-label{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:16px;margin-top:8px;font-weight:600}
+.answer-option{background:var(--bg-card);border:2px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;cursor:pointer;transition:all .25s cubic-bezier(.22,1,.36,1);user-select:none;-webkit-user-select:none;font-size:15px;color:var(--text-secondary);position:relative;overflow:hidden}
+.answer-option::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,0.05) 0%,transparent 60%);opacity:0;transition:opacity .3s ease;pointer-events:none}
+.answer-option:hover::after{opacity:1}
+.answer-option:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.25);border-color:rgba(255,255,255,0.18)}
+.answer-option:active{transform:scale(.97);transition-duration:.1s}
+.answer-option.selected{border-color:var(--accent);color:var(--accent);background:rgba(0,229,155,0.06)}
+.multi-option{background:var(--bg-card);border:2px solid var(--border);border-radius:12px;padding:12px 16px;margin-bottom:8px;cursor:pointer;transition:all .25s cubic-bezier(.22,1,.36,1);user-select:none;-webkit-user-select:none;font-size:15px;color:var(--text-secondary);position:relative;overflow:hidden;display:flex;align-items:center;gap:10px}
+.multi-option::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,0.05) 0%,transparent 60%);opacity:0;transition:opacity .3s ease;pointer-events:none}
+.multi-option:hover::after{opacity:1}
+.multi-option:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.25);border-color:rgba(255,255,255,0.18)}
+.multi-option:active{transform:scale(.97);transition-duration:.1s}
+.multi-option.selected{border-color:var(--accent);color:var(--accent);background:rgba(0,229,155,0.06)}
+.multi-check{width:20px;height:20px;border-radius:6px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s ease;font-size:12px;color:transparent}
+.multi-option.selected .multi-check{border-color:var(--accent);background:var(--accent);color:var(--bg-dark)}
+.scale-row{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 4px}
+.scale-btn{width:40px;height:40px;border-radius:10px;background:var(--bg-card);border:2px solid var(--border);color:var(--text-secondary);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;cursor:pointer;transition:all .2s ease;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.scale-btn:hover{border-color:rgba(255,255,255,0.2);transform:translateY(-2px)}
+.scale-btn:active{transform:scale(.93)}
+.scale-btn.selected{border-color:var(--accent);background:rgba(0,229,155,0.1);color:var(--accent)}
+.scale-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:16px}
+.open-text{width:100%;min-height:80px;background:var(--bg-card);border:2px solid var(--border);border-radius:12px;padding:14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text-primary);resize:vertical;margin:10px 0;transition:border-color .2s ease}
+.open-text:focus{outline:none;border-color:var(--accent)}
+.open-text::placeholder{color:var(--text-muted)}
+.divider{height:1px;background:var(--border);margin:24px 0}
+.callout{background:var(--accent-glow);border:1px solid rgba(0,229,155,0.2);border-radius:var(--radius);padding:20px;margin:20px 0}
+.callout-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.callout ul{list-style:none;padding:0;margin:6px 0 0}
+.callout ul li{font-size:15px;color:var(--text-secondary);padding:3px 0 3px 14px;position:relative;line-height:1.5}
+.callout ul li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.confirm-icon{width:80px;height:80px;border-radius:50%;background:var(--accent-glow);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px;animation:pulseGlow 2s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(0,229,155,0.2)}50%{box-shadow:0 0 20px 8px rgba(0,229,155,0.15)}}
+.confirm-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;text-align:center;margin-bottom:6px}
+.confirm-sub{font-size:15px;color:var(--text-secondary);text-align:center;margin-bottom:24px;line-height:1.5}
+.bottom-action{position:fixed;bottom:0;left:0;right:0;padding:12px 20px;padding-bottom:max(12px,env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--bg-dark) 30%);z-index:50;display:flex;gap:10px;justify-content:center}
+.btn-back{padding:16px 20px;background:var(--bg-card);color:var(--text-secondary);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all .2s ease;flex-shrink:0}
+.btn-back:hover{background:var(--bg-card-hover);border-color:rgba(255,255,255,0.2)}
+.btn-back:active{transform:scale(.97)}
+.btn-back.hidden{display:none}
+.btn-next{flex:1;max-width:var(--max-w);padding:16px;background:var(--accent);color:var(--bg-dark);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;border:none;border-radius:12px;cursor:pointer;transition:all .25s cubic-bezier(.22,1,.36,1);letter-spacing:-.3px;position:relative;overflow:hidden}
+.btn-next::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);transform:translateX(-100%);transition:transform .4s ease}
+.btn-next:hover::before{transform:translateX(100%)}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,229,155,0.25)}
+.btn-next:active{transform:scale(.97) translateY(0);box-shadow:none;transition-duration:.1s}
+.btn-next:disabled{background:var(--text-muted);cursor:not-allowed;box-shadow:none;transform:none}
+.btn-next:disabled::before{display:none}.btn-next:disabled:hover{transform:none;box-shadow:none}
+.btn-next.submitting{pointer-events:none;background:var(--accent-dim)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(20,21,24,0.3);border-top-color:var(--bg-dark);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:8px}
+@media(min-width:600px){.screen{padding:48px 32px 120px}h1{font-size:40px}}
+</style>
+</head>
+<body>
+<div class="top-nav"><div class="brand">life<span>unlocked</span></div><div class="nav-tag">Parent Survey</div></div>
+
+<!-- SCREEN 1: INTRO -->
+<div class="screen active" id="screen1">
+<div class="hook-emoji">👋</div>
+<h1>Thanks for being part of this.</h1>
+<p class="subtitle">Your teen just finished a financial literacy course called Life Unlocked. We'd love your perspective. This takes about 2 minutes.</p>
+
+<div class="content-block">
+<p>Everything here is anonymous. We're using your feedback to improve the course and understand what parents actually want for their kids when it comes to money skills.</p>
+</div>
+
+<div class="callout">
+<div class="callout-title">What your teen learned</div>
+<ul>
+<li>How to pause before spending impulsively</li>
+<li>The difference between needs and wants</li>
+<li>What opportunity cost means (and why it matters)</li>
+<li>How to build a basic budget</li>
+<li>How to apply all of it to a real-world scenario</li>
+</ul>
+</div>
+</div>
+
+<!-- SCREEN 2: ALL QUESTIONS -->
+<div class="screen" id="screen2">
+<h2>Quick questions.</h2>
+<p class="subtitle">Tap your answers. No wrong answers here.</p>
+
+<div class="question-block">
+<div class="section-label">Your Teen's Experience</div>
+<div class="question-text">Did your teen talk about what they learned?</div>
+<div class="answer-option" onclick="selectSingle(this, 'teenTalked')">Yes, without me asking</div>
+<div class="answer-option" onclick="selectSingle(this, 'teenTalked')">Yes, when I asked</div>
+<div class="answer-option" onclick="selectSingle(this, 'teenTalked')">No</div>
+</div>
+
+<div class="divider"></div>
+
+<div class="question-block">
+<div class="section-label">Value & Pricing</div>
+<div class="question-text">How much would you pay for this course?</div>
+<div class="answer-option" onclick="selectSingle(this, 'pricePoint')">$10 – $20</div>
+<div class="answer-option" onclick="selectSingle(this, 'pricePoint')">$20 – $30</div>
+<div class="answer-option" onclick="selectSingle(this, 'pricePoint')">$30 – $40</div>
+<div class="answer-option" onclick="selectSingle(this, 'pricePoint')">$40 – $50</div>
+<div class="answer-option" onclick="selectSingle(this, 'pricePoint')">$50+</div>
+<div class="answer-option" onclick="selectSingle(this, 'pricePoint')">I wouldn't pay for this</div>
+</div>
+
+<div class="divider"></div>
+
+<div class="question-block">
+<div class="question-text">Would you recommend this to other parents?</div>
+<div class="scale-row">
+<div class="scale-btn" onclick="selectScale(this, 'recommendParent', 1)">1</div>
+<div class="scale-btn" onclick="selectScale(this, 'recommendParent', 2)">2</div>
+<div class="scale-btn" onclick="selectScale(this, 'recommendParent', 3)">3</div>
+<div class="scale-btn" onclick="selectScale(this, 'recommendParent', 4)">4</div>
+<div class="scale-btn" onclick="selectScale(this, 'recommendParent', 5)">5</div>
+<div class="scale-btn" onclick="selectScale(this, 'recommendParent', 6)">6</div>
+<div class="scale-btn" onclick="selectScale(this, 'recommendParent', 7)">7</div>
+<div class="scale-btn" onclick="selectScale(this, 'recommendParent', 8)">8</div>
+<div class="scale-btn" onclick="selectScale(this, 'recommendParent', 9)">9</div>
+<div class="scale-btn" onclick="selectScale(this, 'recommendParent', 10)">10</div>
+</div>
+<div class="scale-labels"><span>Not at all</span><span>Absolutely</span></div>
+</div>
+
+<div class="divider"></div>
+
+<div class="question-block">
+<div class="question-text">How much do you trust this course to teach your teen about money?</div>
+<div class="scale-row">
+<div class="scale-btn" onclick="selectScale(this, 'trustLevel', 1)">1</div>
+<div class="scale-btn" onclick="selectScale(this, 'trustLevel', 2)">2</div>
+<div class="scale-btn" onclick="selectScale(this, 'trustLevel', 3)">3</div>
+<div class="scale-btn" onclick="selectScale(this, 'trustLevel', 4)">4</div>
+<div class="scale-btn" onclick="selectScale(this, 'trustLevel', 5)">5</div>
+<div class="scale-btn" onclick="selectScale(this, 'trustLevel', 6)">6</div>
+<div class="scale-btn" onclick="selectScale(this, 'trustLevel', 7)">7</div>
+<div class="scale-btn" onclick="selectScale(this, 'trustLevel', 8)">8</div>
+<div class="scale-btn" onclick="selectScale(this, 'trustLevel', 9)">9</div>
+<div class="scale-btn" onclick="selectScale(this, 'trustLevel', 10)">10</div>
+</div>
+<div class="scale-labels"><span>Not at all</span><span>Completely</span></div>
+</div>
+
+<div class="divider"></div>
+
+<div class="question-block">
+<div class="section-label">Your Approach</div>
+<div class="question-text">How do you currently teach your kids about money?</div>
+<div class="answer-option" onclick="selectSingle(this, 'currentTeaching')">We talk about it at home</div>
+<div class="answer-option" onclick="selectSingle(this, 'currentTeaching')">I leave it to school</div>
+<div class="answer-option" onclick="selectSingle(this, 'currentTeaching')">We don't, and I wish we did</div>
+<div class="answer-option" onclick="selectSingle(this, 'currentTeaching')">I don't know where to start</div>
+</div>
+
+<div class="divider"></div>
+
+<div class="question-block">
+<div class="question-text">Where do you look for resources for your teen?</div>
+<div class="multi-option" onclick="toggleMulti(this, 'resourceSource')"><div class="multi-check">✓</div>Google search</div>
+<div class="multi-option" onclick="toggleMulti(this, 'resourceSource')"><div class="multi-check">✓</div>Social media</div>
+<div class="multi-option" onclick="toggleMulti(this, 'resourceSource')"><div class="multi-check">✓</div>School recommendations</div>
+<div class="multi-option" onclick="toggleMulti(this, 'resourceSource')"><div class="multi-check">✓</div>Word of mouth from other parents</div>
+<div class="multi-option" onclick="toggleMulti(this, 'resourceSource')"><div class="multi-check">✓</div>I don't actively look</div>
+</div>
+
+<div class="divider"></div>
+
+<div class="question-block">
+<div class="question-text">What's missing that your teen needs to learn?</div>
+<textarea class="open-text" id="openMissing" placeholder="Anything that comes to mind..." maxlength="500"></textarea>
+</div>
+</div>
+
+<!-- SCREEN 3: CONFIRMATION -->
+<div class="screen" id="screen3">
+<div class="confirm-icon">🙏</div>
+<div class="confirm-title">That's it. Thank you.</div>
+<div class="confirm-sub">Your feedback directly shapes what we build next and how we make it better.</div>
+</div>
+
+<div class="bottom-action">
+<button class="btn-back hidden" id="backBtn" onclick="prevScreen()">← Back</button>
+<button class="btn-next" id="nextBtn" onclick="handleNext()">Get Started →</button>
+</div>
+
+<script>
+let currentScreen = 1;
+const totalScreens = 3;
+
+let survey = {
+  teenTalked: null,
+  pricePoint: null,
+  recommendParent: null,
+  trustLevel: null,
+  currentTeaching: null,
+  resourceSource: []
+};
+
+// PLACEHOLDER: Replace with your actual Google Form endpoint and entry IDs
+const GOOGLE_FORM_URL = 'YOUR_GOOGLE_FORM_URL_HERE';
+const FORM_FIELDS = {
+  teenTalked: 'entry.XXXXXXX',
+  pricePoint: 'entry.XXXXXXX',
+  recommendParent: 'entry.XXXXXXX',
+  trustLevel: 'entry.XXXXXXX',
+  currentTeaching: 'entry.XXXXXXX',
+  resourceSource: 'entry.XXXXXXX',
+  openMissing: 'entry.XXXXXXX'
+};
+
+function selectSingle(el, key) {
+  el.parentElement.querySelectorAll('.answer-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  survey[key] = el.textContent.trim();
+  updateButton();
+}
+
+function selectScale(el, key, value) {
+  el.parentElement.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  survey[key] = value;
+  updateButton();
+}
+
+function toggleMulti(el, key) {
+  el.classList.toggle('selected');
+  const container = el.parentElement;
+  survey[key] = [];
+  container.querySelectorAll('.multi-option.selected').forEach(o => {
+    const text = o.querySelector('.multi-check').nextSibling ?
+      o.textContent.replace('✓', '').trim() : o.textContent.trim();
+    survey[key].push(text);
+  });
+  updateButton();
+}
+
+// Open text listener for gating
+document.getElementById('openMissing').addEventListener('input', updateButton);
+
+function allQuestionsComplete() {
+  const openText = document.getElementById('openMissing').value.trim();
+  return survey.teenTalked && survey.pricePoint && survey.recommendParent && survey.trustLevel && survey.currentTeaching && survey.resourceSource.length > 0 && openText.length >= 10;
+}
+
+function updateButton() {
+  const btn = document.getElementById('nextBtn');
+  const back = document.getElementById('backBtn');
+  btn.disabled = false;
+  back.classList.toggle('hidden', currentScreen === 1);
+
+  if (currentScreen === 1) {
+    btn.textContent = 'Get Started →';
+  } else if (currentScreen === 2) {
+    if (!allQuestionsComplete()) {
+      btn.disabled = true;
+      btn.textContent = 'Complete all questions ☝️';
+    } else {
+      btn.textContent = 'Submit →';
+    }
+  } else if (currentScreen === 3) {
+    btn.textContent = 'Done ✓';
+    btn.disabled = true;
+  }
+}
+
+function handleNext() {
+  if (currentScreen === 2 && allQuestionsComplete()) {
+    submitSurvey();
+    return;
+  }
+  if (currentScreen >= totalScreens) return;
+  nextScreen();
+}
+
+function nextScreen() {
+  if (currentScreen >= totalScreens) return;
+  document.getElementById('screen' + currentScreen).classList.remove('active');
+  currentScreen++;
+  document.getElementById('screen' + currentScreen).classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  updateButton();
+}
+
+function prevScreen() {
+  if (currentScreen <= 1) return;
+  document.getElementById('screen' + currentScreen).classList.remove('active');
+  currentScreen--;
+  document.getElementById('screen' + currentScreen).classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  updateButton();
+}
+
+function submitSurvey() {
+  const btn = document.getElementById('nextBtn');
+  btn.classList.add('submitting');
+  btn.innerHTML = '<span class="spinner"></span>Submitting...';
+  btn.disabled = true;
+
+  const formData = new URLSearchParams();
+  formData.append(FORM_FIELDS.teenTalked, survey.teenTalked || '');
+  formData.append(FORM_FIELDS.pricePoint, survey.pricePoint || '');
+  formData.append(FORM_FIELDS.recommendParent, survey.recommendParent || '');
+  formData.append(FORM_FIELDS.trustLevel, survey.trustLevel || '');
+  formData.append(FORM_FIELDS.currentTeaching, survey.currentTeaching || '');
+  formData.append(FORM_FIELDS.resourceSource, survey.resourceSource.join('; '));
+  formData.append(FORM_FIELDS.openMissing, document.getElementById('openMissing').value.trim());
+
+  const iframe = document.createElement('iframe');
+  iframe.name = 'hidden_iframe_parent';
+  iframe.style.display = 'none';
+  document.body.appendChild(iframe);
+
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = GOOGLE_FORM_URL;
+  form.target = 'hidden_iframe_parent';
+
+  for (const [key, value] of formData.entries()) {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = key;
+    input.value = value;
+    form.appendChild(input);
+  }
+
+  document.body.appendChild(form);
+  form.submit();
+
+  setTimeout(() => {
+    document.body.removeChild(form);
+    btn.classList.remove('submitting');
+    document.getElementById('screen' + currentScreen).classList.remove('active');
+    currentScreen = 3;
+    document.getElementById('screen3').classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    updateButton();
+  }, 800);
+}
+
+// Mouse follow effect
+document.querySelectorAll('.answer-option, .multi-option').forEach(el => {
+  el.addEventListener('mousemove', e => {
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+    el.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+  });
+});
+
+updateButton();
+</script>
+</body>
+</html>

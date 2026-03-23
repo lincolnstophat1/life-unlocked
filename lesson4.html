@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life Unlocked — Lesson 4: Build Your First Budget</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--bg-dark:#141518;--bg-card:#1e1f24;--bg-card-hover:#26272d;--accent:#00e59b;--accent-dim:#00c583;--accent-glow:rgba(0,229,155,0.15);--text-primary:#f0f0f0;--text-secondary:#a0a0a0;--text-muted:#666;--warning:#ff6b4a;--blue:#4dabf7;--purple:#b197fc;--yellow:#ffd43b;--border:rgba(255,255,255,0.1);--radius:16px;--max-w:560px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg-dark);background-image:radial-gradient(ellipse at 50% 0%,rgba(0,229,155,0.04) 0%,transparent 60%);color:var(--text-primary);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh}
+@media(min-width:700px){body{background-image:radial-gradient(ellipse at 50% 0%,rgba(0,229,155,0.04) 0%,transparent 60%),repeating-linear-gradient(90deg,transparent,transparent calc(50% - 290px),rgba(255,255,255,0.015) calc(50% - 290px),rgba(255,255,255,0.015) calc(50% - 288px),transparent calc(50% - 288px),transparent calc(50% + 288px),rgba(255,255,255,0.015) calc(50% + 288px),rgba(255,255,255,0.015) calc(50% + 290px),transparent calc(50% + 290px))}}
+.progress-bar-container{position:fixed;top:0;left:0;right:0;height:4px;background:rgba(255,255,255,0.05);z-index:100}
+.progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--blue));transition:width .6s cubic-bezier(.22,1,.36,1);border-radius:0 2px 2px 0;box-shadow:0 0 12px rgba(0,229,155,0.3)}
+.top-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;position:sticky;top:0;background:rgba(20,21,24,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:50;border-bottom:1px solid var(--border)}
+.brand{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;letter-spacing:-.5px}.brand span{color:var(--accent)}
+.lesson-tag{font-size:12px;color:var(--text-muted);background:rgba(255,255,255,0.05);padding:4px 10px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase}
+.screen{display:none;min-height:calc(100vh - 60px);padding:32px 20px 100px;max-width:var(--max-w);margin:0 auto;opacity:0;transform:translateY(24px)}
+.screen.active{display:block;animation:screenIn .5s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes screenIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+h1{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;line-height:1.15;letter-spacing:-1px;margin-bottom:8px}
+h2{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;line-height:1.2;letter-spacing:-.5px;margin-bottom:8px}
+.subtitle{color:var(--text-secondary);font-size:16px;margin-bottom:24px;line-height:1.5}
+.content-block{margin:20px 0}.content-block p{font-size:15px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px}
+.content-block strong{color:var(--text-primary);font-weight:600}.content-block em{color:var(--accent);font-style:italic}
+.content-block ul{list-style:none;padding:0;margin:8px 0 12px}
+.content-block ul li{font-size:15px;color:var(--text-secondary);padding:4px 0 4px 16px;position:relative;line-height:1.6}
+.content-block ul li::before{content:'';position:absolute;left:0;top:12px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.key-concept{font-size:15px;color:var(--text-primary);padding:14px 16px;background:rgba(255,255,255,0.04);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;margin:16px 0;line-height:1.6}
+.key-concept strong{color:var(--accent);font-weight:700}
+.key-concept ul{list-style:none;padding:0;margin:6px 0 0}.key-concept ul li{padding:3px 0 3px 14px;position:relative;font-size:15px}
+.key-concept ul li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.sarcasm{color:var(--accent);font-style:italic;font-size:14px;margin-bottom:12px}
+.divider{height:1px;background:var(--border);margin:24px 0}
+.callout{background:var(--accent-glow);border:1px solid rgba(0,229,155,0.2);border-radius:var(--radius);padding:20px;margin:20px 0;transition:transform .2s ease,box-shadow .2s ease}
+.callout:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,229,155,0.08)}
+.callout-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.callout p{font-size:15px;color:var(--text-secondary);line-height:1.6;margin-bottom:6px}.callout p:last-child{margin-bottom:0}
+.callout strong{color:var(--text-primary);font-weight:600}
+.callout ul{list-style:none;padding:0;margin:6px 0 0}.callout ul li{font-size:15px;color:var(--text-secondary);padding:3px 0 3px 14px;position:relative;line-height:1.5}
+.callout ul li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.activity-intro{background:linear-gradient(135deg,rgba(0,229,155,0.08),rgba(77,171,247,0.08));border:1px solid rgba(0,229,155,0.15);border-radius:var(--radius);padding:20px;margin:20px 0;text-align:center}
+.activity-intro .emoji{font-size:32px;margin-bottom:8px}
+.activity-intro h3{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px}
+.activity-intro p{font-size:14px;color:var(--text-secondary)}.activity-intro strong{color:var(--text-primary)}
+/* Buckets */
+.bucket{background:var(--bg-card);border:2px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:16px;transition:all .25s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
+.bucket::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,0.04) 0%,transparent 60%);opacity:0;transition:opacity .3s ease;pointer-events:none}
+.bucket:hover::after{opacity:1}
+.bucket:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.2);border-color:rgba(255,255,255,0.16)}
+.bucket-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.bucket-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px}
+.bucket-name.needs{color:var(--accent)}.bucket-name.wants{color:var(--purple)}.bucket-name.future{color:var(--blue)}
+.bucket-sub{font-size:12px;color:var(--text-muted);font-style:italic;margin-bottom:2px}
+.bucket-amount{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px}
+.bucket-amount.needs{color:var(--accent)}.bucket-amount.wants{color:var(--purple)}.bucket-amount.future{color:var(--blue)}
+.bucket-pct{font-size:13px;color:var(--text-muted);text-align:right}
+.bucket-desc{font-size:13px;color:var(--text-muted);margin-bottom:12px;line-height:1.4}
+.bucket-slider{width:100%;-webkit-appearance:none;appearance:none;height:8px;border-radius:4px;background:rgba(255,255,255,0.08);outline:none;cursor:pointer}
+.bucket-slider::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid var(--bg-dark);box-shadow:0 2px 8px rgba(0,0,0,0.3);transition:transform .15s ease}
+.bucket-slider::-webkit-slider-thumb:hover{transform:scale(1.15)}
+.bucket-slider.needs-s::-webkit-slider-thumb{background:var(--accent)}.bucket-slider.wants-s::-webkit-slider-thumb{background:var(--purple)}.bucket-slider.future-s::-webkit-slider-thumb{background:var(--blue)}
+.bucket-slider::-moz-range-thumb{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid var(--bg-dark);box-shadow:0 2px 8px rgba(0,0,0,0.3)}
+.bucket-slider.needs-s::-moz-range-thumb{background:var(--accent)}.bucket-slider.wants-s::-moz-range-thumb{background:var(--purple)}.bucket-slider.future-s::-moz-range-thumb{background:var(--blue)}
+.remaining-bar{text-align:center;margin:12px 0}
+.remaining-amount{font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;transition:color .3s ease}
+.remaining-amount.ok{color:var(--accent)}.remaining-amount.over{color:var(--warning)}.remaining-amount.done{color:var(--blue)}
+.remaining-label{font-size:13px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px}
+.remaining-pct{font-size:14px;color:var(--text-muted);margin-top:2px}
+.over-warning{color:var(--warning);font-size:14px;font-weight:600;text-align:center;margin-top:4px;display:none}
+.over-warning.visible{display:block;animation:feedbackIn .3s ease forwards}
+@keyframes feedbackIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.alloc-bar{height:12px;border-radius:6px;background:rgba(255,255,255,0.05);overflow:hidden;display:flex;margin:8px 0 16px}
+.alloc-seg{height:100%;transition:width .3s ease}.alloc-seg.n-seg{background:var(--accent)}.alloc-seg.w-seg{background:var(--purple)}.alloc-seg.f-seg{background:var(--blue)}
+/* Month cards */
+.month-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px;transition:all .25s ease}
+.month-card:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,0.2)}
+.month-header{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;margin-bottom:8px}
+.month-detail{font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:4px}
+.month-detail strong{color:var(--text-primary)}.month-detail em{color:var(--accent)}
+.month-detail .clr-need{color:var(--accent);font-weight:600}.month-detail .clr-want{color:var(--purple);font-weight:600}.month-detail .clr-save{color:var(--blue);font-weight:600}
+.month-highlight{font-size:14px;padding:8px 12px;border-radius:8px;margin-top:8px;display:inline-block;font-weight:600}
+.month-highlight.good{background:rgba(0,229,155,0.08);color:var(--accent)}
+.month-highlight.warn{background:rgba(255,212,59,0.08);color:var(--yellow)}
+.month-highlight.bad{background:rgba(255,107,74,0.08);color:var(--warning)}
+/* Reflection */
+.refl-prompt{background:var(--bg-card);border:2px solid var(--border);border-radius:var(--radius);padding:18px;margin:20px 0}
+.refl-prompt h3{font-family:'Space Grotesk',sans-serif;font-size:16px;margin-bottom:8px}
+.refl-prompt p{font-size:14px;color:var(--text-secondary);margin-bottom:12px}
+.refl-options{display:flex;flex-direction:column;gap:8px}
+.refl-option{background:var(--bg-dark);border:2px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer;font-size:14px;color:var(--text-secondary);transition:all .2s ease}
+.refl-option:hover{border-color:rgba(255,255,255,0.2);transform:translateY(-1px)}.refl-option:active{transform:scale(.97)}
+.refl-option.selected{border-color:var(--accent);color:var(--accent);background:rgba(0,229,155,0.06)}
+.refl-option .opt-label{font-weight:600;color:var(--text-primary);margin-bottom:2px}
+.refl-response{margin-top:12px;padding:12px 14px;border-radius:10px;background:rgba(0,229,155,0.08);border:1px solid rgba(0,229,155,0.2);font-size:14px;color:var(--accent);line-height:1.5;display:none}
+.refl-response.visible{display:block;animation:feedbackIn .3s ease forwards}
+/* Bottom nav */
+.bottom-action{position:fixed;bottom:0;left:0;right:0;padding:12px 20px;padding-bottom:max(12px,env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--bg-dark) 30%);z-index:50;display:flex;gap:10px;justify-content:center}
+.btn-back{padding:16px 20px;background:var(--bg-card);color:var(--text-secondary);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all .2s ease;flex-shrink:0}
+.btn-back:hover{background:var(--bg-card-hover);border-color:rgba(255,255,255,0.2)}.btn-back:active{transform:scale(.97)}
+.btn-back.hidden{display:none}
+.btn-next{flex:1;max-width:var(--max-w);padding:16px;background:var(--accent);color:var(--bg-dark);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;border:none;border-radius:12px;cursor:pointer;transition:all .25s cubic-bezier(.22,1,.36,1);letter-spacing:-.3px;position:relative;overflow:hidden}
+.btn-next::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);transform:translateX(-100%);transition:transform .4s ease}
+.btn-next:hover::before{transform:translateX(100%)}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,229,155,0.25)}
+.btn-next:active{transform:scale(.97) translateY(0);box-shadow:none;transition-duration:.1s}
+.btn-next:disabled{background:var(--text-muted);cursor:not-allowed;box-shadow:none;transform:none}
+.btn-next:disabled::before{display:none}.btn-next:disabled:hover{transform:none;box-shadow:none}
+/* Completion */
+.badge-icon{width:80px;height:80px;border-radius:50%;background:var(--accent-glow);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px;animation:pulseGlow 2s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(0,229,155,0.2)}50%{box-shadow:0 0 20px 8px rgba(0,229,155,0.15)}}
+.badge-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;color:var(--accent);margin-bottom:4px}
+.star-tracker{display:flex;gap:8px;justify-content:center;margin:16px 0}
+.star{font-size:28px;opacity:0.2;transition:all .3s ease}.star.lit{opacity:1;animation:starPop .4s cubic-bezier(.22,1,.36,1) both}
+@keyframes starPop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+.star-label{font-size:13px;color:var(--text-muted);text-align:center}
+.next-lesson-preview{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:28px;text-align:left;transition:all .25s ease}
+.next-lesson-preview:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.25)}
+.next-lesson-preview .lock-icon{font-size:14px;color:var(--text-muted)}
+.next-lesson-preview h4{font-family:'Space Grotesk',sans-serif;font-size:16px;margin:4px 0}
+.next-lesson-preview p{font-size:13px;color:var(--text-secondary)}
+.hook-emoji{font-size:48px;margin-bottom:16px;animation:emojiFloat 3s ease-in-out infinite}
+@keyframes emojiFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@media(min-width:600px){.screen{padding:48px 32px 120px}h1{font-size:40px}}
+</style>
+</head>
+<body>
+<div class="progress-bar-container"><div class="progress-bar" id="progressBar"></div></div>
+<div class="top-nav"><div class="brand">life<span>unlocked</span></div><div class="lesson-tag">Lesson 4 of 5</div></div>
+
+<!-- SCREEN 1: HOOK -->
+<div class="screen active" id="screen1">
+<div class="hook-emoji">💰</div>
+<h1>Build Your First Budget.</h1>
+<p class="subtitle">You got your first paycheck. Let's make it work for you.</p>
+<div class="content-block">
+<ul>
+<li>You worked all month. Your gross pay was <strong>$467</strong></li>
+<li>But when you check your account, it says <strong>$400</strong></li>
+</ul>
+<p class="sarcasm">(Welcome to taxes. They took their cut before you even saw the money. That's a whole topic for later. For now, just know: $400 is what you actually have.)</p>
+</div>
+<div class="key-concept">In Lesson 3, you made trade-offs on a $50 weekend. Now we're doing it for a <strong>whole month.</strong> Same idea, bigger stakes.</div>
+<div class="content-block">
+<ul>
+<li><strong>$400 feels like a lot until it isn't</strong></li>
+<li>Phone bill, gas, food, hanging out... it adds up fast</li>
+<li>That's why you need a plan before the money starts moving</li>
+</ul>
+<p>That plan is called a <em>budget.</em> And it's simpler than you think.</p>
+</div>
+</div>
+
+<!-- SCREEN 2: BUCKET SYSTEM -->
+<div class="screen" id="screen2">
+<h2>Three buckets. That's it.</h2>
+<p class="subtitle">Forget complicated spreadsheets. You need three categories.</p>
+<div class="bucket" style="border-color:rgba(0,229,155,0.3)">
+<div class="bucket-header"><div class="bucket-name needs">Gotta Pay</div></div>
+<div class="bucket-sub">( needs )</div>
+<div class="bucket-desc">The non-negotiables. Phone bill, gas or transportation, food when you're on your own. If you skip these, stuff breaks.</div>
+</div>
+<div class="bucket" style="border-color:rgba(177,151,252,0.3)">
+<div class="bucket-header"><div class="bucket-name wants">Good Stuff</div></div>
+<div class="bucket-sub">( wants )</div>
+<div class="bucket-desc">The things that make life worth living. Hanging out, clothes, streaming, entertainment. Wants, not needs, but that doesn't mean they don't matter.</div>
+</div>
+<div class="bucket" style="border-color:rgba(77,171,247,0.3)">
+<div class="bucket-header"><div class="bucket-name future">Future Me</div></div>
+<div class="bucket-sub">( savings )</div>
+<div class="bucket-desc">Whether it's for something specific or just a cushion for when stuff goes wrong. Because stuff will go wrong.</div>
+</div>
+<div class="key-concept">
+<ul>
+<li>A <em>budget</em> isn't a punishment</li>
+<li>It's you <strong>deciding in advance</strong> where your money goes</li>
+<li>Instead of figuring it out after it's already gone</li>
+</ul>
+</div>
+<div class="content-block">
+<p>You already know how to sort needs from wants (Lesson 2). You already know every dollar spent is a trade-off (Lesson 3). Now you're putting <strong>actual numbers</strong> on those decisions.</p>
+</div>
+</div>
+
+<!-- SCREEN 3: ALLOCATE $400 (pre-assessment) -->
+<div class="screen" id="screen3">
+<div class="activity-intro">
+<div class="emoji">🎛️</div>
+<h3>How would you split this today?</h3>
+<p>Use the sliders to divide your <strong>$400 paycheck</strong> across the three buckets.<br>Every dollar must be assigned. Left to assign must hit <strong>$0</strong>.</p>
+</div>
+<div class="remaining-bar">
+<div class="remaining-amount ok" id="remainAmt">$400</div>
+<div class="remaining-label">left to assign</div>
+<div class="remaining-pct" id="remainPct">100% unassigned</div>
+</div>
+<div class="over-warning" id="overWarn">You're over budget. Slide something down.</div>
+<div class="alloc-bar">
+<div class="alloc-seg n-seg" id="allocN" style="width:0%"></div>
+<div class="alloc-seg w-seg" id="allocW" style="width:0%"></div>
+<div class="alloc-seg f-seg" id="allocF" style="width:0%"></div>
+</div>
+<div class="bucket">
+<div class="bucket-header"><div class="bucket-name needs">Gotta Pay <span style="font-weight:400;font-size:13px;color:var(--text-muted)">(needs)</span></div><div><div class="bucket-amount needs" id="nAmt">$0</div><div class="bucket-pct" id="nPct">0%</div></div></div>
+<div class="bucket-desc">Phone ($45), gas ($60), food ($40) = about $145 minimum</div>
+<input type="range" class="bucket-slider needs-s" id="nSlider" min="0" max="400" value="0" step="5" oninput="updateBuckets()">
+</div>
+<div class="bucket">
+<div class="bucket-header"><div class="bucket-name wants">Good Stuff <span style="font-weight:400;font-size:13px;color:var(--text-muted)">(wants)</span></div><div><div class="bucket-amount wants" id="wAmt">$0</div><div class="bucket-pct" id="wPct">0%</div></div></div>
+<div class="bucket-desc">Clothes, eating out, entertainment, subscriptions</div>
+<input type="range" class="bucket-slider wants-s" id="wSlider" min="0" max="400" value="0" step="5" oninput="updateBuckets()">
+</div>
+<div class="bucket">
+<div class="bucket-header"><div class="bucket-name future">Future Me <span style="font-weight:400;font-size:13px;color:var(--text-muted)">(savings)</span></div><div><div class="bucket-amount future" id="fAmt">$0</div><div class="bucket-pct" id="fPct">0%</div></div></div>
+<div class="bucket-desc">Savings account, saving for something specific</div>
+<input type="range" class="bucket-slider future-s" id="fSlider" min="0" max="400" value="0" step="5" oninput="updateBuckets()">
+</div>
+</div>
+
+<!-- SCREEN 4: 3-MONTH REVEAL -->
+<div class="screen" id="screen4">
+<h2>Fast forward 3 months.</h2>
+<p class="subtitle">Here's how your <em>budget</em> played out over time.</p>
+<div id="monthCards"></div>
+<div class="divider"></div>
+<div class="refl-prompt" id="reflPrompt" style="display:none">
+<h3>Looking at those 3 months...</h3>
+<p>If you could go back and move <strong>$50</strong> from one bucket to another, what would you do?</p>
+<div class="refl-options">
+<div class="refl-option" onclick="selectRefl(this,0)"><div class="opt-label"><span style="color:var(--purple)">Good Stuff</span> → <span style="color:var(--blue)">Future Me</span></div>Less fun now, more cushion later</div>
+<div class="refl-option" onclick="selectRefl(this,1)"><div class="opt-label"><span style="color:var(--blue)">Future Me</span> → <span style="color:var(--purple)">Good Stuff</span></div>Life's too short to save everything</div>
+<div class="refl-option" onclick="selectRefl(this,2)"><div class="opt-label"><span style="color:var(--purple)">Good Stuff</span> → <span style="color:var(--accent)">Gotta Pay</span></div>Cover the basics first, fun later</div>
+<div class="refl-option" onclick="selectRefl(this,3)"><div class="opt-label"><span style="color:var(--blue)">Future Me</span> → <span style="color:var(--accent)">Gotta Pay</span></div>Make sure essentials are solid before saving</div>
+<div class="refl-option" onclick="selectRefl(this,4)"><div class="opt-label">I wouldn't change anything</div>My split worked</div>
+</div>
+<div class="refl-response" id="reflResp"></div>
+</div>
+</div>
+
+<!-- SCREEN 5: DEBRIEF -->
+<div class="screen" id="screen5">
+<h2>The 50/30/20 guideline.</h2>
+<p class="subtitle">A popular rule of thumb for budgeting. Here's what it says and why you shouldn't follow it blindly.</p>
+<div class="content-block">
+<p>A lot of financial advice says split your money like this:</p>
+<ul>
+<li><strong style="color:var(--accent)">50% Needs</strong> — half your income on the must-pays</li>
+<li><strong style="color:var(--purple)">30% Wants</strong> — almost a third for the fun stuff</li>
+<li><strong style="color:var(--blue)">20% Savings</strong> — a fifth toward the future</li>
+</ul>
+</div>
+<div class="key-concept">For your $400 paycheck, that'd be <strong>$200</strong> on needs, <strong>$120</strong> on wants, and <strong>$80</strong> into savings.</div>
+<div class="content-block">
+<ul>
+<li>That's a decent starting point</li>
+<li>But your life might not fit neatly into those numbers</li>
+<li>Maybe your needs are <strong>lower</strong> because you live at home</li>
+<li>Maybe they're <strong>higher</strong> because you're helping your family with groceries</li>
+</ul>
+<p>The <strong>split (ratio) matters less than the habit.</strong> Having any split at all beats winging it. You can adjust the percentages as your life changes.</p>
+</div>
+<div class="callout">
+<div class="callout-title">The real lesson</div>
+<ul>
+<li>A <em>budget</em> doesn't restrict your spending</li>
+<li>It <strong>reveals</strong> your spending</li>
+<li>It's the difference between "where did my money go?" and <em>"I know exactly where it went because I told it where to go"</em></li>
+</ul>
+</div>
+</div>
+
+<!-- SCREEN 6: COMPLETION -->
+<div class="screen" id="screen6">
+<div style="text-align:center;padding-top:20px;">
+<div class="badge-icon">🔓</div>
+<div class="badge-name">Budget Builder</div>
+<p class="subtitle" style="margin-bottom:12px;">You just built your first <em>budget.</em> A real split based on a real paycheck.</p>
+<div class="star-tracker">
+<div class="star lit" style="animation-delay:0.1s">⭐</div>
+<div class="star lit" style="animation-delay:0.2s">⭐</div>
+<div class="star lit" style="animation-delay:0.3s">⭐</div>
+<div class="star lit" style="animation-delay:0.5s">⭐</div>
+<div class="star">⭐</div>
+</div>
+<div class="star-label">4 of 5 lessons complete</div>
+</div>
+<div class="divider"></div>
+<div class="content-block">
+<h2>The full toolkit so far:</h2>
+<ul>
+<li><strong>Lesson 1:</strong> Pause before spending</li>
+<li><strong>Lesson 2:</strong> Know the difference between needs and wants</li>
+<li><strong>Lesson 3:</strong> See the <em>opportunity cost</em> of every choice</li>
+<li><strong>Lesson 4:</strong> Put it all into a plan that actually works</li>
+</ul>
+<p>One more to go. And it's the big one.</p>
+</div>
+<div class="next-lesson-preview">
+<div class="lock-icon">🔒 Up Next</div>
+<h4>Lesson 5: The Big Build</h4>
+<p>Everything you've learned, applied to one massive project. Real prices. Real trade-offs. Let's see what you've got.</p>
+</div>
+</div>
+
+<div class="bottom-action">
+<button class="btn-back hidden" id="backBtn" onclick="prevScreen()">← Back</button>
+<button class="btn-next" id="nextBtn" onclick="nextScreen()">Let's Go →</button>
+</div>
+
+<script>
+let currentScreen=1;const totalScreens=6;
+let nVal=0,wVal=0,fVal=0;
+let budgetValid=false;
+let reflDone=false;
+
+function updateBuckets(){
+nVal=parseInt(document.getElementById('nSlider').value);
+wVal=parseInt(document.getElementById('wSlider').value);
+fVal=parseInt(document.getElementById('fSlider').value);
+const total=nVal+wVal+fVal;const rem=400-total;
+document.getElementById('nAmt').textContent='$'+nVal;
+document.getElementById('wAmt').textContent='$'+wVal;
+document.getElementById('fAmt').textContent='$'+fVal;
+document.getElementById('nPct').textContent=Math.round((nVal/400)*100)+'%';
+document.getElementById('wPct').textContent=Math.round((wVal/400)*100)+'%';
+document.getElementById('fPct').textContent=Math.round((fVal/400)*100)+'%';
+const rEl=document.getElementById('remainAmt');
+const warn=document.getElementById('overWarn');
+const rPct=document.getElementById('remainPct');
+if(rem<0){rEl.textContent='-$'+Math.abs(rem);rEl.className='remaining-amount over';warn.classList.add('visible');budgetValid=false;rPct.textContent='Over by '+Math.round((Math.abs(rem)/400)*100)+'%'}
+else if(rem===0){rEl.textContent='$0';rEl.className='remaining-amount done';warn.classList.remove('visible');budgetValid=true;rPct.textContent='Every dollar assigned ✓'}
+else{rEl.textContent='$'+rem;rEl.className='remaining-amount ok';warn.classList.remove('visible');budgetValid=false;rPct.textContent=Math.round((rem/400)*100)+'% unassigned'}
+document.getElementById('allocN').style.width=((nVal/400)*100)+'%';
+document.getElementById('allocW').style.width=((wVal/400)*100)+'%';
+document.getElementById('allocF').style.width=((fVal/400)*100)+'%';
+updateButton();
+}
+
+function buildMonths(){
+const c=document.getElementById('monthCards');let h='';
+// Month 1
+h+='<div class="month-card"><div class="month-header">Month 1</div>';
+h+='<div class="month-detail"><span class="clr-need">Gotta Pay: $'+nVal+'</span>';
+if(nVal<145)h+=' — <em>tight. You might be short on gas or food by week 3.</em>';
+else h+=' — covered. Bills paid, tank full, food handled.';
+h+='</div>';
+h+='<div class="month-detail"><span class="clr-want">Good Stuff: $'+wVal+'</span>';
+if(wVal<50)h+=' — not much room to do anything fun this month.';
+else if(wVal>200)h+=' — living large. Hope nothing breaks.';
+else h+=' — enough to enjoy yourself without going overboard.';
+h+='</div>';
+h+='<div class="month-detail"><span class="clr-save">Future Me: $'+fVal+'</span> saved</div></div>';
+// Month 2
+h+='<div class="month-card"><div class="month-header">Month 2</div>';
+h+='<div class="month-detail">Same paycheck, same split. Running total in savings: <strong>$'+(fVal*2)+'</strong></div>';
+if(fVal===0)h+='<div class="month-highlight bad">Your phone screen cracks. Repair costs $80. You have $0 saved. Now what?</div>';
+else if(fVal*2<80)h+='<div class="month-highlight warn">Your phone screen cracks. Repair is $80. You\'ve saved $'+(fVal*2)+'. Not quite enough, but way better than zero.</div>';
+else h+='<div class="month-highlight good">Your phone screen cracks. Repair is $80. You\'ve got $'+(fVal*2)+' saved. Annoying, but you can handle it.</div>';
+h+='</div>';
+// Month 3
+var repairCost=Math.min(fVal*2,80);var totalSaved=fVal*3-repairCost;
+h+='<div class="month-card"><div class="month-header">Month 3</div>';
+h+='<div class="month-detail">After the phone repair, your savings sit at about <strong>$'+Math.max(0,totalSaved)+'</strong></div>';
+if(nVal>=145&&wVal>=50&&fVal>=40)h+='<div class="month-highlight good">You covered your needs, had some fun, AND bounced back from an emergency. That\'s what a budget does.</div>';
+else if(fVal<20)h+='<div class="month-highlight bad">Three months in and one cracked screen wiped you out. Not because you don\'t make enough. Because nothing went to Future Me.</div>';
+else if(nVal<100)h+='<div class="month-highlight warn">You saved money, but skimping on Gotta Pay meant scrambling for basics. A budget only works if the essentials are covered first.</div>';
+else h+='<div class="month-highlight warn">Not bad, not great. Small adjustments to your split could make a real difference over time.</div>';
+h+='</div>';
+c.innerHTML=h;
+setTimeout(()=>{const rp=document.getElementById('reflPrompt');rp.style.display='block';rp.style.animation='screenIn 0.4s ease forwards'},800);
+}
+
+function selectRefl(el,i){
+document.querySelectorAll('.refl-option').forEach(o=>o.classList.remove('selected'));
+el.classList.add('selected');reflDone=true;
+const resp=document.getElementById('reflResp');
+const responses=[
+"That's the most common move people make after seeing the 3-month picture. More savings means more cushion. The tricky part is sticking with it when your friends are going out on Friday.",
+"Totally fair. Saving is important, but if your budget makes you miserable, you won't follow it. The best budget is one you can actually live with.",
+"Smart if your needs were underfunded. Covering the basics first isn't exciting, but it keeps everything else from falling apart.",
+"Good instinct. If your essentials weren't covered, shifting from savings makes sense short-term. Just be careful not to make it a habit, or Future Me never gets funded.",
+"Confidence in your split. That means you thought it through. That's the whole point of budgeting — making the decision once so you're not second-guessing every purchase."
+];
+resp.innerHTML=responses[i];resp.classList.add('visible');
+updateButton();
+}
+
+function updateProgress(){document.getElementById('progressBar').style.width=((currentScreen/totalScreens)*100)+'%'}
+function updateButton(){
+const btn=document.getElementById('nextBtn');const back=document.getElementById('backBtn');
+btn.disabled=false;back.classList.toggle('hidden',currentScreen===1);
+if(currentScreen===3&&!budgetValid){btn.disabled=true;btn.textContent='Assign every dollar ($0 remaining)'}
+else if(currentScreen===4&&!reflDone){btn.disabled=true;btn.textContent='Answer the question to continue'}
+else if(currentScreen===6){btn.textContent='Coming Soon: Lesson 5 🔒';btn.disabled=true}
+else{btn.textContent='Continue →'}
+}
+function nextScreen(){
+if(currentScreen>=totalScreens)return;
+if(currentScreen===3)buildMonths();
+document.getElementById('screen'+currentScreen).classList.remove('active');
+currentScreen++;document.getElementById('screen'+currentScreen).classList.add('active');
+window.scrollTo({top:0,behavior:'smooth'});updateProgress();updateButton();
+}
+function prevScreen(){
+if(currentScreen<=1)return;
+document.getElementById('screen'+currentScreen).classList.remove('active');
+currentScreen--;document.getElementById('screen'+currentScreen).classList.add('active');
+window.scrollTo({top:0,behavior:'smooth'});updateProgress();updateButton();
+}
+
+// Mouse follow on buckets
+document.querySelectorAll('.bucket').forEach(el=>{
+el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();el.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');el.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%')});
+});
+updateProgress();updateButton();
+</script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life Unlocked — Money Basics</title>
+<meta name="description" content="An interactive financial literacy course for teens ages 14-18. Learn how to budget, save, and make smart money decisions through hands-on lessons.">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--bg-dark:#141518;--bg-card:#1e1f24;--bg-card-hover:#26272d;--accent:#00e59b;--accent-dim:#00c583;--accent-glow:rgba(0,229,155,0.15);--text-primary:#f0f0f0;--text-secondary:#a0a0a0;--text-muted:#666;--warning:#ff6b4a;--blue:#4dabf7;--purple:#b197fc;--yellow:#ffd43b;--border:rgba(255,255,255,0.1);--radius:16px;--max-w:560px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg-dark);background-image:radial-gradient(ellipse at 50% 0%,rgba(0,229,155,0.06) 0%,transparent 60%);color:var(--text-primary);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh}
+@media(min-width:700px){body{background-image:radial-gradient(ellipse at 50% 0%,rgba(0,229,155,0.06) 0%,transparent 60%),repeating-linear-gradient(90deg,transparent,transparent calc(50% - 290px),rgba(255,255,255,0.015) calc(50% - 290px),rgba(255,255,255,0.015) calc(50% - 288px),transparent calc(50% - 288px),transparent calc(50% + 288px),rgba(255,255,255,0.015) calc(50% + 288px),rgba(255,255,255,0.015) calc(50% + 290px),transparent calc(50% + 290px))}}
+.page{max-width:var(--max-w);margin:0 auto;padding:40px 20px 60px}
+/* Nav */
+.top-nav{display:flex;align-items:center;justify-content:center;padding:16px 20px;background:rgba(20,21,24,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.brand{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;letter-spacing:-.5px}.brand span{color:var(--accent)}
+/* Hero */
+.hero{text-align:center;padding:48px 0 32px}
+.hero-emoji{font-size:56px;margin-bottom:20px;animation:emojiFloat 3s ease-in-out infinite}
+@keyframes emojiFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.hero h1{font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;line-height:1.1;letter-spacing:-1.5px;margin-bottom:12px}
+.hero h1 .accent{color:var(--accent)}
+.hero .subtitle{color:var(--text-secondary);font-size:17px;line-height:1.5;margin-bottom:32px}
+/* CTA Button */
+.cta-btn{display:block;width:100%;padding:18px;background:var(--accent);color:var(--bg-dark);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;border:none;border-radius:14px;cursor:pointer;transition:all .25s cubic-bezier(.22,1,.36,1);letter-spacing:-.3px;position:relative;overflow:hidden;text-decoration:none;text-align:center}
+.cta-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);transform:translateX(-100%);transition:transform .4s ease}
+.cta-btn:hover::before{transform:translateX(100%)}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,229,155,0.25)}
+.cta-btn:active{transform:scale(.97) translateY(0);box-shadow:none;transition-duration:.1s}
+.cta-sub{text-align:center;margin-top:10px;font-size:13px;color:var(--text-muted)}
+/* What you'll learn */
+.section-label{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:16px}
+.lesson-list{display:flex;flex-direction:column;gap:10px;margin:20px 0}
+.lesson-item{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:14px;transition:all .25s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
+.lesson-item::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,0.04) 0%,transparent 60%);opacity:0;transition:opacity .3s ease;pointer-events:none}
+.lesson-item:hover::after{opacity:1}
+.lesson-item:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.2);border-color:rgba(255,255,255,0.15)}
+.lesson-num{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:var(--bg-dark);background:var(--accent);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lesson-info{flex:1}
+.lesson-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;margin-bottom:1px}
+.lesson-desc{font-size:13px;color:var(--text-muted);line-height:1.4}
+/* Details */
+.details{margin:28px 0}
+.detail-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.detail-row:last-child{border-bottom:none}
+.detail-icon{font-size:20px;width:28px;text-align:center;flex-shrink:0}
+.detail-text{font-size:14px;color:var(--text-secondary)}
+.detail-text strong{color:var(--text-primary);font-weight:600}
+/* Callout */
+.callout{background:var(--accent-glow);border:1px solid rgba(0,229,155,0.2);border-radius:var(--radius);padding:20px;margin:28px 0}
+.callout-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.callout p{font-size:14px;color:var(--text-secondary);line-height:1.5;margin-bottom:4px}.callout p:last-child{margin-bottom:0}
+/* Divider */
+.divider{height:1px;background:var(--border);margin:32px 0}
+/* Parent section */
+.parent-section{text-align:center;padding:8px 0 20px}
+.parent-section h2{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px}
+.parent-section p{font-size:14px;color:var(--text-secondary);margin-bottom:16px;line-height:1.5}
+.parent-btn{display:inline-block;padding:14px 32px;background:var(--bg-card);color:var(--text-primary);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all .2s ease;text-decoration:none}
+.parent-btn:hover{background:var(--bg-card-hover);border-color:rgba(255,255,255,0.2);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.2)}
+.parent-btn:active{transform:scale(.97)}
+/* Footer */
+.footer{text-align:center;padding:20px 0;border-top:1px solid var(--border);margin-top:32px}
+.footer p{font-size:12px;color:var(--text-muted)}
+@media(min-width:600px){.hero h1{font-size:44px}.page{padding:48px 32px 60px}}
+</style>
+</head>
+<body>
+<div class="top-nav"><div class="brand">life<span>unlocked</span></div></div>
+
+<div class="page">
+
+<!-- HERO -->
+<div class="hero">
+<div class="hero-emoji">💰</div>
+<h1>Learn Money.<br><span class="accent">Before Life Makes You.</span></h1>
+<p class="subtitle">An interactive course that teaches you how to think about money. Not a lecture. Not a textbook. Just five lessons that actually stick.</p>
+</div>
+
+<!-- PRIMARY CTA -->
+<a href="pre-assessment.html" class="cta-btn">Start the Course →</a>
+<div class="cta-sub">Takes about 45 minutes. Works on your phone.</div>
+
+<!-- WHAT YOU'LL LEARN -->
+<div style="margin-top:36px">
+<div class="section-label">What you'll learn</div>
+<div class="lesson-list">
+<div class="lesson-item">
+<div class="lesson-num">1</div>
+<div class="lesson-info">
+<div class="lesson-title">You Have Money. Now What?</div>
+<div class="lesson-desc">The one question to ask before you spend anything.</div>
+</div>
+</div>
+<div class="lesson-item">
+<div class="lesson-num">2</div>
+<div class="lesson-info">
+<div class="lesson-title">Needs vs. Wants</div>
+<div class="lesson-desc">It's not as simple as you think. Plus: the 24-Hour Rule.</div>
+</div>
+</div>
+<div class="lesson-item">
+<div class="lesson-num">3</div>
+<div class="lesson-info">
+<div class="lesson-title">The Trade-Off Game</div>
+<div class="lesson-desc">Every dollar you spend is a dollar that can't do something else.</div>
+</div>
+</div>
+<div class="lesson-item">
+<div class="lesson-num">4</div>
+<div class="lesson-info">
+<div class="lesson-title">Build Your First Budget</div>
+<div class="lesson-desc">Three buckets. Real numbers. Your money, your plan.</div>
+</div>
+</div>
+<div class="lesson-item">
+<div class="lesson-num">5</div>
+<div class="lesson-info">
+<div class="lesson-title">The Big Build</div>
+<div class="lesson-desc">Put it all together and see if your budget survives reality.</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- DETAILS -->
+<div class="details">
+<div class="detail-row">
+<div class="detail-icon">🎯</div>
+<div class="detail-text"><strong>For ages 14-18.</strong> No experience needed.</div>
+</div>
+<div class="detail-row">
+<div class="detail-icon">⏱️</div>
+<div class="detail-text"><strong>About 45 minutes</strong> total, or go at your own pace.</div>
+</div>
+<div class="detail-row">
+<div class="detail-icon">📱</div>
+<div class="detail-text"><strong>Works on your phone.</strong> No app to download.</div>
+</div>
+<div class="detail-row">
+<div class="detail-icon">🧠</div>
+<div class="detail-text"><strong>Interactive, not passive.</strong> You do things, not just read things.</div>
+</div>
+</div>
+
+<!-- TESTER CALLOUT — remove this section for public launch -->
+<div class="callout">
+<div class="callout-title">For testers</div>
+<p>You're one of the first people to try this. When you finish, there's a short survey. Your honest feedback shapes what this becomes.</p>
+<p>The whole flow goes: quick check-in → 5 lessons → final survey. Best done in one sitting, but you can jump to any lesson directly if needed.</p>
+</div>
+
+<!-- SECOND CTA -->
+<a href="pre-assessment.html" class="cta-btn">Start the Course →</a>
+
+<!-- DIVIDER -->
+<div class="divider"></div>
+
+<!-- PARENT SECTION -->
+<div class="parent-section">
+<h2>Are you a parent?</h2>
+<p>Your teen will let you know when they've finished the course. After that, we'd love your perspective. It takes about 2 minutes.</p>
+<a href="survey-parent.html" class="parent-btn">Parent Survey →</a>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+<p>life<span style="color:var(--accent);font-weight:700">unlocked</span> — Money Basics</p>
+</div>
+
+</div>
+
+<script>
+// Mouse follow on lesson items
+document.querySelectorAll('.lesson-item').forEach(el => {
+  el.addEventListener('mousemove', e => {
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+    el.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+  });
+});
+</script>
+</body>
+</html>

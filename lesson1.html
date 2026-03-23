@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life Unlocked — Lesson 1: You Have Money. Now What?</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--bg-dark:#141518;--bg-card:#1e1f24;--bg-card-hover:#26272d;--accent:#00e59b;--accent-dim:#00c583;--accent-glow:rgba(0,229,155,0.15);--text-primary:#f0f0f0;--text-secondary:#a0a0a0;--text-muted:#666;--warning:#ff6b4a;--blue:#4dabf7;--purple:#b197fc;--yellow:#ffd43b;--border:rgba(255,255,255,0.1);--radius:16px;--max-w:560px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg-dark);background-image:radial-gradient(ellipse at 50% 0%,rgba(0,229,155,0.04) 0%,transparent 60%);color:var(--text-primary);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh}
+/* Side treatment for desktop */
+@media(min-width:700px){body{background-image:radial-gradient(ellipse at 50% 0%,rgba(0,229,155,0.04) 0%,transparent 60%),repeating-linear-gradient(90deg,transparent,transparent calc(50% - 290px),rgba(255,255,255,0.015) calc(50% - 290px),rgba(255,255,255,0.015) calc(50% - 288px),transparent calc(50% - 288px),transparent calc(50% + 288px),rgba(255,255,255,0.015) calc(50% + 288px),rgba(255,255,255,0.015) calc(50% + 290px),transparent calc(50% + 290px))}}
+.progress-bar-container{position:fixed;top:0;left:0;right:0;height:4px;background:rgba(255,255,255,0.05);z-index:100}
+.progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--blue));transition:width .6s cubic-bezier(.22,1,.36,1);border-radius:0 2px 2px 0;box-shadow:0 0 12px rgba(0,229,155,0.3)}
+.top-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;position:sticky;top:0;background:rgba(20,21,24,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:50;border-bottom:1px solid var(--border)}
+.brand{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;letter-spacing:-.5px}.brand span{color:var(--accent)}
+.lesson-tag{font-size:12px;color:var(--text-muted);background:rgba(255,255,255,0.05);padding:4px 10px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase}
+.screen{display:none;min-height:calc(100vh - 60px);padding:32px 20px 100px;max-width:var(--max-w);margin:0 auto;opacity:0;transform:translateY(24px)}
+.screen.active{display:block;animation:screenIn .5s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes screenIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+h1{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;line-height:1.15;letter-spacing:-1px;margin-bottom:8px}
+h2{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;line-height:1.2;letter-spacing:-.5px;margin-bottom:8px}
+.subtitle{color:var(--text-secondary);font-size:16px;margin-bottom:24px;line-height:1.5}
+.content-block{margin:20px 0}.content-block p{font-size:15px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px}
+.content-block strong{color:var(--text-primary);font-weight:600}.content-block em{color:var(--accent);font-style:italic}
+.content-block ul{list-style:none;padding:0;margin:8px 0 12px}
+.content-block ul li{font-size:15px;color:var(--text-secondary);padding:4px 0 4px 16px;position:relative;line-height:1.6}
+.content-block ul li::before{content:'';position:absolute;left:0;top:12px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.key-concept{font-size:15px;color:var(--text-primary);padding:14px 16px;background:rgba(255,255,255,0.04);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;margin:16px 0;line-height:1.6}
+.key-concept strong{color:var(--accent);font-weight:700}
+.key-concept ul{list-style:none;padding:0;margin:6px 0 0}
+.key-concept ul li{padding:3px 0 3px 14px;position:relative;font-size:15px}
+.key-concept ul li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.sarcasm{color:var(--accent);font-style:italic;font-size:14px;margin-bottom:12px}
+.divider{height:1px;background:var(--border);margin:24px 0}
+.callout{background:var(--accent-glow);border:1px solid rgba(0,229,155,0.2);border-radius:var(--radius);padding:20px;margin:20px 0;transition:transform .2s ease,box-shadow .2s ease}
+.callout:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,229,155,0.08)}
+.callout-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.callout p{font-size:15px;color:var(--text-secondary);line-height:1.6;margin-bottom:6px}.callout p:last-child{margin-bottom:0}
+.callout strong{color:var(--text-primary);font-weight:600}
+.callout ul{list-style:none;padding:0;margin:6px 0 0}
+.callout ul li{font-size:15px;color:var(--text-secondary);padding:3px 0 3px 14px;position:relative;line-height:1.5}
+.callout ul li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+/* Scenario cards */
+.scenario-section{margin:20px 0}
+.scenario-label{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:14px;font-weight:600}
+.scenario-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 20px 20px 24px;margin-bottom:14px;position:relative;overflow:hidden;transition:all .25s cubic-bezier(.22,1,.36,1)}
+.scenario-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.25);border-color:rgba(255,255,255,0.15)}
+.scenario-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%}
+.scenario-card.jordan::before{background:var(--warning)}
+.scenario-card.maya::before{background:var(--accent)}
+.scenario-card.dev::before{background:var(--blue)}
+.scenario-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;margin-bottom:2px}
+.scenario-age{font-size:13px;color:var(--text-muted);margin-bottom:8px}
+.scenario-action{font-size:15px;color:var(--text-secondary);line-height:1.5;margin-bottom:10px}
+.scenario-action strong{color:var(--text-primary)}
+.scenario-result{font-size:13px;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.04);display:inline-block;font-weight:600}
+.scenario-result.spent{color:var(--warning)}
+.scenario-result.mixed{color:var(--accent)}
+.scenario-result.saved{color:var(--blue)}
+/* Activity */
+.activity-intro{background:linear-gradient(135deg,rgba(0,229,155,0.08),rgba(77,171,247,0.08));border:1px solid rgba(0,229,155,0.15);border-radius:var(--radius);padding:20px;margin:20px 0;text-align:center}
+.activity-intro .emoji{font-size:32px;margin-bottom:8px}
+.activity-intro h3{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px}
+.activity-intro p{font-size:14px;color:var(--text-secondary)}
+.rank-grid{display:flex;flex-direction:column;gap:10px;margin:20px 0}
+.rank-option{background:var(--bg-card);border:2px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;transition:all .25s cubic-bezier(.22,1,.36,1);user-select:none;-webkit-user-select:none;position:relative;overflow:hidden}
+.rank-option::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,0.05) 0%,transparent 60%);opacity:0;transition:opacity .3s ease;pointer-events:none}
+.rank-option:hover::after{opacity:1}
+.rank-option:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.25);border-color:rgba(255,255,255,0.18)}
+.rank-option:active{transform:scale(.97);transition-duration:.1s}
+.rank-option.selected{border-color:var(--accent);background:rgba(0,229,155,0.06)}
+.rank-option .option-title{font-weight:600;font-size:15px;margin-bottom:2px;font-family:'Space Grotesk',sans-serif}
+.rank-option .option-desc{font-size:13px;color:var(--text-secondary)}
+.rank-option .rank-badge{display:none;width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--bg-dark);font-weight:700;font-size:13px;line-height:24px;text-align:center;float:right;margin-top:-2px}
+.rank-option.selected .rank-badge{display:block}
+.result-box{display:none;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin:24px 0}
+.result-box.visible{display:block;animation:screenIn .4s ease forwards}
+.result-box h3{font-family:'Space Grotesk',sans-serif;font-size:20px;margin-bottom:10px}
+.result-box p{font-size:15px;color:var(--text-secondary);line-height:1.6;margin-bottom:8px}
+.highlight{color:var(--accent);font-weight:600}
+/* Reflection */
+.reflection-area{width:100%;min-height:70px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text-primary);resize:vertical;margin:10px 0;transition:border-color .2s}
+.reflection-area:focus{outline:none;border-color:var(--accent)}
+.reflection-area::placeholder{color:var(--text-muted)}
+.pick-option{background:var(--bg-card);border:2px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;cursor:pointer;transition:all .2s ease;font-size:15px;color:var(--text-secondary)}
+.pick-option:hover{border-color:rgba(255,255,255,0.2);transform:translateY(-1px)}
+.pick-option:active{transform:scale(.97)}
+.pick-option.selected{border-color:var(--accent);color:var(--accent);background:rgba(0,229,155,0.06)}
+/* Nav buttons */
+.bottom-action{position:fixed;bottom:0;left:0;right:0;padding:12px 20px;padding-bottom:max(12px,env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--bg-dark) 30%);z-index:50;display:flex;gap:10px;justify-content:center}
+.btn-back{padding:16px 20px;background:var(--bg-card);color:var(--text-secondary);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all .2s ease;flex-shrink:0}
+.btn-back:hover{background:var(--bg-card-hover);border-color:rgba(255,255,255,0.2)}
+.btn-back:active{transform:scale(.97)}
+.btn-back.hidden{display:none}
+.btn-next{flex:1;max-width:var(--max-w);padding:16px;background:var(--accent);color:var(--bg-dark);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;border:none;border-radius:12px;cursor:pointer;transition:all .25s cubic-bezier(.22,1,.36,1);letter-spacing:-.3px;position:relative;overflow:hidden}
+.btn-next::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);transform:translateX(-100%);transition:transform .4s ease}
+.btn-next:hover::before{transform:translateX(100%)}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,229,155,0.25)}
+.btn-next:active{transform:scale(.97) translateY(0);box-shadow:none;transition-duration:.1s}
+.btn-next:disabled{background:var(--text-muted);cursor:not-allowed;box-shadow:none;transform:none}
+.btn-next:disabled::before{display:none}.btn-next:disabled:hover{transform:none;box-shadow:none}
+/* Completion */
+.badge-icon{width:80px;height:80px;border-radius:50%;background:var(--accent-glow);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px;animation:pulseGlow 2s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(0,229,155,0.2)}50%{box-shadow:0 0 20px 8px rgba(0,229,155,0.15)}}
+.badge-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;color:var(--accent);margin-bottom:4px}
+.star-tracker{display:flex;gap:8px;justify-content:center;margin:16px 0}
+.star{font-size:28px;opacity:0.2;transition:all .3s ease}
+.star.lit{opacity:1;animation:starPop .4s cubic-bezier(.22,1,.36,1) both}
+@keyframes starPop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+.star-label{font-size:13px;color:var(--text-muted);text-align:center}
+.next-lesson-preview{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:28px;text-align:left;transition:all .25s ease}
+.next-lesson-preview:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.25)}
+.next-lesson-preview .lock-icon{font-size:14px;color:var(--text-muted)}
+.next-lesson-preview h4{font-family:'Space Grotesk',sans-serif;font-size:16px;margin:4px 0}
+.next-lesson-preview p{font-size:13px;color:var(--text-secondary)}
+.hook-emoji{font-size:48px;margin-bottom:16px;animation:emojiFloat 3s ease-in-out infinite}
+@keyframes emojiFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@media(min-width:600px){.screen{padding:48px 32px 120px}h1{font-size:40px}}
+</style>
+</head>
+<body>
+<div class="progress-bar-container"><div class="progress-bar" id="progressBar"></div></div>
+<div class="top-nav"><div class="brand">life<span>unlocked</span></div><div class="lesson-tag">Lesson 1 of 5</div></div>
+
+<!-- SCREEN 1: HOOK -->
+<div class="screen active" id="screen1">
+<div class="hook-emoji">💸</div>
+<h1>You Have Money.<br>Now What?</h1>
+<p class="subtitle">You just got $200 for your birthday. Now comes the part nobody warns you about.</p>
+<div class="content-block">
+<p>The second money hits your hands, it starts talking to you:</p>
+<ul>
+<li><strong>"Spend me."</strong></li>
+<li><strong>"Save me."</strong></li>
+<li><em>"Lend me to your friend who definitely won't pay you back."</em></li>
+</ul>
+<p class="sarcasm">(Spoiler: they won't.)</p>
+</div>
+<div class="key-concept">Most adults are still figuring out money. Not because it's complicated, but because <strong>nobody ever showed them how to think about it.</strong></div>
+<div class="callout">
+<div class="callout-title">Real talk</div>
+<ul>
+<li>This isn't a lecture about saving every penny</li>
+<li>Life's too short for that and it's not realistic</li>
+<li>This is about <strong>knowing what you're doing with your money</strong> so it works for you instead of disappearing on stuff you forgot you bought</li>
+</ul>
+</div>
+</div>
+
+<!-- SCREEN 2: SCENARIOS -->
+<div class="screen" id="screen2">
+<h2>Three people. Same $200.<br>Three very different Mondays.</h2>
+<p class="subtitle">Nobody here is "wrong." But look at how each choice plays out.</p>
+<div class="scenario-section">
+<div class="scenario-label">The Players</div>
+<div class="scenario-card jordan">
+<div class="scenario-name">Jordan</div>
+<div class="scenario-age">16 years old</div>
+<div class="scenario-action"><strong>New shoes</strong> ($140), <strong>food with friends</strong> ($35), <strong>random stuff</strong> at the gas station ($25). Done by Sunday night.</div>
+<div class="scenario-result spent">$0 left by Monday</div>
+</div>
+<div class="scenario-card maya">
+<div class="scenario-name">Maya</div>
+<div class="scenario-age">17 years old</div>
+<div class="scenario-action">Put <strong>$100 in savings.</strong> Spent $60 on a hoodie she'd been wanting for weeks. Kept <strong>$40 for the rest of the month.</strong></div>
+<div class="scenario-result mixed">$140 working for her</div>
+</div>
+<div class="scenario-card dev">
+<div class="scenario-name">Dev</div>
+<div class="scenario-age">16 years old</div>
+<div class="scenario-action">Put <strong>all $200 in savings.</strong> Told himself he'd spend it "later." Three months in, still hasn't touched it. <em>Also hasn't done anything fun.</em></div>
+<div class="scenario-result saved">$200 saved, $0 lived</div>
+</div>
+</div>
+<div class="callout">
+<div class="callout-title">Wait, Dev isn't winning?</div>
+<ul>
+<li>Nope. Saving every dollar and never enjoying your life isn't the move</li>
+<li><strong>Money is a tool.</strong> Tools are supposed to be used</li>
+<li>The goal is using them <em>on purpose</em>, not by accident</li>
+</ul>
+</div>
+</div>
+
+<!-- SCREEN 3: ACTIVITY -->
+<div class="screen" id="screen3">
+<div class="activity-intro">
+<div class="emoji">🎯</div>
+<h3>Your Turn</h3>
+<p>Tap the one closest to what you'd actually do. Be honest.</p>
+</div>
+<h2>You just got $200. What's your move?</h2>
+<div class="rank-grid" id="rankGrid">
+<div class="rank-option" data-choice="spender" onclick="selectChoice(this)">
+<div class="rank-badge">✓</div>
+<div class="option-title">Spend it this weekend</div>
+<div class="option-desc">Life is short. New fit, good food, good times.</div>
+</div>
+<div class="rank-option" data-choice="splitter" onclick="selectChoice(this)">
+<div class="rank-badge">✓</div>
+<div class="option-title">Split it up</div>
+<div class="option-desc">Some for now, some for later. Balance.</div>
+</div>
+<div class="rank-option" data-choice="saver" onclick="selectChoice(this)">
+<div class="rank-badge">✓</div>
+<div class="option-title">Save all of it</div>
+<div class="option-desc">Future me will thank present me.</div>
+</div>
+<div class="rank-option" data-choice="planner" onclick="selectChoice(this)">
+<div class="rank-badge">✓</div>
+<div class="option-title">Depends what I need right now</div>
+<div class="option-desc">No fixed plan. Check the situation first.</div>
+</div>
+</div>
+<div class="result-box" id="choiceResult"></div>
+</div>
+
+<!-- SCREEN 4: REFLECTION -->
+<div class="screen" id="screen4">
+<h2>One more thing.</h2>
+<p class="subtitle">Think about the last time you had money in your hands. Could be $20, $50, $200.</p>
+<div class="content-block">
+<p><strong>What did you do with it?</strong></p>
+</div>
+<textarea class="reflection-area" id="reflectionText" placeholder="What did you spend it on? Be honest..."></textarea>
+<div class="divider"></div>
+<div class="content-block">
+<p><strong>If you could go back, would you do the same thing?</strong></p>
+</div>
+<div class="pick-option" onclick="pickReflection(this, 'yes')">Yes — I spent it on something that mattered to me and I'd do it again</div>
+<div class="pick-option" onclick="pickReflection(this, 'no')">No — I kind of wish I'd done something different with it</div>
+<div class="callout" id="reflCallout" style="display:none">
+<div class="callout-title">Why this matters</div>
+<ul>
+<li>Most people never stop to think about what happened to their money after it's gone</li>
+<li>That <strong>10 seconds of "wait, should I?"</strong> before you buy something is the most powerful money habit you can build</li>
+<li><em>That pause is worth more than any budgeting app</em></li>
+</ul>
+</div>
+</div>
+
+<!-- SCREEN 5: COMPLETION -->
+<div class="screen" id="screen5">
+<div style="text-align:center;padding-top:20px;">
+<div class="badge-icon">🔓</div>
+<div class="badge-name">Money Aware</div>
+<p class="subtitle" style="margin-bottom:12px;">You now think about money differently than you did five minutes ago.</p>
+<div class="star-tracker">
+<div class="star lit" style="animation-delay:0.1s">⭐</div>
+<div class="star">⭐</div>
+<div class="star">⭐</div>
+<div class="star">⭐</div>
+<div class="star">⭐</div>
+</div>
+<div class="star-label">1 of 5 lessons complete</div>
+</div>
+<div class="divider"></div>
+<div class="content-block">
+<h2>What you picked up:</h2>
+<ul>
+<li>Every time you get money, you have a choice</li>
+<li>Not just <strong>"spend or save"</strong> but <em>"what do I actually want this money to do for me?"</em></li>
+<li>That question is the whole game. Most people never ask it.</li>
+</ul>
+</div>
+<div class="next-lesson-preview">
+<div class="lock-icon">🔒 Up Next</div>
+<h4>Lesson 2: Needs vs. Wants (It's Not That Simple)</h4>
+<p>You think you know the difference? Wait until we start arguing about whether Wi-Fi is a need.</p>
+</div>
+</div>
+
+<div class="bottom-action">
+<button class="btn-back hidden" id="backBtn" onclick="prevScreen()">← Back</button>
+<button class="btn-next" id="nextBtn" onclick="nextScreen()">Let's Go →</button>
+</div>
+
+<script>
+let currentScreen=1;const totalScreens=5;
+let choiceMade=false;
+let reflTextDone=false,reflPickDone=false;
+
+function updateProgress(){document.getElementById('progressBar').style.width=((currentScreen/totalScreens)*100)+'%'}
+function updateButton(){
+const btn=document.getElementById('nextBtn');
+const back=document.getElementById('backBtn');
+btn.disabled=false;
+back.classList.toggle('hidden',currentScreen===1);
+if(currentScreen===3&&!choiceMade){btn.disabled=true;btn.textContent='Make your pick first ☝️'}
+else if(currentScreen===4&&(!reflTextDone||!reflPickDone)){btn.disabled=true;btn.textContent='Complete both sections ✍️'}
+else if(currentScreen===5){btn.textContent='Coming Soon: Lesson 2 🔒';btn.disabled=true}
+else if(currentScreen===4&&reflTextDone&&reflPickDone){btn.disabled=false;btn.textContent='Finish Lesson →'}
+else{btn.textContent='Continue →'}
+}
+function nextScreen(){
+if(currentScreen>=totalScreens)return;
+document.getElementById('screen'+currentScreen).classList.remove('active');
+currentScreen++;
+document.getElementById('screen'+currentScreen).classList.add('active');
+window.scrollTo({top:0,behavior:'smooth'});
+updateProgress();updateButton();
+}
+function prevScreen(){
+if(currentScreen<=1)return;
+document.getElementById('screen'+currentScreen).classList.remove('active');
+currentScreen--;
+document.getElementById('screen'+currentScreen).classList.add('active');
+window.scrollTo({top:0,behavior:'smooth'});
+updateProgress();updateButton();
+}
+
+function selectChoice(el){
+document.querySelectorAll('.rank-option').forEach(o=>o.classList.remove('selected'));
+el.classList.add('selected');
+choiceMade=true;
+const choice=el.dataset.choice;
+const rb=document.getElementById('choiceResult');
+rb.classList.add('visible');
+const r={
+spender:{title:"Okay, Jordan. 😄",text:"No judgment. Spending feels good in the moment. But here's the question worth sitting with: <span class='highlight'>did you choose to spend it, or did it just... happen?</span><br><br>There's a big difference between:<ul><li><strong>\"I treated myself because I wanted to\"</strong></li><li><strong>\"Wait, where did my money go?\"</strong></li></ul>One is a decision. The other is a habit you didn't sign up for."},
+splitter:{title:"The Maya Move. 👊",text:"Splitting isn't just playing it safe. It's <span class='highlight'>telling your money where to go instead of wondering where it went.</span><br><br><ul><li>You don't have to pick between enjoying life now and building for later</li><li>You can do both</li><li>A lot of people don't realize that's even an option</li></ul>"},
+saver:{title:"Respect the discipline. But... 🤔",text:"Saving everything sounds smart until you're sitting at home with money in the bank and nothing to show for it.<br><br><ul><li><strong>Money is a tool, not a trophy</strong></li><li><span class='highlight'>The goal isn't to have the most money. It's to use it on purpose.</span></li><li>Save, absolutely. But give yourself permission to live too</li></ul>"},
+planner:{title:"Context first. Smart. 🧠",text:"\"It depends\" is the most thoughtful answer here. It means you're looking at your situation instead of following a rule blindly.<br><br><ul><li><span class='highlight'>The best money decision always depends on what's going on in your life right now</span></li><li>Having even a loose plan beats winging it every time</li><li>We'll get there</li></ul>"}
+};
+const d=r[choice];
+rb.innerHTML='<h3>'+d.title+'</h3><p>'+d.text+'</p>';
+setTimeout(()=>{rb.scrollIntoView({behavior:'smooth',block:'center'})},100);
+updateButton();
+}
+
+function pickReflection(el,val){
+document.querySelectorAll('.pick-option').forEach(o=>o.classList.remove('selected'));
+el.classList.add('selected');
+reflPickDone=true;
+document.getElementById('reflCallout').style.display='block';
+document.getElementById('reflCallout').style.animation='screenIn 0.4s ease forwards';
+updateButton();
+}
+function checkReflText(){
+reflTextDone=document.getElementById('reflectionText').value.trim().length>10;
+updateButton();
+}
+const rEl=document.getElementById('reflectionText');
+['input','keyup','change','blur','paste'].forEach(e=>{rEl.addEventListener(e,checkReflText)});
+setInterval(()=>{if(currentScreen===4)checkReflText()},500);
+
+// Mouse follow
+document.querySelectorAll('.rank-option').forEach(el=>{
+el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();el.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');el.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%')});
+});
+
+updateProgress();updateButton();
+</script>
+</body>
+</html>

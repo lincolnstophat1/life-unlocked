@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life Unlocked — Lesson 2: Needs vs. Wants</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--bg-dark:#141518;--bg-card:#1e1f24;--bg-card-hover:#26272d;--accent:#00e59b;--accent-dim:#00c583;--accent-glow:rgba(0,229,155,0.15);--text-primary:#f0f0f0;--text-secondary:#a0a0a0;--text-muted:#666;--warning:#ff6b4a;--blue:#4dabf7;--purple:#b197fc;--yellow:#ffd43b;--border:rgba(255,255,255,0.1);--radius:16px;--max-w:560px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg-dark);background-image:radial-gradient(ellipse at 50% 0%,rgba(0,229,155,0.04) 0%,transparent 60%);color:var(--text-primary);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh}
+@media(min-width:700px){body{background-image:radial-gradient(ellipse at 50% 0%,rgba(0,229,155,0.04) 0%,transparent 60%),repeating-linear-gradient(90deg,transparent,transparent calc(50% - 290px),rgba(255,255,255,0.015) calc(50% - 290px),rgba(255,255,255,0.015) calc(50% - 288px),transparent calc(50% - 288px),transparent calc(50% + 288px),rgba(255,255,255,0.015) calc(50% + 288px),rgba(255,255,255,0.015) calc(50% + 290px),transparent calc(50% + 290px))}}
+.progress-bar-container{position:fixed;top:0;left:0;right:0;height:4px;background:rgba(255,255,255,0.05);z-index:100}
+.progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--blue));transition:width .6s cubic-bezier(.22,1,.36,1);border-radius:0 2px 2px 0;box-shadow:0 0 12px rgba(0,229,155,0.3)}
+.top-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;position:sticky;top:0;background:rgba(20,21,24,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:50;border-bottom:1px solid var(--border)}
+.brand{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;letter-spacing:-.5px}.brand span{color:var(--accent)}
+.lesson-tag{font-size:12px;color:var(--text-muted);background:rgba(255,255,255,0.05);padding:4px 10px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase}
+.screen{display:none;min-height:calc(100vh - 60px);padding:32px 20px 100px;max-width:var(--max-w);margin:0 auto;opacity:0;transform:translateY(24px)}
+.screen.active{display:block;animation:screenIn .5s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes screenIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+h1{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;line-height:1.15;letter-spacing:-1px;margin-bottom:8px}
+h2{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;line-height:1.2;letter-spacing:-.5px;margin-bottom:8px}
+.subtitle{color:var(--text-secondary);font-size:16px;margin-bottom:24px;line-height:1.5}
+.content-block{margin:20px 0}.content-block p{font-size:15px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px}
+.content-block strong{color:var(--text-primary);font-weight:600}.content-block em{color:var(--accent);font-style:italic}
+.content-block ul{list-style:none;padding:0;margin:8px 0 12px}
+.content-block ul li{font-size:15px;color:var(--text-secondary);padding:4px 0 4px 16px;position:relative;line-height:1.6}
+.content-block ul li::before{content:'';position:absolute;left:0;top:12px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.key-concept{font-size:15px;color:var(--text-primary);padding:14px 16px;background:rgba(255,255,255,0.04);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;margin:16px 0;line-height:1.6}
+.key-concept strong{color:var(--accent);font-weight:700}
+.key-concept ul{list-style:none;padding:0;margin:6px 0 0}.key-concept ul li{padding:3px 0 3px 14px;position:relative;font-size:15px}
+.key-concept ul li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.sarcasm{color:var(--accent);font-style:italic;font-size:14px;margin-bottom:12px}
+.divider{height:1px;background:var(--border);margin:24px 0}
+.callout{background:var(--accent-glow);border:1px solid rgba(0,229,155,0.2);border-radius:var(--radius);padding:20px;margin:20px 0;transition:transform .2s ease,box-shadow .2s ease}
+.callout:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,229,155,0.08)}
+.callout-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.callout p{font-size:15px;color:var(--text-secondary);line-height:1.6;margin-bottom:6px}.callout p:last-child{margin-bottom:0}
+.callout strong{color:var(--text-primary);font-weight:600}
+.callout ul{list-style:none;padding:0;margin:6px 0 0}.callout ul li{font-size:15px;color:var(--text-secondary);padding:3px 0 3px 14px;position:relative;line-height:1.5}
+.callout ul li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.activity-intro{background:linear-gradient(135deg,rgba(0,229,155,0.08),rgba(77,171,247,0.08));border:1px solid rgba(0,229,155,0.15);border-radius:var(--radius);padding:20px;margin:20px 0;text-align:center}
+.activity-intro .emoji{font-size:32px;margin-bottom:8px}
+.activity-intro h3{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px}
+.activity-intro p{font-size:14px;color:var(--text-secondary)}.activity-intro strong{color:var(--text-primary)}
+/* Example cards */
+.example-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 18px 18px 22px;margin:12px 0;transition:all .25s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
+.example-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%}
+.example-card.easy::before{background:var(--accent)}.example-card.tricky::before{background:var(--yellow)}
+.example-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.25);border-color:rgba(255,255,255,0.15)}
+.example-card .card-label{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;font-weight:700;margin-bottom:6px}
+.example-card.easy .card-label{color:var(--accent)}.example-card.tricky .card-label{color:var(--yellow)}
+.example-card .card-item{font-weight:700;font-size:17px;margin-bottom:4px;font-family:'Space Grotesk',sans-serif}
+.example-card .card-explain{font-size:14px;color:var(--text-secondary);line-height:1.5}
+.example-card .card-explain strong{color:var(--text-primary)}.example-card .card-explain em{color:var(--accent)}
+.example-card .card-explain .lbl-need{color:var(--accent);font-weight:700}.example-card .card-explain .lbl-want{color:var(--purple);font-weight:700}
+.example-card.tricky .card-explain .lbl-q{color:var(--yellow);font-weight:600}
+/* Sort items */
+.sort-item{background:var(--bg-card);border:2px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:12px;transition:all .25s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
+.sort-item::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,0.05) 0%,transparent 60%);opacity:0;transition:opacity .3s ease;pointer-events:none}
+.sort-item:hover::after{opacity:1}
+.sort-item:hover{transform:translateY(-1px);border-color:rgba(255,255,255,0.16);box-shadow:0 4px 16px rgba(0,0,0,0.25)}
+.sort-item .item-name{font-weight:700;font-size:16px;margin-bottom:3px;font-family:'Space Grotesk',sans-serif}
+.sort-item .item-context{font-size:13px;color:var(--text-primary);line-height:1.4;margin-bottom:10px}
+.sort-buttons{display:flex;gap:8px}
+.sort-btn{flex:1;padding:10px;border-radius:10px;border:2px solid var(--border);background:var(--bg-dark);color:var(--text-secondary);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;cursor:pointer;transition:all .2s cubic-bezier(.22,1,.36,1);text-transform:uppercase;letter-spacing:.5px}
+.sort-btn:hover{transform:translateY(-1px);border-color:rgba(255,255,255,0.25);background:var(--bg-card-hover)}
+.sort-btn:active{transform:scale(.96)}
+.sort-btn.active-need{border-color:var(--accent);color:var(--accent);background:rgba(0,229,155,0.1);box-shadow:0 0 12px rgba(0,229,155,0.1)}
+.sort-btn.active-want{border-color:var(--purple);color:var(--purple);background:rgba(177,151,252,0.1);box-shadow:0 0 12px rgba(177,151,252,0.1)}
+.sort-btn.active-depends{border-color:var(--yellow);color:var(--yellow);background:rgba(255,212,59,0.1);box-shadow:0 0 12px rgba(255,212,59,0.1)}
+.sort-item.sorted-need{border-color:rgba(0,229,155,0.3)}.sort-item.sorted-want{border-color:rgba(177,151,252,0.3)}.sort-item.sorted-depends{border-color:rgba(255,212,59,0.3)}
+.sort-tracker{display:flex;gap:10px;justify-content:center;margin:16px 0;flex-wrap:wrap}
+.tracker-pill{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:20px;font-size:13px;font-weight:600;font-family:'Space Grotesk',sans-serif}
+.tracker-pill.need-pill{background:rgba(0,229,155,0.1);color:var(--accent);border:1px solid rgba(0,229,155,0.2)}
+.tracker-pill.want-pill{background:rgba(177,151,252,0.1);color:var(--purple);border:1px solid rgba(177,151,252,0.2)}
+.tracker-pill.depends-pill{background:rgba(255,212,59,0.1);color:var(--yellow);border:1px solid rgba(255,212,59,0.2)}
+.tracker-pill .count{font-size:18px;font-weight:700}
+.spectrum-container{margin:20px 0}
+.spectrum-bar{height:8px;border-radius:4px;background:var(--bg-card);overflow:hidden;display:flex}
+.spectrum-segment{height:100%;transition:width .5s cubic-bezier(.22,1,.36,1)}
+.spectrum-segment.need-seg{background:var(--accent)}.spectrum-segment.depends-seg{background:var(--yellow)}.spectrum-segment.want-seg{background:var(--purple)}
+.spectrum-labels{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px}
+.spectrum-totals{display:flex;justify-content:space-between;margin-top:4px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px}
+.spectrum-totals .st-need{color:var(--accent)}.spectrum-totals .st-dep{color:var(--yellow)}.spectrum-totals .st-want{color:var(--purple)}
+.warmup-feedback{padding:10px 14px;border-radius:10px;margin-top:8px;font-size:14px;line-height:1.5;display:none}
+.warmup-feedback.visible{display:block;animation:feedbackIn .3s ease forwards}
+@keyframes feedbackIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.warmup-feedback.correct{background:rgba(0,229,155,0.08);border:1px solid rgba(0,229,155,0.2);color:var(--accent)}
+.warmup-feedback.neutral{background:rgba(255,212,59,0.08);border:1px solid rgba(255,212,59,0.2);color:var(--yellow)}
+/* 24hr rule highlight */
+.rule-highlight{background:linear-gradient(135deg,rgba(0,229,155,0.1),rgba(77,171,247,0.1));border:2px solid rgba(0,229,155,0.25);border-radius:var(--radius);padding:20px;margin:20px 0;text-align:center}
+.rule-highlight h3{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--accent);margin-bottom:8px}
+.rule-highlight p{font-size:15px;color:var(--text-secondary);line-height:1.6}
+.rule-highlight strong{color:var(--text-primary)}
+/* Bottom nav */
+.bottom-action{position:fixed;bottom:0;left:0;right:0;padding:12px 20px;padding-bottom:max(12px,env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--bg-dark) 30%);z-index:50;display:flex;gap:10px;justify-content:center}
+.btn-back{padding:16px 20px;background:var(--bg-card);color:var(--text-secondary);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all .2s ease;flex-shrink:0}
+.btn-back:hover{background:var(--bg-card-hover);border-color:rgba(255,255,255,0.2)}.btn-back:active{transform:scale(.97)}
+.btn-back.hidden{display:none}
+.btn-next{flex:1;max-width:var(--max-w);padding:16px;background:var(--accent);color:var(--bg-dark);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;border:none;border-radius:12px;cursor:pointer;transition:all .25s cubic-bezier(.22,1,.36,1);letter-spacing:-.3px;position:relative;overflow:hidden}
+.btn-next::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);transform:translateX(-100%);transition:transform .4s ease}
+.btn-next:hover::before{transform:translateX(100%)}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,229,155,0.25)}
+.btn-next:active{transform:scale(.97) translateY(0);box-shadow:none;transition-duration:.1s}
+.btn-next:disabled{background:var(--text-muted);cursor:not-allowed;box-shadow:none;transform:none}
+.btn-next:disabled::before{display:none}.btn-next:disabled:hover{transform:none;box-shadow:none}
+/* Completion */
+.badge-icon{width:80px;height:80px;border-radius:50%;background:var(--accent-glow);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px;animation:pulseGlow 2s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(0,229,155,0.2)}50%{box-shadow:0 0 20px 8px rgba(0,229,155,0.15)}}
+.badge-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;color:var(--accent);margin-bottom:4px}
+.star-tracker{display:flex;gap:8px;justify-content:center;margin:16px 0}
+.star{font-size:28px;opacity:0.2;transition:all .3s ease}.star.lit{opacity:1;animation:starPop .4s cubic-bezier(.22,1,.36,1) both}
+@keyframes starPop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+.star-label{font-size:13px;color:var(--text-muted);text-align:center}
+.next-lesson-preview{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:28px;text-align:left;transition:all .25s ease}
+.next-lesson-preview:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.25)}
+.next-lesson-preview .lock-icon{font-size:14px;color:var(--text-muted)}
+.next-lesson-preview h4{font-family:'Space Grotesk',sans-serif;font-size:16px;margin:4px 0}
+.next-lesson-preview p{font-size:13px;color:var(--text-secondary)}
+.hook-emoji{font-size:48px;margin-bottom:16px;animation:emojiFloat 3s ease-in-out infinite}
+@keyframes emojiFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@media(min-width:600px){.screen{padding:48px 32px 120px}h1{font-size:40px}}
+</style>
+</head>
+<body>
+<div class="progress-bar-container"><div class="progress-bar" id="progressBar"></div></div>
+<div class="top-nav"><div class="brand">life<span>unlocked</span></div><div class="lesson-tag">Lesson 2 of 5</div></div>
+
+<!-- SCREEN 1: HOOK -->
+<div class="screen active" id="screen1">
+<div class="hook-emoji">🤔</div>
+<h1>Needs vs. Wants.<br>It's Not That Simple.</h1>
+<p class="subtitle">Everyone thinks they know the difference. Most people are wrong.</p>
+<div class="content-block">
+<p>You've heard it before: <strong>"Only buy what you need."</strong></p>
+<p>Cool advice. Except... <em>what counts as a need?</em></p>
+</div>
+<div class="key-concept"><em>Needs</em> and <em>wants</em> aren't two neat boxes. They're a <strong>sliding scale</strong> that shifts based on your situation, your money, and what's happening in your life right now.</div>
+<div class="content-block">
+<ul>
+<li>Food? <strong>Need.</strong> Eating out with friends? <em>Less clear.</em></li>
+<li>Clothes? <strong>Need.</strong> Those specific brand name shoes? <em>Hmm.</em></li>
+<li>A phone? <strong>Need.</strong> The newest model? <em>That's a different conversation.</em></li>
+</ul>
+<p class="sarcasm">(Gets messy fast.)</p>
+</div>
+<div class="callout">
+<div class="callout-title">Real talk</div>
+<ul>
+<li>This isn't about labeling everything perfectly</li>
+<li>It's about being <strong>honest with yourself</strong> about why you're spending</li>
+<li><em>"I need this"</em> and <em>"I want this and I'm choosing it"</em> are both fine</li>
+<li>The problem starts when you call a want a need to justify it</li>
+</ul>
+</div>
+</div>
+
+<!-- SCREEN 2: EXAMPLES -->
+<div class="screen" id="screen2">
+<h2>Some are obvious. Some will start arguments.</h2>
+<p class="subtitle">Let's look at both types.</p>
+<div class="example-card easy">
+<div class="card-label">Easy call</div>
+<div class="card-item">Groceries</div>
+<div class="card-explain">You gotta eat. <span class="lbl-need">Need.</span> Nobody's arguing this one.</div>
+</div>
+<div class="example-card easy">
+<div class="card-label">Easy call</div>
+<div class="card-item">A $200 concert ticket</div>
+<div class="card-explain">Fun? Yes. Required for survival? <span class="lbl-want">Want.</span></div>
+</div>
+<div class="divider"></div>
+<div class="example-card tricky">
+<div class="card-label">Now it gets tricky</div>
+<div class="card-item">Wi-Fi at home</div>
+<div class="card-explain">You need it for school, job applications, and staying connected. But people survived without it 20 years ago. <span class="lbl-q">So... need or want?</span></div>
+</div>
+<div class="example-card tricky">
+<div class="card-label">Now it gets tricky</div>
+<div class="card-item">A car</div>
+<div class="card-explain">If there's no bus and your job is 20 miles away? <span class="lbl-need">Need.</span> If everything's within walking distance? <span class="lbl-want">Want.</span> <span class="lbl-q">Same item, different answer.</span></div>
+</div>
+<div class="key-concept">Context changes everything. The same item can be a <strong>need</strong> for one person and a <strong>want</strong> for another. That's reality.</div>
+</div>
+
+<!-- SCREEN 3: WARM-UP -->
+<div class="screen" id="screen3">
+<div class="activity-intro">
+<div class="emoji">🎯</div>
+<h3>Quick Practice Round</h3>
+<p>Three easy ones to get you warmed up. Tap your answer.</p>
+</div>
+<div class="sort-item" id="warmup-0">
+<div class="item-name">Drinking water</div>
+<div class="item-context">Your body literally can't function without it.</div>
+<div class="sort-buttons">
+<button class="sort-btn" onclick="warmupSort(0,'need')">Need</button>
+<button class="sort-btn" onclick="warmupSort(0,'depends')">Depends</button>
+<button class="sort-btn" onclick="warmupSort(0,'want')">Want</button>
+</div>
+<div class="warmup-feedback" id="warmup-fb-0"></div>
+</div>
+<div class="sort-item" id="warmup-1">
+<div class="item-name">Designer sunglasses</div>
+<div class="item-context">The $15 pair blocks the same UV rays as the $250 pair.</div>
+<div class="sort-buttons">
+<button class="sort-btn" onclick="warmupSort(1,'need')">Need</button>
+<button class="sort-btn" onclick="warmupSort(1,'depends')">Depends</button>
+<button class="sort-btn" onclick="warmupSort(1,'want')">Want</button>
+</div>
+<div class="warmup-feedback" id="warmup-fb-1"></div>
+</div>
+<div class="sort-item" id="warmup-2">
+<div class="item-name">A winter coat</div>
+<div class="item-context">It's January. Temps are below freezing where you live. Your old one has a broken zipper.</div>
+<div class="sort-buttons">
+<button class="sort-btn" onclick="warmupSort(2,'need')">Need</button>
+<button class="sort-btn" onclick="warmupSort(2,'depends')">Depends</button>
+<button class="sort-btn" onclick="warmupSort(2,'want')">Want</button>
+</div>
+<div class="warmup-feedback" id="warmup-fb-2"></div>
+</div>
+<div id="warmupComplete" style="display:none;">
+<div class="callout">
+<div class="callout-title">Nice work</div>
+<ul>
+<li>Those were the easy ones</li>
+<li>Now let's get into the items where <strong>reasonable people disagree</strong></li>
+<li>That's where the real thinking happens</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- SCREEN 4: MAIN SORT -->
+<div class="screen" id="screen4">
+<div class="activity-intro">
+<div class="emoji">⚡</div>
+<h3>The Real Sort</h3>
+<p>8 items. No right answers on most of these.<br><strong>You can change your mind</strong> — just tap a different button.</p>
+</div>
+<div class="sort-tracker">
+<div class="tracker-pill need-pill">Needs: <span class="count" id="needCount">0</span></div>
+<div class="tracker-pill want-pill">Wants: <span class="count" id="wantCount">0</span></div>
+<div class="tracker-pill depends-pill">Depends: <span class="count" id="dependsCount">0</span></div>
+</div>
+<div id="sortArea">
+<div class="sort-item" id="item-0">
+<div class="item-name">A phone case</div>
+<div class="item-context">Yours cracked last week. A basic one runs $15. A nicer one costs $45.</div>
+<div class="sort-buttons">
+<button class="sort-btn" onclick="sortItem(0,'need')">Need</button>
+<button class="sort-btn" onclick="sortItem(0,'depends')">Depends</button>
+<button class="sort-btn" onclick="sortItem(0,'want')">Want</button>
+</div>
+</div>
+<div class="sort-item" id="item-1">
+<div class="item-name">A streaming subscription</div>
+<div class="item-context">How else are you watching your favorite shows?</div>
+<div class="sort-buttons">
+<button class="sort-btn" onclick="sortItem(1,'need')">Need</button>
+<button class="sort-btn" onclick="sortItem(1,'depends')">Depends</button>
+<button class="sort-btn" onclick="sortItem(1,'want')">Want</button>
+</div>
+</div>
+<div class="sort-item" id="item-2">
+<div class="item-name">Eating out every day</div>
+<div class="item-context">$10-15 a pop. That's $200+ a month. But you don't have time to cook.</div>
+<div class="sort-buttons">
+<button class="sort-btn" onclick="sortItem(2,'need')">Need</button>
+<button class="sort-btn" onclick="sortItem(2,'depends')">Depends</button>
+<button class="sort-btn" onclick="sortItem(2,'want')">Want</button>
+</div>
+</div>
+<div class="sort-item" id="item-3">
+<div class="item-name">New sneakers</div>
+<div class="item-context">Your current ones still work. But they're beat. Like, <em>really</em> beat.</div>
+<div class="sort-buttons">
+<button class="sort-btn" onclick="sortItem(3,'need')">Need</button>
+<button class="sort-btn" onclick="sortItem(3,'depends')">Depends</button>
+<button class="sort-btn" onclick="sortItem(3,'want')">Want</button>
+</div>
+</div>
+<div class="sort-item" id="item-4">
+<div class="item-name">Gym membership</div>
+<div class="item-context">$30/month. You could work out at home for free. But you probably won't.</div>
+<div class="sort-buttons">
+<button class="sort-btn" onclick="sortItem(4,'need')">Need</button>
+<button class="sort-btn" onclick="sortItem(4,'depends')">Depends</button>
+<button class="sort-btn" onclick="sortItem(4,'want')">Want</button>
+</div>
+</div>
+<div class="sort-item" id="item-5">
+<div class="item-name">Putting money in savings</div>
+<div class="item-context">Nothing exciting happens. Your money just... sits there. Growing slowly.</div>
+<div class="sort-buttons">
+<button class="sort-btn" onclick="sortItem(5,'need')">Need</button>
+<button class="sort-btn" onclick="sortItem(5,'depends')">Depends</button>
+<button class="sort-btn" onclick="sortItem(5,'want')">Want</button>
+</div>
+</div>
+<div class="sort-item" id="item-6">
+<div class="item-name">Birthday gift for your best friend</div>
+<div class="item-context">Their birthday is Friday. You could make something. But you know what they actually want.</div>
+<div class="sort-buttons">
+<button class="sort-btn" onclick="sortItem(6,'need')">Need</button>
+<button class="sort-btn" onclick="sortItem(6,'depends')">Depends</button>
+<button class="sort-btn" onclick="sortItem(6,'want')">Want</button>
+</div>
+</div>
+<div class="sort-item" id="item-7">
+<div class="item-name">A fresh haircut</div>
+<div class="item-context">Job interview next week. First impressions matter. But $40 is $40.</div>
+<div class="sort-buttons">
+<button class="sort-btn" onclick="sortItem(7,'need')">Need</button>
+<button class="sort-btn" onclick="sortItem(7,'depends')">Depends</button>
+<button class="sort-btn" onclick="sortItem(7,'want')">Want</button>
+</div>
+</div>
+</div>
+<div class="spectrum-container" id="spectrumViz" style="display:none;">
+<div style="margin-bottom:12px;">
+<h2 style="font-size:18px;margin-bottom:4px;">Your money brain:</h2>
+<p style="font-size:13px;color:var(--text-muted);">This isn't a score. It's a snapshot of how you think.</p>
+</div>
+<div class="spectrum-bar">
+<div class="spectrum-segment need-seg" id="needBar" style="width:0%"></div>
+<div class="spectrum-segment depends-seg" id="dependsBar" style="width:0%"></div>
+<div class="spectrum-segment want-seg" id="wantBar" style="width:0%"></div>
+</div>
+<div class="spectrum-labels"><span>Needs</span><span>It depends</span><span>Wants</span></div>
+<div class="spectrum-totals"><span class="st-need" id="stNeed">0</span><span class="st-dep" id="stDep">0</span><span class="st-want" id="stWant">0</span></div>
+</div>
+</div>
+
+<!-- SCREEN 5: DEBRIEF -->
+<div class="screen" id="screen5">
+<h2>Here's what your sort tells you.</h2>
+<div class="content-block">
+<p>Notice how many landed in <strong>"It Depends"?</strong> That is great because it shows you are questioning if it is a good use of money.</p>
+</div>
+<div class="key-concept">The skill is asking yourself one question every time: <strong>"Is this a need right now, or am I calling it a need because I want it?"</strong></div>
+<div class="content-block">
+<ul>
+<li>A haircut before a job interview <strong>IS</strong> different from a haircut because you're bored</li>
+<li>New shoes when yours are falling apart <strong>IS</strong> different from new shoes because a fresh colorway dropped</li>
+<li><em>Same item. Different situation. Different answer.</em></li>
+</ul>
+</div>
+<div class="divider"></div>
+<div class="callout">
+<div class="callout-title">The trick your brain plays</div>
+<ul>
+<li>Your brain is really good at upgrading wants to needs</li>
+<li><strong>"I NEED those shoes."</strong> No you don't. You want them.</li>
+<li>And that's fine! Just call it what it is</li>
+<li>The moment you're honest about it, you stop being surprised when your money disappears</li>
+</ul>
+</div>
+<div class="rule-highlight">
+<h3>⏰ The 24-Hour Rule</h3>
+<p>Before buying anything over $20, <strong>wait a day.</strong></p>
+<p>If you still want it tomorrow, go for it. You'd be shocked how many "needs" disappear overnight.</p>
+<p class="sarcasm" style="margin-top:8px;margin-bottom:0">(Your future self is already thanking you.)</p>
+</div>
+</div>
+
+<!-- SCREEN 6: COMPLETION -->
+<div class="screen" id="screen6">
+<div style="text-align:center;padding-top:20px;">
+<div class="badge-icon">🔓</div>
+<div class="badge-name">Need Detector</div>
+<p class="subtitle" style="margin-bottom:12px;">You can now see through the <em>"I need it"</em> lie your brain tells you.</p>
+<div class="star-tracker">
+<div class="star lit" style="animation-delay:0.1s">⭐</div>
+<div class="star lit" style="animation-delay:0.3s">⭐</div>
+<div class="star">⭐</div>
+<div class="star">⭐</div>
+<div class="star">⭐</div>
+</div>
+<div class="star-label">2 of 5 lessons complete</div>
+</div>
+<div class="divider"></div>
+<div class="content-block">
+<h2>What you picked up:</h2>
+<ul>
+<li><em>Needs</em> and <em>wants</em> aren't fixed labels. They shift based on <strong>your situation</strong></li>
+<li>The real skill is being honest about which one something actually is for you, right now</li>
+<li>Not what ads tell you. Not what your friends think. <em>What's true for your life and your money</em></li>
+</ul>
+</div>
+<div class="next-lesson-preview">
+<div class="lock-icon">🔒 Up Next</div>
+<h4>Lesson 3: The Trade-Off Game</h4>
+<p>Every dollar you spend here is a dollar you can't spend there. Sounds obvious. Stings when you see it play out.</p>
+</div>
+</div>
+
+<div class="bottom-action">
+<button class="btn-back hidden" id="backBtn" onclick="prevScreen()">← Back</button>
+<button class="btn-next" id="nextBtn" onclick="nextScreen()">Let's Go →</button>
+</div>
+
+<script>
+let currentScreen=1;const totalScreens=6;
+let warmupAnswers=[null,null,null];let warmupDone=0;
+const warmupFeedback=[
+{need:{type:'correct',text:"Yep. Non-negotiable. Your body needs water."},depends:{type:'neutral',text:"It's water. Your body shuts down without it. Clear <strong>need</strong>."},want:{type:'neutral',text:"Bold answer. Without water you've got about 3 days. Basic need."}},
+{need:{type:'neutral',text:"Sun protection? Sure. But <strong>designer</strong> sunglasses? That premium is all want."},depends:{type:'neutral',text:"Sun protection could be a need. But the <em>designer</em> part? That's the want."},want:{type:'correct',text:"Nailed it. Sun protection might be a need. The designer label is pure want."}},
+{need:{type:'correct',text:"100%. Broken zipper, freezing temps, no backup. That's a need."},depends:{type:'neutral',text:"Fair instinct. But broken zipper + freezing = that's a <strong>need</strong>."},want:{type:'neutral',text:"Freezing temps + broken zipper? You need a coat. <strong>Need.</strong>"}}
+];
+function warmupSort(i,choice){
+const item=document.getElementById('warmup-'+i);
+const btns=item.querySelectorAll('.sort-btn');
+btns.forEach(b=>b.className='sort-btn');
+if(warmupAnswers[i]===null)warmupDone++;
+warmupAnswers[i]=choice;
+const bi=choice==='need'?0:choice==='depends'?1:2;
+btns[bi].classList.add('active-'+choice);
+const fb=document.getElementById('warmup-fb-'+i);
+const d=warmupFeedback[i][choice];
+fb.className='warmup-feedback visible '+d.type;
+fb.innerHTML=d.text;
+if(warmupDone>=3){setTimeout(()=>{const el=document.getElementById('warmupComplete');el.style.display='block';el.style.animation='screenIn 0.4s ease forwards'},400)}
+updateButton();
+}
+
+const totalItems=8;const counts={need:0,want:0,depends:0};const itemAnswers=new Array(totalItems).fill(null);
+function getSortedCount(){return itemAnswers.filter(a=>a!==null).length}
+function sortItem(index,category){
+const item=document.getElementById('item-'+index);
+const btns=item.querySelectorAll('.sort-btn');
+if(itemAnswers[index]!==null){counts[itemAnswers[index]]--;item.classList.remove('sorted-need','sorted-want','sorted-depends')}
+itemAnswers[index]=category;counts[category]++;
+btns.forEach(b=>b.className='sort-btn');
+const bi=category==='need'?0:category==='depends'?1:2;
+btns[bi].classList.add('active-'+category);
+item.classList.add('sorted-'+category);
+document.getElementById('needCount').textContent=counts.need;
+document.getElementById('wantCount').textContent=counts.want;
+document.getElementById('dependsCount').textContent=counts.depends;
+const sorted=getSortedCount();
+if(sorted===totalItems){
+const viz=document.getElementById('spectrumViz');viz.style.display='block';
+viz.style.animation='screenIn 0.5s cubic-bezier(0.22,1,0.36,1) forwards';
+document.getElementById('needBar').style.width=((counts.need/totalItems)*100)+'%';
+document.getElementById('dependsBar').style.width=((counts.depends/totalItems)*100)+'%';
+document.getElementById('wantBar').style.width=((counts.want/totalItems)*100)+'%';
+document.getElementById('stNeed').textContent=counts.need;
+document.getElementById('stDep').textContent=counts.depends;
+document.getElementById('stWant').textContent=counts.want;
+}else{document.getElementById('spectrumViz').style.display='none'}
+updateButton();
+}
+
+function updateProgress(){document.getElementById('progressBar').style.width=((currentScreen/totalScreens)*100)+'%'}
+function updateButton(){
+const btn=document.getElementById('nextBtn');const back=document.getElementById('backBtn');
+btn.disabled=false;back.classList.toggle('hidden',currentScreen===1);
+if(currentScreen===3&&warmupDone<3){btn.disabled=true;btn.textContent='Answer all 3 to continue'}
+else if(currentScreen===4&&getSortedCount()<totalItems){btn.disabled=true;btn.textContent='Sort all items ('+getSortedCount()+'/'+totalItems+')'}
+else if(currentScreen===6){btn.textContent='Coming Soon: Lesson 3 🔒';btn.disabled=true}
+else{btn.textContent='Continue →'}
+}
+function nextScreen(){
+if(currentScreen>=totalScreens)return;
+document.getElementById('screen'+currentScreen).classList.remove('active');
+currentScreen++;document.getElementById('screen'+currentScreen).classList.add('active');
+window.scrollTo({top:0,behavior:'smooth'});updateProgress();updateButton();
+}
+function prevScreen(){
+if(currentScreen<=1)return;
+document.getElementById('screen'+currentScreen).classList.remove('active');
+currentScreen--;document.getElementById('screen'+currentScreen).classList.add('active');
+window.scrollTo({top:0,behavior:'smooth'});updateProgress();updateButton();
+}
+document.querySelectorAll('.sort-item').forEach(el=>{
+el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();el.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');el.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%')});
+});
+updateProgress();updateButton();
+</script>
+</body>
+</html>
