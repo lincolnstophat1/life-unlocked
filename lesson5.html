@@ -506,6 +506,7 @@ shopBudget=BUDGET-planS;
 needSpentLive=0;wantSpentLive=0;
 document.getElementById('shopTotal').textContent=shopBudget;
 updateShopDisplay();
+function esc(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 let html='';
 cat.forEach(cg=>{
 const tagClass=cg.catType==='need'?'need-tag':'want-tag';
@@ -515,7 +516,7 @@ html+='<div class="shop-category" style="'+catColor+'">'+cg.cat+' <span class="c
 cg.items.forEach(item=>{
 const id=item.name.replace(/[^a-z0-9]/gi,'_');
 const itemClass=cg.catType==='need'?'need-item':'want-item';
-html+='<div class="shop-item '+itemClass+'" data-id="'+id+'" data-price="'+item.price+'" data-name="'+item.name+'" data-group="'+(cg.group||'')+'" data-tier="'+item.tier+'" data-cattype="'+cg.catType+'" onclick="toggleShop(this)"><div class="s-left"><div class="s-name">'+item.name+'</div><div class="s-desc">'+item.desc+'</div><div class="s-tier">'+item.tier+'</div></div><div class="s-price">$'+item.price+'</div></div>';
+html+='<div class="shop-item '+itemClass+'" data-id="'+id+'" data-price="'+item.price+'" data-name="'+esc(item.name)+'" data-group="'+(cg.group||'')+'" data-tier="'+item.tier+'" data-cattype="'+cg.catType+'" onclick="toggleShop(this)"><div class="s-left"><div class="s-name">'+item.name+'</div><div class="s-desc">'+item.desc+'</div><div class="s-tier">'+item.tier+'</div></div><div class="s-price">$'+item.price+'</div></div>';
 });
 });
 c.innerHTML=html;
