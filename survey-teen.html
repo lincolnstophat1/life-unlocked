@@ -84,6 +84,10 @@ h2{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;line-he
 .rank-num{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:var(--text-muted);width:22px;text-align:center;flex-shrink:0}
 .rank-item-text{flex:1}
 .rank-hint{font-size:13px;color:var(--text-muted);margin-bottom:10px}
+.rank-arrows{display:flex;flex-direction:column;gap:2px;flex-shrink:0;margin-left:auto}
+.rank-arrow{width:28px;height:22px;border:1px solid var(--border);border-radius:6px;background:var(--bg-dark);color:var(--text-muted);font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s ease;padding:0;line-height:1}
+.rank-arrow:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,229,155,0.06)}
+.rank-arrow:active{transform:scale(.9)}
 /* Open text */
 .open-text{width:100%;min-height:80px;background:var(--bg-card);border:2px solid var(--border);border-radius:12px;padding:14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text-primary);resize:vertical;margin:10px 0;transition:border-color .2s ease}
 .open-text:focus{outline:none;border-color:var(--accent)}
@@ -285,14 +289,14 @@ h2{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;line-he
 
 <div class="question-block">
 <div class="question-text">What do you want to learn next? Drag to rank most to least interesting.</div>
-<div class="rank-hint">☝️ = most interesting, 6 = least interesting</div>
+<div class="rank-hint">☝️ = most interesting, 6 = least interesting. Drag or use arrows to reorder.</div>
 <div class="rank-list" id="rankList">
-<div class="rank-item" draggable="true" data-rank-id="credit"><div class="rank-handle">⠿</div><div class="rank-num">1</div><div class="rank-item-text">How credit cards and loans actually work</div></div>
-<div class="rank-item" draggable="true" data-rank-id="investing"><div class="rank-handle">⠿</div><div class="rank-num">2</div><div class="rank-item-text">How to start investing (even with small amounts)</div></div>
-<div class="rank-item" draggable="true" data-rank-id="paycheck"><div class="rank-handle">⠿</div><div class="rank-num">3</div><div class="rank-item-text">Understanding your first paycheck, taxes, and deductions</div></div>
-<div class="rank-item" draggable="true" data-rank-id="renting"><div class="rank-handle">⠿</div><div class="rank-num">4</div><div class="rank-item-text">Renting your first apartment (leases, deposits, utilities)</div></div>
-<div class="rank-item" draggable="true" data-rank-id="insurance"><div class="rank-handle">⠿</div><div class="rank-num">5</div><div class="rank-item-text">How insurance works and why you need it</div></div>
-<div class="rank-item" draggable="true" data-rank-id="career"><div class="rank-handle">⠿</div><div class="rank-num">6</div><div class="rank-item-text">Building a resume and negotiating pay</div></div>
+<div class="rank-item" draggable="true" data-rank-id="credit"><div class="rank-handle">⠿</div><div class="rank-num">1</div><div class="rank-item-text">How credit cards and loans actually work</div><div class="rank-arrows"><button class="rank-arrow" onclick="moveRank(this,-1)">▲</button><button class="rank-arrow" onclick="moveRank(this,1)">▼</button></div></div>
+<div class="rank-item" draggable="true" data-rank-id="investing"><div class="rank-handle">⠿</div><div class="rank-num">2</div><div class="rank-item-text">How to start investing (even with small amounts)</div><div class="rank-arrows"><button class="rank-arrow" onclick="moveRank(this,-1)">▲</button><button class="rank-arrow" onclick="moveRank(this,1)">▼</button></div></div>
+<div class="rank-item" draggable="true" data-rank-id="paycheck"><div class="rank-handle">⠿</div><div class="rank-num">3</div><div class="rank-item-text">Understanding your first paycheck, taxes, and deductions</div><div class="rank-arrows"><button class="rank-arrow" onclick="moveRank(this,-1)">▲</button><button class="rank-arrow" onclick="moveRank(this,1)">▼</button></div></div>
+<div class="rank-item" draggable="true" data-rank-id="renting"><div class="rank-handle">⠿</div><div class="rank-num">4</div><div class="rank-item-text">Renting your first apartment (leases, deposits, utilities)</div><div class="rank-arrows"><button class="rank-arrow" onclick="moveRank(this,-1)">▲</button><button class="rank-arrow" onclick="moveRank(this,1)">▼</button></div></div>
+<div class="rank-item" draggable="true" data-rank-id="insurance"><div class="rank-handle">⠿</div><div class="rank-num">5</div><div class="rank-item-text">How insurance works and why you need it</div><div class="rank-arrows"><button class="rank-arrow" onclick="moveRank(this,-1)">▲</button><button class="rank-arrow" onclick="moveRank(this,1)">▼</button></div></div>
+<div class="rank-item" draggable="true" data-rank-id="career"><div class="rank-handle">⠿</div><div class="rank-num">6</div><div class="rank-item-text">Building a resume and negotiating pay</div><div class="rank-arrows"><button class="rank-arrow" onclick="moveRank(this,-1)">▲</button><button class="rank-arrow" onclick="moveRank(this,1)">▼</button></div></div>
 </div>
 </div>
 
@@ -332,6 +336,11 @@ h2{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;line-he
 <div class="content-block">
 <p class="sarcasm">You now know more about money than most adults. Use that power wisely.</p>
 </div>
+
+<div style="text-align:center;margin-top:24px;">
+<a href="index.html" style="display:inline-block;width:100%;padding:16px;background:var(--accent);color:var(--bg-dark);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;border:none;border-radius:12px;text-decoration:none;text-align:center;transition:all .2s ease;letter-spacing:-.3px;">← Back to Home</a>
+<p style="font-size:13px;color:var(--text-muted);margin-top:16px;">Are you a parent? <a href="survey-parent.html" style="color:var(--accent);text-decoration:underline;">Take the Parent Survey →</a></p>
+</div>
 </div>
 
 <div class="bottom-action">
@@ -356,7 +365,6 @@ let survey = {
   wouldShare: null
 };
 
-// PLACEHOLDER: Replace with your actual Google Form endpoint and entry IDs
 const GOOGLE_FORM_URL = 'https://docs.google.com/forms/u/0/d/1LhgBaoqJK1QWfiJF0MasJKC6RWjqeqaLvBjC_l5-LJI/formResponse';
 const FORM_FIELDS = {
   codeName: 'entry.1068969809',
@@ -485,32 +493,46 @@ rankList.addEventListener('dragover', function(e) {
   }
 });
 
-// Touch drag support for mobile
+// Touch drag support for mobile - position-based insertion
 let touchItem = null;
+let touchStartY = 0;
+let touchItemStartRect = null;
 
 rankList.addEventListener('touchstart', function(e) {
   const item = e.target.closest('.rank-item');
   if (!item) return;
   touchItem = item;
+  touchStartY = e.touches[0].clientY;
+  touchItemStartRect = item.getBoundingClientRect();
   touchItem.classList.add('dragging');
+  touchItem.style.position = 'relative';
+  touchItem.style.zIndex = '10';
 }, {passive: true});
 
 rankList.addEventListener('touchmove', function(e) {
   if (!touchItem) return;
   e.preventDefault();
   const touchY = e.touches[0].clientY;
+  const deltaY = touchY - touchStartY;
+  touchItem.style.transform = 'translateY(' + deltaY + 'px)';
+
+  // Find the item we're hovering over and insert before/after it
   const items = Array.from(rankList.querySelectorAll('.rank-item'));
-  
   for (const item of items) {
     if (item === touchItem) continue;
     const rect = item.getBoundingClientRect();
     const midY = rect.top + rect.height / 2;
-    if (touchY < midY && item.previousElementSibling === touchItem) {
-      rankList.insertBefore(touchItem, item);
+    if (touchY < midY) {
+      if (item !== touchItem.nextElementSibling || touchY < rect.top) {
+        rankList.insertBefore(touchItem, item);
+        touchStartY = touchY;
+        touchItem.style.transform = '';
+      }
       break;
-    } else if (touchY > midY && item.nextElementSibling === touchItem) {
+    } else if (touchY > midY && item === items[items.length - 1]) {
       rankList.insertBefore(touchItem, item.nextSibling);
-      break;
+      touchStartY = touchY;
+      touchItem.style.transform = '';
     }
   }
 }, {passive: false});
@@ -518,6 +540,9 @@ rankList.addEventListener('touchmove', function(e) {
 rankList.addEventListener('touchend', function(e) {
   if (touchItem) {
     touchItem.classList.remove('dragging');
+    touchItem.style.position = '';
+    touchItem.style.zIndex = '';
+    touchItem.style.transform = '';
     touchItem = null;
   }
   updateRankNumbers();
@@ -529,6 +554,18 @@ function updateRankNumbers() {
   });
 }
 
+function moveRank(btn, dir) {
+  const item = btn.closest('.rank-item');
+  if (dir === -1 && item.previousElementSibling) {
+    rankList.insertBefore(item, item.previousElementSibling);
+  } else if (dir === 1 && item.nextElementSibling) {
+    rankList.insertBefore(item, item.nextElementSibling.nextSibling);
+  }
+  updateRankNumbers();
+  item.style.background = 'rgba(0,229,155,0.08)';
+  setTimeout(() => { item.style.background = ''; }, 200);
+}
+
 function getRanking() {
   return Array.from(rankList.querySelectorAll('.rank-item')).map(item => item.dataset.rankId).join(',');
 }
@@ -538,11 +575,11 @@ function screen3Complete() {
   return survey.mostUseful && survey.almostStopped && survey.recommend && survey.learnedFrom.length > 0 && survey.socialMedia.length > 0 && survey.wouldShare;
 }
 
-// Screen 4 required: both open text fields have 10+ characters
+// Screen 4 required: both open text fields have 5+ characters
 function screen4Complete() {
   const useful = document.getElementById('openUseful').value.trim();
   const better = document.getElementById('openBetter').value.trim();
-  return useful.length >= 10 && better.length >= 10;
+  return useful.length >= 5 && better.length >= 5;
 }
 
 function updateButton() {
@@ -581,8 +618,7 @@ function updateButton() {
       btn.textContent = 'Submit →';
     }
   } else if (currentScreen === 5) {
-    btn.textContent = 'Done ✓';
-    btn.disabled = true;
+    document.querySelector('.bottom-action').style.display = 'none';
   }
 }
 

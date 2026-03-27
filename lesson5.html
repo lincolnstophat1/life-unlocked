@@ -341,6 +341,11 @@ h2{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;line-he
 <li><em>You're ready for all of it</em></li>
 </ul>
 </div>
+<div class="divider"></div>
+<div style="text-align:center;">
+<a href="index.html" style="display:inline-block;padding:12px 28px;background:var(--bg-card);color:var(--text-secondary);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;border:1px solid var(--border);border-radius:12px;text-decoration:none;transition:all .2s ease;margin-bottom:12px;">← Back to Home</a>
+<p style="font-size:13px;color:var(--text-muted);margin-top:12px;">Are you a parent? <a href="survey-parent.html" style="color:var(--accent);text-decoration:underline;">Take the Parent Survey →</a></p>
+</div>
 </div>
 
 <div class="bottom-action">
@@ -578,7 +583,6 @@ document.getElementById('shopCount').textContent=shopSelected.size;
 // Dual tracker
 const needPct=planN>0?Math.min((needSpentLive/planN)*100,100):0;
 const wantBudgetEffective=Math.max(planW-(Math.max(needSpentLive-planN,0)),0);
-const wantPct=planW>0?Math.min((wantSpentLive/planW)*100,100):0;
 const needOver=needSpentLive>planN;
 document.getElementById('needFill').style.width=Math.min(needPct,100)+'%';
 document.getElementById('needFill').className='tracker-fill '+(needOver?'over-fill':'need-fill');
@@ -606,9 +610,10 @@ const needOverspend=Math.max(needSpent-planN,0);
 const effectiveWantBudget=planW-needOverspend;
 let h='';
 h+='<h2 style="font-size:18px;margin-bottom:4px;">Plan vs. Reality</h2><p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">How your spending compared to your targets.</p>';
+var spendBudget=BUDGET-planS;
 h+='<div class="compare-bar">';
-h+='<div class="compare-row"><div class="compare-label" style="color:var(--accent)">Needs</div><div class="compare-track"><div class="compare-fill planned" style="width:'+((planN/BUDGET)*100)+'%"></div><div class="compare-fill actual nf" style="width:'+((needSpent/BUDGET)*100)+'%"></div></div><div class="compare-pct" style="color:'+(needSpent>planN?'var(--warning)':'var(--accent)')+'">$'+needSpent+' <span style="font-size:11px;color:var(--text-muted)">/ $'+planN+'</span></div></div>';
-h+='<div class="compare-row"><div class="compare-label" style="color:var(--purple)">Wants</div><div class="compare-track"><div class="compare-fill planned" style="width:'+((planW/BUDGET)*100)+'%"></div><div class="compare-fill actual wf" style="width:'+((wantSpent/BUDGET)*100)+'%"></div></div><div class="compare-pct" style="color:'+(wantSpent>effectiveWantBudget?'var(--warning)':'var(--purple)')+'">$'+wantSpent+' <span style="font-size:11px;color:var(--text-muted)">/ $'+effectiveWantBudget+'</span></div></div>';
+h+='<div class="compare-row"><div class="compare-label" style="color:var(--accent)">Needs</div><div class="compare-track"><div class="compare-fill planned" style="width:'+(spendBudget>0?((planN/spendBudget)*100):0)+'%"></div><div class="compare-fill actual nf" style="width:'+(spendBudget>0?((needSpent/spendBudget)*100):0)+'%"></div></div><div class="compare-pct" style="color:'+(needSpent>planN?'var(--warning)':'var(--accent)')+'">$'+needSpent+' <span style="font-size:11px;color:var(--text-muted)">/ $'+planN+'</span></div></div>';
+h+='<div class="compare-row"><div class="compare-label" style="color:var(--purple)">Wants</div><div class="compare-track"><div class="compare-fill planned" style="width:'+(spendBudget>0?((effectiveWantBudget/spendBudget)*100):0)+'%"></div><div class="compare-fill actual wf" style="width:'+(spendBudget>0?((wantSpent/spendBudget)*100):0)+'%"></div></div><div class="compare-pct" style="color:'+(wantSpent>effectiveWantBudget?'var(--warning)':'var(--purple)')+'">$'+wantSpent+' <span style="font-size:11px;color:var(--text-muted)">/ $'+effectiveWantBudget+'</span></div></div>';
 h+='<div class="compare-row"><div class="compare-label" style="color:var(--blue)">Saved</div><div class="compare-track"><div class="compare-fill planned" style="width:'+((planS/BUDGET)*100)+'%"></div><div class="compare-fill actual sf" style="width:'+((actualSave/BUDGET)*100)+'%"></div></div><div class="compare-pct" style="color:var(--blue)">$'+actualSave+' <span style="font-size:11px;color:var(--text-muted)">/ $'+planS+'</span></div></div>';
 h+='</div>';
 // Overspend callout
@@ -639,7 +644,7 @@ document.getElementById('revealContent').innerHTML=h;
 }
 
 function checkGut(){
-gutDone=document.getElementById('gutCheck').value.trim().length>15;
+gutDone=document.getElementById('gutCheck').value.trim().length>=5;
 if(gutDone){const gc=document.getElementById('gutCallout');gc.style.display='block';gc.style.animation='screenIn 0.4s ease forwards'}
 updateButton();
 }

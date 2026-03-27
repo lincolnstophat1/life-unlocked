@@ -340,7 +340,7 @@ document.getElementById('reflCallout').style.animation='screenIn 0.4s ease forwa
 updateButton();
 }
 function checkReflText(){
-reflTextDone=document.getElementById('reflectionText').value.trim().length>10;
+reflTextDone=document.getElementById('reflectionText').value.trim().length>=5;
 updateButton();
 }
 const rEl=document.getElementById('reflectionText');
