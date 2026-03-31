@@ -129,6 +129,7 @@ h2{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;line-he
 .os-btn{flex:1;padding:12px;border-radius:10px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;cursor:pointer;border:none;transition:all .2s ease}
 .os-btn:active{transform:scale(.95)}
 .os-btn.os-confirm{background:var(--warning);color:var(--bg-dark)}
+.os-btn.os-confirm.os-savings{background:var(--yellow);color:var(--bg-dark)}
 .os-btn.os-cancel{background:var(--bg-card-hover);color:var(--text-secondary);border:1px solid var(--border)}
 .shop-item .s-left{display:flex;flex-direction:column;flex:1;min-width:0}
 .shop-item .s-name{font-weight:600;font-size:15px;font-family:'Space Grotesk',sans-serif}
@@ -257,20 +258,21 @@ h2{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;line-he
 <div class="dual-tracker">
 <div class="tracker-row"><div class="tracker-label need-lbl">Needs</div><div class="tracker-bar"><div class="tracker-fill need-fill" id="needFill" style="width:0%"></div></div><div class="tracker-nums" id="needNums">$0 of $0</div></div>
 <div class="tracker-row"><div class="tracker-label want-lbl">Wants</div><div class="tracker-bar"><div class="tracker-fill want-fill" id="wantFill" style="width:0%"></div></div><div class="tracker-nums" id="wantNums">$0 of $0</div></div>
+<div class="tracker-row"><div class="tracker-label" style="color:var(--blue)">Saved</div><div class="tracker-bar"><div class="tracker-fill" id="saveFill" style="width:0%;background:var(--blue)"></div></div><div class="tracker-nums" id="saveNums">$0 of $0</div></div>
 </div>
 </div>
 <div class="activity-intro" style="margin-top:8px"><div class="emoji">🛒</div><h3 id="shopTitle">Build Your Setup</h3><p>Tap to add, tap again to remove.<br><strong>Pick one option per category</strong> (Budget, Mid, or Premium).</p></div>
 <div id="shopCatalog"></div>
 </div>
 
-<!-- OVERSPEND MODAL -->
+<!-- OVERSPEND MODAL (dynamic for all scenarios) -->
 <div class="overspend-modal" id="overspendModal">
-<div class="overspend-box">
-<h3>Over your needs budget</h3>
-<p id="overspendMsg">This puts you over what you planned for needs. The extra <span class="os-amount" id="overspendAmt">$0</span> will come out of your wants budget. Are you sure?</p>
+<div class="overspend-box" id="overspendBox">
+<h3 id="osTitle">Over budget</h3>
+<p id="osMsg"></p>
 <div class="overspend-btns">
 <div class="os-btn os-cancel" onclick="cancelOverspend()">Never mind</div>
-<div class="os-btn os-confirm" onclick="confirmOverspend()">Yes, I need this</div>
+<div class="os-btn os-confirm" id="osConfirmBtn" onclick="confirmOverspend()">Yes, I need this</div>
 </div>
 </div>
 </div>
@@ -362,6 +364,8 @@ let shopBudget=BUDGET;const shopSelected=new Map();
 let gutDone=false;
 let needSpentLive=0,wantSpentLive=0;
 let pendingOverspendEl=null;
+let savingsUsed=0;
+let needsPulledForWants=0;
 
 // CATALOGS - items grouped by category, with mutual exclusivity groups
 const catalogs={
@@ -503,7 +507,7 @@ function buildShop(){
 const cat=catalogs[chosenPath];const c=document.getElementById('shopCatalog');
 document.getElementById('shopTitle').textContent=chosenPath==='gaming'?'Build Your Setup':'Build Your Room';
 shopBudget=BUDGET-planS;
-needSpentLive=0;wantSpentLive=0;
+needSpentLive=0;wantSpentLive=0;savingsUsed=0;needsPulledForWants=0;
 document.getElementById('shopTotal').textContent=shopBudget;
 updateShopDisplay();
 function esc(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -528,22 +532,81 @@ el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();el.style.
 function toggleShop(el){
 const price=parseInt(el.dataset.price);const name=el.dataset.name;const group=el.dataset.group;const tier=el.dataset.tier;const catType=el.dataset.cattype;
 if(el.classList.contains('selected')){
-el.classList.remove('selected');shopSelected.delete(name);shopBudget+=price;
+// DESELECT: return money to appropriate buckets
+el.classList.remove('selected');shopSelected.delete(name);
 if(catType==='need')needSpentLive-=price;else wantSpentLive-=price;
-if(group)document.querySelectorAll('.shop-item[data-group="'+group+'"]').forEach(s=>{if(s!==el)s.classList.remove('excluded')});
+// Return savings first if savings was used
+if(savingsUsed>0){
+const returnToSave=Math.min(savingsUsed,price);
+savingsUsed-=returnToSave;shopBudget+=(price-returnToSave);
+// Also return needsPulledForWants if applicable
+}else if(needsPulledForWants>0&&catType==='want'){
+const returnToNeeds=Math.min(needsPulledForWants,price);
+needsPulledForWants-=returnToNeeds;shopBudget+=price;
 }else{
-if(price>shopBudget)return;
-// Check if this needs item would push needs over budget
-if(catType==='need'&&(needSpentLive+price)>planN){
-pendingOverspendEl=el;
-const overAmt=(needSpentLive+price)-planN;
-document.getElementById('overspendAmt').textContent='$'+overAmt;
-document.getElementById('overspendModal').classList.add('visible');
+shopBudget+=price;
+}
+if(group)document.querySelectorAll('.shop-item[data-group="'+group+'"]').forEach(s=>{if(s!==el)s.classList.remove('excluded')});
+updateShopDisplay();updateButton();
 return;
 }
-addItem(el);
+// SELECT: check if we can afford it and which bucket it comes from
+var totalAvailable=shopBudget+savingsUsed;
+// Calculate available budgets
+var needsLeft=Math.max(planN-needSpentLive,0);
+var wantsLeft=Math.max(planW-Math.max(needSpentLive-planN,0)-wantSpentLive,0);
+if(catType==='need'){
+// NEED ITEM: check if it fits in needs budget
+if(needSpentLive+price<=planN){
+// Fits in needs budget, no modal needed
+addItem(el);updateShopDisplay();updateButton();
+}else if(price<=shopBudget){
+// Need goes over needs budget -> eats into wants (existing behavior)
+pendingOverspendEl=el;pendingOverspendType='need-over';
+var overAmt=(needSpentLive+price)-planN;
+showModal('Over your needs budget','This puts you <strong>$'+overAmt+' over</strong> what you planned for needs. That extra comes out of your wants budget.','Yes, I need this','warning');
+}else{return}// Can't afford at all
+}else{
+// WANT ITEM: cascade logic
+if(wantSpentLive+price<=planW-Math.max(needSpentLive-planN,0)){
+// Fits in effective wants budget, no modal needed
+if(price<=shopBudget){addItem(el);updateShopDisplay();updateButton()}
+}else{
+// Want goes over wants budget - figure out the cascade
+var wantOver=((wantSpentLive+price)-(planW-Math.max(needSpentLive-planN,0)));
+var fromNeeds=Math.min(wantOver,needsLeft);
+var fromSavings=wantOver-fromNeeds;
+var savingsAvail=planS-savingsUsed;
+if(fromSavings>savingsAvail){return}// Can't afford even with savings
+if(price>shopBudget+savingsAvail-savingsUsed){return}// Total budget check
+pendingOverspendEl=el;pendingOverspendType='want-over';
+pendingFromNeeds=fromNeeds;pendingFromSavings=fromSavings;
+if(fromSavings===0){
+// Only pulling from needs
+showModal('Calling a want a need?','You\'re <strong>$'+wantOver+'</strong> over your wants budget. You have <strong>$'+needsLeft+'</strong> left in needs. Pull <strong>$'+fromNeeds+'</strong> from your needs budget to cover this?','Pull from needs','warning');
+}else if(fromNeeds===0){
+// Only pulling from savings
+showModal('Dipping into savings','You\'ve used up your needs and wants budgets. This <strong>$'+wantOver+'</strong> would come straight from your savings. That\'s money meant to protect you from the unexpected.','Yes, use savings','savings');
+}else{
+// Pulling from both
+showModal('Over budget on two fronts','You\'re <strong>$'+wantOver+'</strong> over your wants budget. <strong>$'+fromNeeds+'</strong> can come from your leftover needs, but <strong>$'+fromSavings+'</strong> would come from your savings. That\'s your safety net money.','Pull $'+fromNeeds+' from needs + $'+fromSavings+' from savings','savings');
 }
-updateShopDisplay();updateButton();
+}
+}
+}
+
+var pendingOverspendType=null;
+var pendingFromNeeds=0,pendingFromSavings=0;
+
+function showModal(title,msg,confirmText,severity){
+document.getElementById('osTitle').textContent=title;
+document.getElementById('osMsg').innerHTML=msg;
+var btn=document.getElementById('osConfirmBtn');
+btn.textContent=confirmText;
+btn.className='os-btn os-confirm'+(severity==='savings'?' os-savings':'');
+document.getElementById('overspendBox').style.borderColor=severity==='savings'?'var(--yellow)':'var(--warning)';
+document.getElementById('osTitle').style.color=severity==='savings'?'var(--yellow)':'var(--warning)';
+document.getElementById('overspendModal').classList.add('visible');
 }
 
 function addItem(el){
@@ -567,35 +630,56 @@ if(catType==='need')needSpentLive+=price;else wantSpentLive+=price;
 
 function confirmOverspend(){
 document.getElementById('overspendModal').classList.remove('visible');
-if(pendingOverspendEl){addItem(pendingOverspendEl);pendingOverspendEl=null;updateShopDisplay();updateButton()}
+if(!pendingOverspendEl)return;
+if(pendingOverspendType==='want-over'&&pendingFromSavings>0){
+// Expand shopBudget by dipping into savings
+savingsUsed+=pendingFromSavings;
+shopBudget+=pendingFromSavings;
+}
+if(pendingOverspendType==='want-over'&&pendingFromNeeds>0){
+needsPulledForWants+=pendingFromNeeds;
+}
+addItem(pendingOverspendEl);
+pendingOverspendEl=null;pendingOverspendType=null;pendingFromNeeds=0;pendingFromSavings=0;
+updateShopDisplay();updateButton();
 }
 
 function cancelOverspend(){
 document.getElementById('overspendModal').classList.remove('visible');
-pendingOverspendEl=null;
+pendingOverspendEl=null;pendingOverspendType=null;pendingFromNeeds=0;pendingFromSavings=0;
 }
 
 function updateShopDisplay(){
-const spent=BUDGET-planS-shopBudget;
+const totalSpendBudget=BUDGET-planS+savingsUsed;
+const spent=totalSpendBudget-shopBudget;
 document.getElementById('shopSpent').textContent='$'+spent;
 document.getElementById('shopRem').textContent='$'+shopBudget+' left';
 document.getElementById('shopRem').className='sb-remaining '+(shopBudget>500?'ok':shopBudget>100?'low':'over');
 document.getElementById('shopCount').textContent=shopSelected.size;
-// Dual tracker
+// Dual tracker - needs
 const needPct=planN>0?Math.min((needSpentLive/planN)*100,100):0;
-const wantBudgetEffective=Math.max(planW-(Math.max(needSpentLive-planN,0)),0);
 const needOver=needSpentLive>planN;
 document.getElementById('needFill').style.width=Math.min(needPct,100)+'%';
 document.getElementById('needFill').className='tracker-fill '+(needOver?'over-fill':'need-fill');
 document.getElementById('needNums').textContent='$'+needSpentLive+' of $'+planN;
 document.getElementById('needNums').className='tracker-nums'+(needOver?' over-nums':'');
+// Dual tracker - wants (effective budget accounts for needs overspend AND needs pulled for wants)
+const wantBudgetEffective=Math.max(planW-(Math.max(needSpentLive-planN,0)),0);
 document.getElementById('wantFill').style.width=(wantBudgetEffective>0?Math.min((wantSpentLive/wantBudgetEffective)*100,100):0)+'%';
 document.getElementById('wantFill').className='tracker-fill '+(wantSpentLive>wantBudgetEffective?'over-fill':'want-fill');
 document.getElementById('wantNums').textContent='$'+wantSpentLive+' of $'+wantBudgetEffective;
 document.getElementById('wantNums').className='tracker-nums'+(wantSpentLive>wantBudgetEffective?' over-nums':'');
-// Lock items that are too expensive
+// Savings tracker
+var actualSave=planS-savingsUsed;
+document.getElementById('saveFill').style.width=(planS>0?((actualSave/planS)*100):0)+'%';
+document.getElementById('saveFill').className='tracker-fill'+(savingsUsed>0?' over-fill':'');
+document.getElementById('saveFill').style.background=savingsUsed>0?'var(--warning)':'var(--blue)';
+document.getElementById('saveNums').textContent='$'+actualSave+' of $'+planS;
+document.getElementById('saveNums').className='tracker-nums'+(savingsUsed>0?' over-nums':'');
+// Lock items that are too expensive (including potential savings)
+var maxAffordable=shopBudget+(planS-savingsUsed);
 document.querySelectorAll('.shop-item').forEach(el=>{
-if(!el.classList.contains('selected')&&!el.classList.contains('excluded')&&parseInt(el.dataset.price)>shopBudget)el.classList.add('locked');
+if(!el.classList.contains('selected')&&!el.classList.contains('excluded')&&parseInt(el.dataset.price)>maxAffordable)el.classList.add('locked');
 else if(!el.classList.contains('selected')&&!el.classList.contains('excluded'))el.classList.remove('locked');
 });
 }
@@ -608,16 +692,16 @@ else{missed.push({...item,catType:cg.catType})}
 })});
 const totalSpent=needSpent+wantSpent;const actualSave=BUDGET-totalSpent;
 const needOverspend=Math.max(needSpent-planN,0);
-const effectiveWantBudget=planW-needOverspend;
+const effectiveWantBudget=Math.max(planW-needOverspend,0);
 let h='';
 h+='<h2 style="font-size:18px;margin-bottom:4px;">Plan vs. Reality</h2><p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">How your spending compared to your targets.</p>';
 var spendBudget=BUDGET-planS;
 h+='<div class="compare-bar">';
 h+='<div class="compare-row"><div class="compare-label" style="color:var(--accent)">Needs</div><div class="compare-track"><div class="compare-fill planned" style="width:'+(spendBudget>0?((planN/spendBudget)*100):0)+'%"></div><div class="compare-fill actual nf" style="width:'+(spendBudget>0?((needSpent/spendBudget)*100):0)+'%"></div></div><div class="compare-pct" style="color:'+(needSpent>planN?'var(--warning)':'var(--accent)')+'">$'+needSpent+' <span style="font-size:11px;color:var(--text-muted)">/ $'+planN+'</span></div></div>';
 h+='<div class="compare-row"><div class="compare-label" style="color:var(--purple)">Wants</div><div class="compare-track"><div class="compare-fill planned" style="width:'+(spendBudget>0?((effectiveWantBudget/spendBudget)*100):0)+'%"></div><div class="compare-fill actual wf" style="width:'+(spendBudget>0?((wantSpent/spendBudget)*100):0)+'%"></div></div><div class="compare-pct" style="color:'+(wantSpent>effectiveWantBudget?'var(--warning)':'var(--purple)')+'">$'+wantSpent+' <span style="font-size:11px;color:var(--text-muted)">/ $'+effectiveWantBudget+'</span></div></div>';
-h+='<div class="compare-row"><div class="compare-label" style="color:var(--blue)">Saved</div><div class="compare-track"><div class="compare-fill planned" style="width:'+((planS/BUDGET)*100)+'%"></div><div class="compare-fill actual sf" style="width:'+((actualSave/BUDGET)*100)+'%"></div></div><div class="compare-pct" style="color:var(--blue)">$'+actualSave+' <span style="font-size:11px;color:var(--text-muted)">/ $'+planS+'</span></div></div>';
+h+='<div class="compare-row"><div class="compare-label" style="color:var(--blue)">Saved</div><div class="compare-track"><div class="compare-fill planned" style="width:'+((planS/BUDGET)*100)+'%"></div><div class="compare-fill actual sf" style="width:'+((actualSave/BUDGET)*100)+'%"></div></div><div class="compare-pct" style="color:'+(savingsUsed>0?'var(--warning)':'var(--blue)')+'">$'+actualSave+' <span style="font-size:11px;color:var(--text-muted)">/ $'+planS+'</span></div></div>';
 h+='</div>';
-// Overspend callout
+// CALLOUT: Needs overspend ate into wants
 if(needOverspend>0){
 h+='<div class="callout warn-callout" style="margin:16px 0"><div class="callout-title">Needs ate into your wants</div><ul>';
 h+='<li>You budgeted <strong>$'+planN+'</strong> for needs but spent <strong>$'+needSpent+'</strong></li>';
@@ -626,9 +710,36 @@ h+='<li>Your wants budget shrank from <strong>$'+planW+'</strong> to <strong>$'+
 h+='<li>This is how it works in real life. When bills go up, fun money shrinks</li>';
 h+='</ul></div>';
 }
-if(actualSave<planS)h+='<div class="callout mild-callout" style="margin:16px 0"><div class="callout-title">Budget drift</div><ul><li>You planned to save <strong>$'+planS+'</strong> but actually saved <strong>$'+actualSave+'</strong></li><li>Those upgrades are tempting</li><li>This is exactly why you set a plan first — it shows you when you\'re drifting</li></ul></div>';
-else if(actualSave>planS)h+='<div class="callout" style="margin:16px 0"><div class="callout-title">Under budget</div><ul><li>You planned to save <strong>$'+planS+'</strong> and actually saved <strong>$'+actualSave+'</strong></li><li>You found a way to get what you wanted without blowing everything</li><li>That\'s discipline showing up</li></ul></div>';
+// CALLOUT: Wants pulled from needs
+if(needsPulledForWants>0&&savingsUsed===0){
+h+='<div class="callout mild-callout" style="margin:16px 0"><div class="callout-title">You moved need money to cover wants</div><ul>';
+h+='<li>You had <strong>$'+needsPulledForWants+'</strong> left in your needs budget and moved it to wants</li>';
+h+='<li>That works when you have leftover. But be honest with yourself about why</li>';
+h+='<li>If you start treating wants as needs, the categories stop meaning anything</li>';
+h+='</ul></div>';
+}
+// CALLOUT: Wants pulled from needs AND savings
+if(needsPulledForWants>0&&savingsUsed>0){
+h+='<div class="callout mild-callout" style="margin:16px 0"><div class="callout-title">You moved need money to cover wants</div><ul>';
+h+='<li>You shifted <strong>$'+needsPulledForWants+'</strong> from needs to wants</li>';
+h+='<li>When you had leftover need money, using it for wants felt easy. But that\'s how category lines start to blur</li>';
+h+='</ul></div>';
+}
+// CALLOUT: Savings was raided (the heavy one)
+if(savingsUsed>0){
+h+='<div class="callout warn-callout" style="margin:16px 0"><div class="callout-title">You dipped into savings for wants</div><ul>';
+h+='<li>You pulled <strong>$'+savingsUsed+'</strong> from your savings to fund wants</li>';
+h+='<li>Remember <em>opportunity cost</em> from Lesson 3? That <strong>$'+savingsUsed+'</strong> wasn\'t just money. It was your cushion, your safety net, your future flexibility. That\'s what you traded for upgrades</li>';
+h+='<li>Two weeks later, something breaks. Repair costs $150. You planned to have <strong>$'+planS+'</strong> saved but you raided <strong>$'+savingsUsed+'</strong> for wants. Now you\'ve got <strong>$'+actualSave+'</strong></li>';
+if(actualSave<150)h+='<li style="color:var(--warning)"><strong>That\'s not enough to cover it.</strong> This is how savings disappears. Not all at once, but one "I\'ll just dip in this once" at a time</li>';
+else h+='<li>You can still cover it, but your margin just got thinner. Every dip makes the next one easier to justify</li>';
+h+='</ul></div>';
+}
+// CALLOUT: Under/over on savings (no raid scenarios)
+if(savingsUsed===0){
+if(actualSave>planS)h+='<div class="callout" style="margin:16px 0"><div class="callout-title">Under budget</div><ul><li>You planned to save <strong>$'+planS+'</strong> and actually saved <strong>$'+actualSave+'</strong></li><li>You found a way to get what you wanted without blowing everything</li><li>That\'s discipline showing up</li></ul></div>';
 else if(actualSave===planS&&actualSave>0)h+='<div class="callout" style="margin:16px 0"><div class="callout-title">Right on target</div><ul><li>You planned to save <strong>$'+planS+'</strong> and that\'s exactly what you did</li><li>Plans work when you stick to them</li></ul></div>';
+}
 h+='<div class="divider"></div><div class="reveal-section"><div class="reveal-label got">What you built ('+picked.length+' items — $'+totalSpent+')</div>';
 picked.forEach(i=>{
 const clr=i.catType==='need'?'var(--accent)':'var(--purple)';
@@ -639,8 +750,9 @@ h+='</div>';
 h+='<div class="divider"></div><div class="reveal-section"><div class="reveal-label missed">Your <em>opportunity cost</em>: what you left behind</div>';
 missed.forEach(i=>{h+='<div class="reveal-item lost"><span class="r-name">'+i.name+'</span><span class="r-price">$'+i.price+'</span></div>'});
 h+='</div>';
-if(actualSave===0)h+='<div class="callout warn-callout" style="margin:20px 0"><div class="callout-title">Reality check</div><ul><li>You spent every dollar</li><li>Two weeks later, something breaks. Repair costs $150. With $0 saved, you\'re stuck</li><li>Remember the phone crack from Lesson 4? <strong>Same lesson, bigger number</strong></li></ul></div>';
-else if(actualSave<150)h+='<div class="callout mild-callout" style="margin:20px 0"><div class="callout-title">Thin cushion</div><ul><li>You saved $'+actualSave+'</li><li>Better than nothing, but one unexpected expense and it\'s gone</li></ul></div>';
+if(actualSave===0&&savingsUsed>0)h+='<div class="callout warn-callout" style="margin:20px 0"><div class="callout-title">Zero safety net</div><ul><li>You started with <strong>$'+planS+'</strong> in savings and spent every dollar of it on wants</li><li>You chose upgrades over security. Remember the phone crack from Lesson 4? <strong>Same lesson, bigger number, and now you have nothing to cover it</strong></li></ul></div>';
+else if(actualSave===0&&savingsUsed===0)h+='<div class="callout warn-callout" style="margin:20px 0"><div class="callout-title">Reality check</div><ul><li>You spent every dollar</li><li>Two weeks later, something breaks. Repair costs $150. With $0 saved, you\'re stuck</li><li>Remember the phone crack from Lesson 4? <strong>Same lesson, bigger number</strong></li></ul></div>';
+else if(actualSave>0&&actualSave<150&&savingsUsed===0)h+='<div class="callout mild-callout" style="margin:20px 0"><div class="callout-title">Thin cushion</div><ul><li>You saved $'+actualSave+'</li><li>Better than nothing, but one unexpected expense and it\'s gone</li></ul></div>';
 document.getElementById('revealContent').innerHTML=h;
 }
 
